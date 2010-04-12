@@ -42,7 +42,7 @@
               },
           }
           
-          function action( ) {
+          function snapshot( ) {
               var moveTo = position( this.start, this.end )
               console.log( moveTo.done )
               window.scroll( moveTo.x - this.win.width / 2,
@@ -52,7 +52,7 @@
               }
           }
           
-          function glance( ) { // saccade
+          function scene( ) { // saccade
               var self = this
               var args = Array.prototype.slice.call( arguments )
               
@@ -150,12 +150,12 @@
                 } ).bottom.left
               )
           }
-          if( state.scroller ) state.scroller.scroll()
+          if( this.snapshot ) this.snapshot()
       }
       
       $( function() {
-          var watcher = new Animatable( ScrollWatcher )
-          watcher.go
+          var scene = new scene( watcher )
+          scene.go
           $('body').append( $('<p/>').css( { 'margin-top' : '2000px' } ).text( 'test' ) )
       } )
   ]]></script>
