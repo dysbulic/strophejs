@@ -13,12 +13,14 @@
         function scroll() {
             var total = { height: document.documentElement.scrollHeight,
                            width: document.documentElement.scrollWidth, }
-            var win = { height: document.documentElement.clientHeight,
+            var win = { x: document.documentElement.scrollLeft,
+                        y: document.documentElement.scrollTop,
+                        height: document.documentElement.clientHeight,
                         width: document.documentElement.clientWidth, }
-            window.scroll( 100, 0 )
+            window.scrollBy( 100, 100 )
         }
         scroll()
-        //setInterval( scroll, 10 )
+        //setInterval( scroll, 100 )
     } )
   </script>
   <style type="text/css">
