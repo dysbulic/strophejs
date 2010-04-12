@@ -61,7 +61,7 @@
 
           this.scroll = function() {
               var moveTo = position( this.start, this.end )
-              console.log( moveTo )
+              console.log( window.scroll )
               window.scroll( moveTo.x - this.win.width / 2,
                              moveTo.y - this.win.height / 2 )
               if( moveTo.done ) {
@@ -85,8 +85,8 @@
           width : root.scrollWidth,
           height : root.scrollHeight,
       }
-      var scroll = { interval : 30 /* seconds */ * 1000, }
       function ScrollWatcher() {
+          var scroll = { interval : 30 /* seconds */ * 1000, }
           var current = {
               top : root.scrollTop,
               left : root.scrollLeft,
