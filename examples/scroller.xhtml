@@ -106,20 +106,12 @@
           )
       }
 
-      $(document).bind( 'DOMAttrModified', function( evt ) {
-          console.log( evt )
+      $(document.documentElement).bind( 'DOMAttrModified', function( evt ) {
+          console.log( evt.attrName )
       } )
-    
+
       $( function() {
-          function scroll() {
-              // The box covers the total space in a maximum of
-              // 'time' units.
-              var move = position( )
-              console.log( move )
-              if( move ) window.scroll( move.x, move.y )
-          }
-          //scroll()
-          //setInterval( scroll, 1000 )
+          $('body').append( $('<p/>').css( { margin-top : '2000px' } ).text( 'test' ) )
       } )
   ]]></script>
   <style type="text/css">
