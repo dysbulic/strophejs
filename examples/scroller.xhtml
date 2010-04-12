@@ -39,6 +39,7 @@
                       : ( function() {
                           return dest
                         } )() )
+        pos.toString = function() { return '<' + pos.x + ', ' + pos.y + '>' }
         return pos
     }
     $( function() {
@@ -63,6 +64,7 @@
                 },
                 offset : offset,
             } )
+            console.log( move )
             if( move ) window.scroll( move.x, move.y )
         }
         //scroll()
