@@ -43,7 +43,7 @@
                                 y : win.y + win.height / 2,
                             }
                             return {
-                                offset 
+                                x: offset * (dest.x - ctr.x) 
                             }
                       } )() )
         pos.x -= win.width / 2
@@ -54,8 +54,9 @@
     }
     $( function() {
         var moveTime = 30 // one second
-        var startTime = new Date()
+        var startTime
         function scroll() {
+            startTime = startTime || new Date()
             var callTime = new Date()
             var offset = ( ( callTime.getTime() - startTime.getTime() )
                            / ( moveTime * 1000 ) )
