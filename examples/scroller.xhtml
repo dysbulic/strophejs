@@ -56,6 +56,11 @@
           } )
       }
       
+      var state = {
+          scroller : undefined,
+          top : root.scrollTop,
+          left : root.scrollLeft,
+      }
       function Scroller( state ) {
           this.interval = $.merge(
               this.interval || {},
@@ -67,7 +72,9 @@
           var moveTo = postition( start, end )
           window.scroll( moveTo.x - win.width / 2,
                          moveTo.y - win.height / 2 )
-          if( moveTo.done )
+          if( moveTo.done ) {
+              
+              state.scroller = 
       }
 
       /*
@@ -78,11 +85,6 @@
        * There is no event callback for changes in scroll size, so it is necessary to poll
        */
 
-      var state = {
-          scroller : undefined,
-          top : root.scrollTop,
-          left : root.scrollLeft,
-      }
       function ScrollWatcher() {
           var current = {
               top : root.scrollTop,
