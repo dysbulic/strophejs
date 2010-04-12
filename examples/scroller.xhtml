@@ -110,7 +110,7 @@
                       height : root.clientHeight,
                   }
                   if( this.move === undefined ) {
-                      this.move = new Scroller( {
+                      this.move = new Snapshot( {
                           win : win,
                           start : {
                               x : ( current.left
@@ -151,7 +151,7 @@
                     } ).bottom.left
                   )
               }
-              if( this.snapshot ) this.snapshot()
+              snapshot.apply( this, arguments )
           }
            
           $( function() {
