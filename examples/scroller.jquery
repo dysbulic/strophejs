@@ -1,37 +1,37 @@
-function log( level, msg ) {
-    if( msg && msg.length > 0 ) {
-        $('#log, body ol').eq( 0 ).append(
-            $('<li/>').text( msg )
-        )
-    }
-}
-
-function rawInput( ) {
-    var data = Array.prototype.slice.call( arguments ).join()
-    log( Strophe.LogLevel.INFO,
-         '⍟: ' + data )
-}
-
-function rawOutput( ) {
-    var data = Array.prototype.slice.call( arguments ).join()
-    log( Strophe.LogLevel.INFO,
-         '⋆: ' + data )
-}
-
-function onConnect( status ) {
-    var name = 'Strophe XMPP'
-    var msg = {}
-    msg[ Strophe.Status.CONNECTING ] = name + ' Connecting'
-    msg[ Strophe.Status.CONNFAIL ] = name + ' Connect Failed'
-    msg[ Strophe.Status.DISCONNECTING ] = name + ' Disconnecting'
-    msg[ Strophe.Status.DISCONNECTED ] = name + ' Disconnected'
-    msg[ Strophe.Status.CONNECTED ] = name + ' Connected'
-    
-    log( Strophe.LogLevel.DEBUG,
-         msg[ status ] || ( name + ' Unknown:' + status ) )
-}
-
 $( function () {
+    function log( level, msg ) {
+        if( msg && msg.length > 0 ) {
+            $('#log, body ol').eq( 0 ).append(
+                $('<li/>').text( msg )
+            )
+        }
+    }
+
+    function rawInput( ) {
+        var data = Array.prototype.slice.call( arguments ).join()
+        log( Strophe.LogLevel.INFO,
+             '⍟: ' + data )
+    }
+
+    function rawOutput( ) {
+        var data = Array.prototype.slice.call( arguments ).join()
+        log( Strophe.LogLevel.INFO,
+             '⋆: ' + data )
+    }
+    
+    function onConnect( status ) {
+        var name = 'Strophe XMPP'
+        var msg = {}
+        msg[ Strophe.Status.CONNECTING ] = name + ' Connecting'
+        msg[ Strophe.Status.CONNFAIL ] = name + ' Connect Failed'
+        msg[ Strophe.Status.DISCONNECTING ] = name + ' Disconnecting'
+        msg[ Strophe.Status.DISCONNECTED ] = name + ' Disconnected'
+        msg[ Strophe.Status.CONNECTED ] = name + ' Connected'
+        
+        log( Strophe.LogLevel.DEBUG,
+             msg[ status ] || ( name + ' Unknown:' + status ) )
+    }
+
     var BOSH_SERVICE = 'http://bosh.metajack.im:5280/xmpp-httpbind'
     var connection = new Strophe.Connection( BOSH_SERVICE )
     connection.rawInput = rawInput
@@ -60,4 +60,4 @@ $( function () {
     } ).find( 'ul, ol' ).eq( 0 ).append(
         $('<li/>').append( $action )
     )
-})
+} )
