@@ -32,18 +32,28 @@
                     y : cvs.height - win.height / 2,
                 } },
             } }
-        } ).top.left
+        } ).bottom.left
 
-        var pos = ( state[ 'offset' ] >= 1
+        var offset = state[ 'offset' ]
+        var pos = ( offset >= 1
                       ? dest
                       : ( function() {
-                          return dest
-                        } )() )
+                            var ctr = {
+                                x : win.x + win.width / 2,
+                                y : win.y + win.height / 2,
+                            }
+                            return {
+                                offset 
+                            }
+                      } )() )
+        pos.x -= win.width / 2
+        pos.y -= win.height / 2
         pos.toString = function() { return '<' + pos.x + ', ' + pos.y + '>' }
+        
         return pos
     }
     $( function() {
-        var moveTime = 1 // one second
+        var moveTime = 30 // one second
         var startTime = new Date()
         function scroll() {
             var callTime = new Date()
