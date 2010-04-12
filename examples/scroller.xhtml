@@ -111,11 +111,11 @@
           }
 
           if( change ) {
+              var win = {
+                  width : root.clientWidth,
+                  height : root.clientHeight,
+              }
               if( state.scroller === undefined ) {
-                  var win = {
-                      width : root.clientWidth,
-                      height : root.clientHeight,
-                  }
                   state.scroller = new Scroller( {
                       win : win,
                       start : {
@@ -129,8 +129,8 @@
                       }
                   } )
               }
-              var end = $.merge( {
-                  time : ( start.time
+              state.scroller.end = $.merge( {
+                  time : ( state.scroller.start.time
                            + this.interval.length )
                 },
                 ( {
@@ -158,10 +158,11 @@
              )
           }
       }
-
-
+      
+      
       $( function() {
-          $(document.documentElement).attr( 'id', 'root' )
+          var watcher = new ScrollWatcher()
+          watcher.go
           $('body').append( $('<p/>').css( { 'margin-top' : '2000px' } ).text( 'test' ) )
       } )
   ]]></script>
