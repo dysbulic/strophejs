@@ -8,16 +8,75 @@
   <script type="application/javascript" src=".../lib/strophe/strophe.js"/>
   <script type="application/javascript" src="scroller.jquery"/>
   <script type="application/javascript"><![CDATA[
-      var moveTime = 30 // seconds
       function position( state ) {
           var win = state['win']
           var last = state['last']
           var cnvs = state['canvas']
-          var dest = ( {
-              get top() { return {
-                  get left() { return {
-                      x : win.width / 2,
-                      y : win.height / 2,
+          
+          var start = state['start']
+          var end   = state['end']
+          var offset = ( ( ( new Date() ).getTime() - start.time )
+                         / ( end.time - start.time ) )
+          var ideal = {
+              x : offset * ( end.x - start.x ),
+              y : offset * ( end.y - start.y ),
+          }
+          var pos = ( offset >= 1
+                      ? dest
+                      : ( function() {
+                          var ctr = {
+                              x : win.x + win.width / 2,
+                              y : win.y + win.height / 2,
+                          }
+                          return {
+                              x: offset * (dest.x - ctr.x),
+                              y: offset * (dest.y - ctr.y),
+                          }
+                      } )() )
+          pos.x -= win.width / 2
+          pos.y -= win.height / 2
+          pos.toString = function() { return '<' + pos.x + ', ' + pos.y + '>' }
+          
+          return pos
+      }
+      $( function() {
+          var start, end
+          var move = { time : 30 /* seconds */ * 1000 }
+          var total = 0
+          function scroll() {
+              var win = {
+                  width: document.documentElement.clientWidth,
+                  height: document.documentElement.clientHeight,
+              }
+              var state = {
+                  canvas : {
+                      width : document.documentElement.scrollWidth,
+                      height : document.documentElement.scrollHeight,
+                  },
+                  last : {
+                      x : ( document.documentElement.scrollLeft
+                            + win.width / 2 ),
+                      y: ( document.documentElement.scrollTop
+                           + win.height / 2 ),
+                      width: win.width,
+                      height: win.height,
+                  },
+                  win : win,
+                  count : count,
+                  offset : offset,
+              }
+              state['start'] = start = start || {
+                  time : ( new Date() ).getTime(),
+                  x : state.last.x,
+                  y : state.last.y,
+              }
+              state['end'] = end = end || $.merge( {
+                  time : ( new Date() ).getTime(),
+                  ( {
+                      get top() { return {
+                          get left() { return {
+                              x : win.width / 2,
+                              y : win.height / 2,
                   } },
                   get right() { return {
                       x : cvs.width - win.width / 2,
@@ -34,62 +93,17 @@
                       y : cnvs.height - win.height / 2,
                   } },
               } }
-          } ).bottom.left
-          
-          var start = state['start']
-          var end   = state['end']
-          var offset = ( ( new Date() ).getTime() - start.time ) / ( moveTime * 1000 )
-          var ideal = {
-              x : offset * ( end.x - start.x 
-        var pos = ( offset >= 1
-                      ? dest
-                      : ( function() {
-                            var ctr = {
-                                x : win.x + win.width / 2,
-                                y : win.y + win.height / 2,
-                            }
-                            return {
-                                x: offset * (dest.x - ctr.x),
-                                y: offset * (dest.y - ctr.y),
-                            }
-                      } )() )
-        pos.x -= win.width / 2
-        pos.y -= win.height / 2
-        pos.toString = function() { return '<' + pos.x + ', ' + pos.y + '>' }
-        
-        return pos
-    }
-    $( function() {
-        var startTime
-        var total = 0
-        function scroll() {
-            startTime = startTime || new Date()
-            var count = ++total
-            var callTime = new Date()
-            var offset = ( ( callTime.getTime() - startTime.getTime() )
-                           / ( moveTime * 1000 ) )
+          } ).bottom.left              },
+                  x : state.last.x,
+                  y : state.last.y,
+              }
+                  var count = ++total
+                  var callTime = new Date()
+                  var offset = ( ( callTime.getTime() - startTime.getTime() )
+                                 / ( moveTime * 1000 ) )
             // The box covers the total space in a maximum of
             // 'time' units.
-            var move = position( {
-                canvas : {
-                    width : document.documentElement.scrollWidth,
-                    height : document.documentElement.scrollHeight,
-                },
-                last : {
-                    x : ( document.documentElement.scrollLeft
-                          + document.documentElement.clientWidth / 2 ),
-                    y: ( document.documentElement.scrollTop
-                         + document.documentElement.clientHeight / 2 ),
-                    width: document.documentElement.clientWidth,
-                    height: document.documentElement.clientHeight,
-                },
-                win : {
-                    width: document.documentElement.clientWidth,
-                    height: document.documentElement.clientHeight,
-                },
-                count : count,
-                offset : offset,
-            } )
+            var move = position( )
             console.log( move )
             if( move ) window.scroll( move.x, move.y )
         }
