@@ -52,7 +52,7 @@
               }
           }
           
-          function scene( ) { // saccade
+          function Scene( watcher ) { // saccade
               var self = this
               var args = Array.prototype.slice.call( arguments )
               
@@ -154,7 +154,7 @@
           }
            
           $( function() {
-              var scene = new scene( watcher )
+              var scene = new Scene( watcher )
               scene.go
               $('body').append( $('<p/>').css( { 'margin-top' : '2000px' } ).text( 'test' ) )
           } )
