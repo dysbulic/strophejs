@@ -10,12 +10,33 @@
   <script type="application/javascript">
     function position( state ) {
         var dest = ( {
-            get top() { return { get left() {
-                return {
+            get top() { return {
+                get left() { return {
                     x : state['window']['width'] / 2,
                     y : state['window']['height'] / 2,
-                } } } } } ).top.left
-        log( dest )
+                } }
+                get right() { return {
+                    x : state['canvas']['width'] - state['window']['width'] / 2,
+                    y : state['window']['height'] / 2,
+                } }
+            } }
+            get bottom() { return {
+                get left() { return {
+                    x : state['window']['width'] / 2,
+                    y : state['canvas']['height'] - state['window']['height'] / 2,
+                } }
+                get right() { return {
+                    x : state['canvas']['width'] - state['window']['width'] / 2,
+                    y : state['canvas']['height'] - state['window']['height'] / 2,
+                } }
+            } }
+        } ).top.left
+
+        var pos = ( state[ 'offset' ] >= 1
+                      ? dest
+                      : ( function() {
+                        } )() )
+        return pos
     }
     $( function() {
         var moveTime = 1 // one second
@@ -24,10 +45,9 @@
             var callTime = new Date()
             var offset = ( ( callTime.getTime() - startTime.getTime() )
                            / ( moveTime * 1000 ) )
-            console.log( callTime.getTime() + ':' + offset )
             // The box covers the total space in a maximum of
             // 'time' units.
-            var state = {
+            var move = position( {
                 canvas : {
                     height: document.documentElement.scrollHeight,
                     width: document.documentElement.scrollWidth,
@@ -39,9 +59,8 @@
                     width: document.documentElement.clientWidth,
                 },
                 offset : offset,
-            } 
-            var move = position( state )
-            //if( move ) window.scrollBy( move.x, move.y )
+            } )
+            if( move ) window.scrollBy( move.x, move.y )
         }
         //scroll()
         setInterval( scroll, 1000 )
