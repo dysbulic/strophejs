@@ -27,9 +27,10 @@
           } )
       }
       
-      function Animatable() {
+      function Animatable( ) {
           var self = this
           var args = Array.prototype.slice.call( arguments )
+          var f = args.pop()
           
           this.interval = {
               id: undefined,
@@ -39,12 +40,9 @@
           this.__defineGetter__( 'go', function() {
               if( this.interval.id === undefined ) {
                   this.interval.id =
-                      setInterval(
-                          function() {
-                              self.apply(
-                                  self, args
-                              )
-                          },
+                      setInterval( function() {
+                          f.apply( f, args )
+                      },
                           this.interval.length
                       )
               }
@@ -88,8 +86,8 @@
           width : root.scrollWidth,
           height : root.scrollHeight,
       }
+      var scroll = { interval : 30 /* seconds */ * 1000, }
       function ScrollWatcher() {
-          var scroll = { interval : 30 /* seconds */ * 1000, }
           var current = {
               top : root.scrollTop,
               left : root.scrollLeft,
@@ -158,10 +156,9 @@
           }
           if( state.scroller ) state.scroller.scroll
       }
-      ScrollWatcher.prototype = new Animatable()
       
       $( function() {
-          var watcher = new ScrollWatcher()
+          var watcher = new Animatable( ScrollWatcher )
           watcher.go
           $('body').append( $('<p/>').css( { 'margin-top' : '2000px' } ).text( 'test' ) )
       } )
