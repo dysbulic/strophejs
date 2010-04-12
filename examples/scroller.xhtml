@@ -8,38 +8,39 @@
   <script type="application/javascript" src=".../lib/strophe/strophe.js"/>
   <script type="application/javascript" src="scroller.jquery"/>
   <script type="application/javascript"><![CDATA[
-    function position( state ) {
-        var win = state['win']
-        var last = state['last']
-        var cnvs = state['canvas']
-        var dest = ( {
-            get top() { return {
-                get left() { return {
-                    x : win.width / 2,
-                    y : win.height / 2,
-                } },
-                get right() { return {
-                    x : cvs.width - win.width / 2,
-                    y : win.height / 2,
-                } },
-            } },
-            get bottom() { return {
-                get left() { return {
-                    x : win.width / 2,
-                    y : cnvs.height - win.height / 2,
-                } },
-                get right() { return {
-                    x : cnvs.width - win.width / 2,
-                    y : cnvs.height - win.height / 2,
-                } },
-            } }
-        } ).bottom.left
-
-        var start = state['start']
-        var end   = state['end']
-        var offset = start.time 
-        var ideal = {
-            x : offset * ( end.x - start.x 
+      var moveTime = 30 // seconds
+      function position( state ) {
+          var win = state['win']
+          var last = state['last']
+          var cnvs = state['canvas']
+          var dest = ( {
+              get top() { return {
+                  get left() { return {
+                      x : win.width / 2,
+                      y : win.height / 2,
+                  } },
+                  get right() { return {
+                      x : cvs.width - win.width / 2,
+                      y : win.height / 2,
+                  } },
+              } },
+              get bottom() { return {
+                  get left() { return {
+                      x : win.width / 2,
+                      y : cnvs.height - win.height / 2,
+                  } },
+                  get right() { return {
+                      x : cnvs.width - win.width / 2,
+                      y : cnvs.height - win.height / 2,
+                  } },
+              } }
+          } ).bottom.left
+          
+          var start = state['start']
+          var end   = state['end']
+          var offset = ( ( new Date() ).getTime() - start.time ) / ( moveTime * 1000 )
+          var ideal = {
+              x : offset * ( end.x - start.x 
         var pos = ( offset >= 1
                       ? dest
                       : ( function() {
