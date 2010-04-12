@@ -1,0 +1,63 @@
+function log( level, msg ) {
+    if( msg && msg.length > 0 ) {
+        $('#log, body ol').eq( 0 ).append(
+            $('<li/>').text( msg )
+        )
+    }
+}
+
+function rawInput( ) {
+    var data = Array.prototype.slice.call( arguments ).join()
+    log( Strophe.LogLevel.INFO,
+         '⍟: ' + data )
+}
+
+function rawOutput( ) {
+    var data = Array.prototype.slice.call( arguments ).join()
+    log( Strophe.LogLevel.INFO,
+         '⋆: ' + data )
+}
+
+function onConnect( status ) {
+    var name = 'Strophe XMPP'
+    var msg = {}
+    msg[ Strophe.Status.CONNECTING ] = name + ' Connecting'
+    msg[ Strophe.Status.CONNFAIL ] = name + ' Connect Failed'
+    msg[ Strophe.Status.DISCONNECTING ] = name + ' Disconnecting'
+    msg[ Strophe.Status.DISCONNECTED ] = name + ' Disconnected'
+    msg[ Strophe.Status.CONNECTED ] = name + ' Connected'
+    
+    log( Strophe.LogLevel.DEBUG,
+         msg[ status ] || ( name + ' Unknown:' + status ) )
+}
+
+$( function () {
+    var BOSH_SERVICE = 'http://bosh.metajack.im:5280/xmpp-httpbind'
+    var connection = new Strophe.Connection( BOSH_SERVICE )
+    connection.rawInput = rawInput
+    connection.rawOutput = rawOutput
+
+    var $action = $('<button/>')
+    var text = { connect : '⟱ Connect ⟱',
+                 'break' : '⟰ Break ⟰',
+               }
+    $action.text( text['connect'] )
+    $('#connect').submit( function () {
+	if( $action.text() === text['connect'] ) {
+	    connection.connect( $('#user').val(),
+			        $('#pass').val(),
+			        onConnect )
+
+	    $action.text( text['break'] )
+	} else if( $action.text() === text['break'] ) {
+	    connection.disconnect()
+	    $action.text( text['break'] )
+	} else {
+            log( Strophe.LogLevel.ERROR,
+                 'Unknown Action: ' + $action.text() )
+        }
+        return false
+    } ).find( 'ul, ol' ).eq( 0 ).append(
+        $('<li/>').append( $action )
+    )
+})
