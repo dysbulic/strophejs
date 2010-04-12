@@ -19,6 +19,7 @@
                     / ( end.time - start.time ) )
               )
           return {
+              offset: offset,
               x : offset * ( end.x - start.x ),
               y : offset * ( end.y - start.y ),
               done : offset === 1, 
