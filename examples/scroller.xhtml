@@ -41,7 +41,7 @@
                   this.interval.id =
                       setInterval(
                           function() {
-                              arguments.callee.apply(
+                              self.apply(
                                   self, args
                               )
                           },
@@ -64,6 +64,7 @@
 
           this.scroll = function() {
               var moveTo = postition( this.start, this.end )
+              console.log( moveTo )
               window.scroll( moveTo.x - this.win.width / 2,
                              moveTo.y - this.win.height / 2 )
               if( moveTo.done ) {
@@ -108,6 +109,7 @@
           }
 
           if( change ) {
+              console.log( 'change' )
               var win = {
                   width : root.clientWidth,
                   height : root.clientHeight,
@@ -156,6 +158,7 @@
           }
           if( state.scroller ) state.scroller.scroll
       }
+      ScrollWatcher.prototype = new Animatable()
       
       $( function() {
           var watcher = new ScrollWatcher()
