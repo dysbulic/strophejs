@@ -93,9 +93,9 @@
               var change = false
               try {
                   var self = this
-                  current.each( function( attr ) {
-                      console.log( attr + ':' +  self[attr] + ':' + current[attr] )
-                      if( self[attr] !== current[attr] ) {
+                  current.each( function( attr, name ) {
+                      console.log( name + ':' + attr + ':' +  current[name] )
+                      if( self[name] !== attr ) {
                           throw true
                       }
                   } )
