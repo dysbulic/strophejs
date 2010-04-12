@@ -83,17 +83,18 @@
       
           function watcher( ) {
               var scroll = { interval : 30 /* seconds */ * 1000, }
-              var current = {
+              var current = new List( {
                   top : root.scrollTop,
                   left : root.scrollLeft,
                   width : root.scrollWidth,
                   height : root.scrollHeight,
-              }
+              } )
           
               var change = false
               try {
-                  .each( function( attr ) {
-                      if( this[attr] !== current[attr] ) {
+                  var self = this
+                  current.each( function( attr ) {
+                      if( self[attr] !== current[attr] ) {
                           throw true
                       }
                   } )
@@ -106,9 +107,9 @@
                   var win = {
                       width : root.clientWidth,
                       height : root.clientHeight,
-              }
-              if( state.scroller === undefined ) {
-                  state.scroller = new Scroller( {
+                  }
+              if( this.action === undefined ) {
+                  this.action = new Scroller( {
                       win : win,
                       start : {
                           x : ( current.left
@@ -121,7 +122,7 @@
                       }
                   } )
               }
-              state.scroller.end = $.merge( {
+                  this.action.end = $.merge( {
                   time : ( state.scroller.start.time
                            + scroll.interval )
                 },
