@@ -8,20 +8,39 @@
   <script type="application/javascript" src=".../lib/strophe/strophe.js"/>
   <script type="application/javascript" src="scroller.jquery"/>
   <script type="application/javascript">
+    function position( state ) {
+        var dest = ( {
+            get top() { return { get left() {
+                return {
+                    x : state['client']['width'] / 2,
+                    y : state['client']['height'] / 2,
+                } } } } } ).top.left
+        log( dest )
+    }
     $( function() {
+        var moveTime = 1 // one second
         var startTime = new Date()
-        var lastTime
         function scroll() {
             var callTime = new Date()
+            var offset = ( ( callTime - startTime )
+                           / ( moveTime * 1000 ) )
+            console.log( offset )
             // The box covers the total space in a maximum of
             // 'time' units.
-            var total = { height: document.documentElement.scrollHeight,
-                           width: document.documentElement.scrollWidth, }
-            var win = { x: document.documentElement.scrollLeft,
-                        y: document.documentElement.scrollTop,
-                        height: document.documentElement.clientHeight,
-                        width: document.documentElement.clientWidth, }
-            window.scrollBy( 100, 100 )
+            var move = position( {
+                canvas : {
+                    height: document.documentElement.scrollHeight,
+                    width: document.documentElement.scrollWidth,
+                },
+                window : {
+                    x: document.documentElement.scrollLeft,
+                    y: document.documentElement.scrollTop,
+                    height: document.documentElement.clientHeight,
+                    width: document.documentElement.clientWidth,
+                },
+                offset : offset,
+            } )
+            if( move ) window.scrollBy( move.x, move.y )
         }
         scroll()
         //setInterval( scroll, 100 )

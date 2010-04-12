@@ -1,12 +1,13 @@
-$( function () {
-    function log( level, msg ) {
-        if( msg && msg.length > 0 ) {
-            $('#log, body ol').eq( 0 ).append(
-                $('<li/>').text( msg )
-            )
-        }
+function log( level, msg ) {
+    msg = msg || level
+    if( msg && msg.length > 0 ) {
+        $('#log, body ol').eq( 0 ).append(
+            $('<li/>').text( msg )
+        )
     }
+}
 
+$( function () {
     function rawInput( ) {
         var data = Array.prototype.slice.call( arguments ).join()
         log( Strophe.LogLevel.INFO,
