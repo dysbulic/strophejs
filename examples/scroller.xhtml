@@ -31,26 +31,28 @@
           var args = Array.prototype.slice.call( arguments )
           var f = args.pop()
           
-          this.interval = {
+          var interval = {
               id: undefined,
               length: 1 /* seconds */ * 1000,
           }
           
           this.__defineGetter__( 'go', function() {
-              if( this.interval.id === undefined ) {
-                  this.interval.id =
+              if( interval.id === undefined ) {
+                  interval.id =
                       setInterval( function() {
                           f.apply( f, args )
                       },
-                          this.interval.length
+                                   interval.length
                       )
               }
+              return this
           } )
           this.__defineGetter__( 'stop', function() {
-              if( this.interval.id !== undefined ) {
-                  clearInterval( this.interval.id )
-                  this.interval.id = undefined
+              if( interval.id !== undefined ) {
+                  clearInterval( interval.id )
+                  interval.id = undefined
               }
+              return this
           } )
       }
       
@@ -61,7 +63,7 @@
 
           this.scroll = function() {
               var moveTo = position( this.start, this.end )
-              console.log( window.scroll )
+              console.log( moveTo.done )
               window.scroll( moveTo.x - this.win.width / 2,
                              moveTo.y - this.win.height / 2 )
               if( moveTo.done ) {
