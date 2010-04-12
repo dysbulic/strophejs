@@ -54,25 +54,14 @@
           } )
       }
       
-      function Scroller() {
+      function Scroller( state ) {
           this.interval = $.merge(
               this.interval || {},
               { length: 30 /* seconds */ * 1000, }
           )
 
-          var win = {
-              width : root.clientWidth,
-              height : root.clientHeight,
-          }
-          var start = {
-              x : ( root.scrollLeft
-                    + win.width / 2 ),
-              y: ( root.scrollTop
-                   + win.height / 2 ),
-              width: win.width,
-              height: win.height,
-              time : ( new Date() ).getTime(),
-          }
+          var win = state['win']
+          var start = state['start']
           var canvas = {
               width : root.scrollWidth,
               height : root.scrollHeight,
@@ -127,8 +116,24 @@
               
           if( current.top !== state.top
               || current.left !== state.left ) {
-              if( state.scroller ) {
-                  
+              if( state.scroller === undefined ) {
+                  var win = {
+                      width : root.clientWidth,
+                      height : root.clientHeight,
+                  }
+                  state.scroller = new Scroller( {
+                      win : win,
+                      start : {
+                          x : ( root.scrollLeft
+                                + win.width / 2 ),
+                          y: ( root.scrollTop
+                               + win.height / 2 ),
+                          width: win.width,
+                          height: win.height,
+                          time : ( new Date() ).getTime(),
+                      }
+                  } )
+              }
           }
       }
 
