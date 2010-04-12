@@ -10,7 +10,7 @@
   <script type="application/javascript"><![CDATA[
       var root = document.documentElement
 
-      function Position( start, end ) {
+      function position( start, end ) {
           this.__defineGetter__( 'now', function() {
               var offset =
                   Math.min(
@@ -93,6 +93,8 @@
                 } }
             } ).bottom.left
           )
+          var moveTo = postition( start, end )
+          window.scroll( moveTo.left, moveTo.top )
       }
 
       /*
