@@ -9,8 +9,8 @@
   <script type="application/javascript" src="scroller.jquery"/>
   <script type="application/javascript"><![CDATA[
     function position( state ) {
-        var win = state['window']
-        var cvs = state['canvas']
+        var last = state['last']
+        var cnvs = state['canvas']
         var dest = ( {
             get top() { return {
                 get left() { return {
@@ -43,7 +43,8 @@
                                 y : win.y + win.height / 2,
                             }
                             return {
-                                x: offset * (dest.x - ctr.x) 
+                                x: offset * (dest.x - ctr.x),
+                                y: offset * (dest.y - ctr.y),
                             }
                       } )() )
         pos.x -= win.width / 2
@@ -55,8 +56,10 @@
     $( function() {
         var moveTime = 30 // one second
         var startTime
+        var total = 0
         function scroll() {
             startTime = startTime || new Date()
+            var count = ++total
             var callTime = new Date()
             var offset = ( ( callTime.getTime() - startTime.getTime() )
                            / ( moveTime * 1000 ) )
@@ -64,15 +67,22 @@
             // 'time' units.
             var move = position( {
                 canvas : {
-                    height: document.documentElement.scrollHeight,
-                    width: document.documentElement.scrollWidth,
+                    width : document.documentElement.scrollWidth,
+                    height : document.documentElement.scrollHeight,
                 },
-                window : {
-                    x: document.documentElement.scrollLeft,
-                    y: document.documentElement.scrollTop,
-                    height: document.documentElement.clientHeight,
+                last : {
+                    x : ( document.documentElement.scrollLeft
+                          + document.documentElement.clientWidth / 2 ),
+                    y: ( document.documentElement.scrollTop
+                         + document.documentElement.clientHeight / 2 ),
                     width: document.documentElement.clientWidth,
+                    height: document.documentElement.clientHeight,
                 },
+                win : {
+                    width: document.documentElement.clientWidth,
+                    height: document.documentElement.clientHeight,
+                },
+                count : count,
                 offset : offset,
             } )
             console.log( move )
