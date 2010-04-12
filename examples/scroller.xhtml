@@ -106,9 +106,9 @@
           )
       }
 
-      $(document.documentElement).bind( 'DOMAttrModified', function( evt ) {
-          console.log( evt.attrName )
-      } )
+      document.documentElement.addEventListener( 'DOMAttrModified', function( evt ) {
+          console.log( evt )
+      }, false )
 
       $( function() {
           $(document.documentElement).attr( 'id', 'root' )
