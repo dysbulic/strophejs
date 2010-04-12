@@ -24,25 +24,48 @@
       }
 
       function Animatable() {
+          var self = this
+          var args = Array.prototype.slice.call( arguments )
+
           this.interval = {
               id: undefined,
               length: 30 /* seconds */ * 1000,
           }
+
           this.__defineGetter__( 'go', function() {
               if( this.interval.id === undefined ) {
-                  this.interval.id = setInterval
+                  this.interval.id =
+                      setInterval(
+                          function() {
+                              arguments.callee.apply(
+                                  self, args
+                              )
+                          },
+                          this.interval.length
+                      )
+              }
           } )
           this.__defineGetter__( 'stop', function() {
+              if( this.interval.id !== undefined ) {
+                  clearInterval( this.interval.id )
+                  
+              }
           } )
       }
-
-      $( function() {
-          var start, end
-          var move = { time : 30  * 1000 }
-          var total = 0
-          function scroll() {
-              var root = document.documentElement
-              var win = {
+      
+      function Scroller() {
+          var root = document.documentElement
+          var win = {
+              width : root.clientWidth,
+              height : root.clientHeight,
+          }
+          var start = {
+              x : ( root.scrollLeft
+                    + root.clientWidth / 2 ),
+              y: ( root.scrollTop
+                   + root.clientHeight / 2 ),
+              width: win.width,
+              height: win.height,
                   width: root.clientWidth,
                   height: root.clientHeight,
               }
@@ -50,14 +73,17 @@
                   width : root.scrollWidth,
                   height : root.scrollHeight,
               }
+
+      }
+
+      $(window).bind( 'scroll', function() {
+          console.log('hi')
+      } )
+    
+      $( function() {
+          function scroll() {
               var state = {
                   last : {
-                      x : ( root.scrollLeft
-                            + win.width / 2 ),
-                      y: ( root.scrollTop
-                           + win.height / 2 ),
-                      width: win.width,
-                      height: win.height,
                   },
                   win : win,
                   canvas : cnvs,
