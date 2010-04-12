@@ -10,14 +10,26 @@
   <script type="application/javascript"><![CDATA[
       function Position( start, end ) {
           this.__defineGetter__( 'now', function() {
-              var offset = ( ( ( new Date() ).getTime() - start.time )
-                             / ( end.time - start.time ) )
+              var offset =
+                  Math.min(
+                      1,
+                      ( ( ( new Date() ).getTime() - start.time )
+                        / ( end.time - start.time ) )
+                  )
               return {
                   x : offset * ( end.x - start.x ),
                   y : offset * ( end.y - start.y ),
               }
-          }
+          } )
       }
+
+      function Animatable() {
+          this.__defineGetter__( 'stop', function() {
+          } )
+          this.__defineGetter__( 'stop', function() {
+          } )
+      }
+
       $( function() {
           var start, end
           var move = { time : 30 /* seconds */ * 1000 }
