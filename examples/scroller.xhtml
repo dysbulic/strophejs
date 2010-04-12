@@ -27,7 +27,7 @@
             console.log( offset )
             // The box covers the total space in a maximum of
             // 'time' units.
-            var move = position( {
+            var state = {
                 canvas : {
                     height: document.documentElement.scrollHeight,
                     width: document.documentElement.scrollWidth,
@@ -39,7 +39,8 @@
                     width: document.documentElement.clientWidth,
                 },
                 offset : offset,
-            } )
+            } 
+            var move = position( state )
             if( move ) window.scrollBy( move.x, move.y )
         }
         scroll()
