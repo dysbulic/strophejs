@@ -24,7 +24,13 @@
       }
 
       function Animatable() {
-          this.__defineGetter__( 'stop', function() {
+          this.interval = {
+              id: undefined,
+              length: 30 /* seconds */ * 1000,
+          }
+          this.__defineGetter__( 'go', function() {
+              if( this.interval.id === undefined ) {
+                  this.interval.id = setInterval
           } )
           this.__defineGetter__( 'stop', function() {
           } )
@@ -32,7 +38,7 @@
 
       $( function() {
           var start, end
-          var move = { time : 30 /* seconds */ * 1000 }
+          var move = { time : 30  * 1000 }
           var total = 0
           function scroll() {
               var root = document.documentElement
