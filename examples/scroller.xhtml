@@ -19,52 +19,54 @@
               height : root.scrollHeight,
           }
 
-          // Current location between two toxels
-          function position( start, end ) {
-              var current = { time : ( new Date() ).getTime() }
-              var offset =
-                  Math.min(
-                      1,
-                      ( ( current.time - start.time )
-                        / ( end.time - start.time ) )
-                  )
-              return {
-                  offset: offset,
-                  x : offset * ( end.x - start.x ),
-                  y : offset * ( end.y - start.y ),
-                  done : offset === 1, 
-              }
-          }
-      
-      function Animatable( ) {
-          var self = this
-          var args = Array.prototype.slice.call( arguments )
-          var f = args.pop()
-          
-          var interval = {
-              id: undefined,
-              length: 1 /* seconds */ * 1000,
-          }
-          
-          this.__defineGetter__( 'go', function() {
-              if( interval.id === undefined ) {
-                  interval.id =
-                      setInterval( function() {
-                          f.apply( f, args )
-                      },
-                                   interval.length
+          // Linear translation between two tixels
+          var position = {
+              linear : function ( start, end ) {
+                  var current = { time : ( new Date() ).getTime() }
+                  var offset =
+                      Math.min(
+                          1,
+                          ( ( current.time - start.time )
+                            / ( end.time - start.time ) )
                       )
+                  return {
+                      offset: offset,
+                      x : offset * ( end.x - start.x ),
+                      y : offset * ( end.y - start.y ),
+                      done : offset === 1, 
+                  }
+              },
+          }
+          
+          function glance( ) { // saccade
+              var self = this
+              var args = Array.prototype.slice.call( arguments )
+              var f = args.shift()
+              
+              var interval = {
+                  id: undefined,
+                  length: 1 /* seconds */ * 1000,
               }
-              return this
-          } )
-          this.__defineGetter__( 'stop', function() {
-              if( interval.id !== undefined ) {
-                  clearInterval( interval.id )
-                  interval.id = undefined
-              }
-              return this
-          } )
-      }
+              
+              this.__defineGetter__( 'go', function() {
+                  if( interval.id === undefined ) {
+                      interval.id =
+                          setInterval( function() {
+                              f.apply( f, args )
+                          },
+                                       interval.length
+                                     )
+                  }
+                  return this
+              } )
+              this.__defineGetter__( 'stop', function() {
+                  if( interval.id !== undefined ) {
+                      clearInterval( interval.id )
+                      interval.id = undefined
+                  }
+                  return this
+              } )
+          }
       
       function Scroller( state ) {
           this.win = state['win']
