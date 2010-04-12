@@ -94,6 +94,7 @@
               try {
                   var self = this
                   current.each( function( attr ) {
+                      console.log( attr + ':' +  self[attr] + ':' + current[attr] )
                       if( self[attr] !== current[attr] ) {
                           throw true
                       }
