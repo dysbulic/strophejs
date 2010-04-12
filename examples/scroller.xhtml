@@ -11,20 +11,18 @@
       var root = document.documentElement
 
       function position( start, end ) {
-          this.__defineGetter__( 'now', function() {
-              var current = { time : ( new Date() ).getTime() }
-              var offset =
-                  Math.min(
-                      1,
-                      ( ( current.time - start.time )
-                        / ( end.time - start.time ) )
-                  )
-              return {
-                  x : offset * ( end.x - start.x ),
-                  y : offset * ( end.y - start.y ),
-                  done : offset === 1, 
-              }
-          } )
+          var current = { time : ( new Date() ).getTime() }
+          var offset =
+              Math.min(
+                  1,
+                  ( ( current.time - start.time )
+                    / ( end.time - start.time ) )
+              )
+          return {
+              x : offset * ( end.x - start.x ),
+              y : offset * ( end.y - start.y ),
+              done : offset === 1, 
+          }
       }
       
       function Animatable( ) {
@@ -34,7 +32,7 @@
           
           this.interval = {
               id: undefined,
-              length: 30 /* seconds */ * 1000,
+              length: 1 /* seconds */ * 1000,
           }
           
           this.__defineGetter__( 'go', function() {
