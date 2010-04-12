@@ -12,8 +12,8 @@
         var dest = ( {
             get top() { return { get left() {
                 return {
-                    x : state['client']['width'] / 2,
-                    y : state['client']['height'] / 2,
+                    x : state['window']['width'] / 2,
+                    y : state['window']['height'] / 2,
                 } } } } } ).top.left
         log( dest )
     }
@@ -22,9 +22,9 @@
         var startTime = new Date()
         function scroll() {
             var callTime = new Date()
-            var offset = ( ( callTime - startTime )
+            var offset = ( ( callTime.getTime() - startTime.getTime() )
                            / ( moveTime * 1000 ) )
-            console.log( offset )
+            console.log( callTime.getTime() + ':' + offset )
             // The box covers the total space in a maximum of
             // 'time' units.
             var state = {
@@ -41,10 +41,10 @@
                 offset : offset,
             } 
             var move = position( state )
-            if( move ) window.scrollBy( move.x, move.y )
+            //if( move ) window.scrollBy( move.x, move.y )
         }
-        scroll()
-        //setInterval( scroll, 100 )
+        //scroll()
+        setInterval( scroll, 1000 )
     } )
   </script>
   <style type="text/css">
