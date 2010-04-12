@@ -9,8 +9,12 @@
   <script type="application/javascript" src="scroller.jquery"/>
   <script type="application/javascript">
     $( function() {
-        var first;
+        var startTime = new Date()
+        var lastTime
         function scroll() {
+            var callTime = new Date()
+            // The box covers the total space in a maximum of
+            // 'time' units.
             var total = { height: document.documentElement.scrollHeight,
                            width: document.documentElement.scrollWidth, }
             var win = { x: document.documentElement.scrollLeft,
