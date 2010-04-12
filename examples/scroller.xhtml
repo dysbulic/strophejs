@@ -7,7 +7,7 @@
   <script type="application/javascript" src=".../lib/jquery/jquery.js"/>
   <script type="application/javascript" src=".../lib/strophe/strophe.js"/>
   <script type="application/javascript" src="scroller.jquery"/>
-  <script type="application/javascript">
+  <script type="application/javascript"><![CDATA[
     function position( state ) {
         var win = state['window']
         var cvs = state['canvas']
@@ -15,7 +15,7 @@
             get top() { return {
                 get left() { return {
                     x : win.width / 2,
-                    y : window.height / 2,
+                    y : win.height / 2,
                 } },
                 get right() { return {
                     x : cvs.width - win.width / 2,
@@ -70,7 +70,7 @@
         //scroll()
         setInterval( scroll, 1000 )
     } )
-  </script>
+  ]]></script>
   <style type="text/css">
     html, body { margin: 0; min-height: 2000px }
     form { float: left }
