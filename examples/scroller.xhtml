@@ -26,15 +26,15 @@
               }
           } )
       }
-
+      
       function Animatable() {
           var self = this
           var args = Array.prototype.slice.call( arguments )
-
+          
           this.interval = {
               id: undefined,
           }
-
+          
           this.__defineGetter__( 'go', function() {
               if( this.interval.id === undefined ) {
                   this.interval.id =
@@ -51,24 +51,23 @@
           this.__defineGetter__( 'stop', function() {
               if( this.interval.id !== undefined ) {
                   clearInterval( this.interval.id )
-                  
+                  this.interval.id = undefined
               }
           } )
       }
       
       function Scroller( state ) {
-          this.interval = $.merge(
-              this.interval || {},
-              { length: 30 /* seconds */ * 1000, }
-          )
+          this.win = state['win']
+          this.start = state['start']
+          this.end = state['end']
 
-          var win = state['win']
-          var start = state['start']
-          var moveTo = postition( start, end )
-          window.scroll( moveTo.x - win.width / 2,
-                         moveTo.y - win.height / 2 )
-          if( moveTo.done ) {
-              state.scroller = undefined
+          this.scroll = function() {
+              var moveTo = postition( this.start, this.end )
+              window.scroll( moveTo.x - this.win.width / 2,
+                             moveTo.y - this.win.height / 2 )
+              if( moveTo.done ) {
+                  state.scroller = undefined
+              }
           }
       }
 
@@ -88,6 +87,11 @@
           height : root.scrollHeight,
       }
       function ScrollWatcher() {
+          this.interval = $.merge(
+              this.interval || {},
+              { length: 30 /* seconds */ * 1000, }
+          )
+
           var current = {
               top : root.scrollTop,
               left : root.scrollLeft,
@@ -125,38 +129,33 @@
                       }
                   } )
               }
-              var canvas = {
-                  width : root.scrollWidth,
-                  height : root.scrollHeight,
-              }
               var end = $.merge( {
                   time : ( start.time
                            + this.interval.length )
-              },
-            ( {
-                get top() { return {
-                    get left() { return {
-                        x : win.width / 2,
-                        y : win.height / 2,
+                },
+                ( {
+                    get top() { return {
+                        get left() { return {
+                            x : win.width / 2,
+                            y : win.height / 2,
+                        } },
+                        get right() { return {
+                            x : current.width - win.width / 2,
+                            y : win.height / 2,
+                        } },
                     } },
-                    get right() { return {
-                        x : cvs.width - win.width / 2,
-                        y : win.height / 2,
-                    } },
-                } },
-                get bottom() { return {
-                    get left() { return {
-                        x : win.width / 2,
-                        y : cnvs.height - win.height / 2,
-                    } },
-                    get right() { return {
-                        x : cnvs.width - win.width / 2,
-                        y : cnvs.height - win.height / 2,
-                    } },
-                } }
-            } ).bottom.left
-          )
-
+                    get bottom() { return {
+                        get left() { return {
+                            x : win.width / 2,
+                            y : current.height - win.height / 2,
+                        } },
+                        get right() { return {
+                            x : current.width - win.width / 2,
+                            y : current.height - win.height / 2,
+                        } },
+                    } }
+                } ).bottom.left
+             )
           }
       }
 
