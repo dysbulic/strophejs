@@ -9,25 +9,27 @@
   <script type="application/javascript" src="scroller.jquery"/>
   <script type="application/javascript">
     function position( state ) {
+        var win = state['window']
+        var cvs = state['canvas']
         var dest = ( {
             get top() { return {
                 get left() { return {
-                    x : state['window']['width'] / 2,
-                    y : state['window']['height'] / 2,
+                    x : win.width / 2,
+                    y : window.height / 2,
                 } }
                 get right() { return {
-                    x : state['canvas']['width'] - state['window']['width'] / 2,
-                    y : state['window']['height'] / 2,
+                    x : cvs.width - win.width / 2,
+                    y : win.height / 2,
                 } }
             } }
             get bottom() { return {
                 get left() { return {
-                    x : state['window']['width'] / 2,
-                    y : state['canvas']['height'] - state['window']['height'] / 2,
+                    x : win.width / 2,
+                    y : cvs.height - win.height / 2,
                 } }
                 get right() { return {
-                    x : state['canvas']['width'] - state['window']['width'] / 2,
-                    y : state['canvas']['height'] - state['window']['height'] / 2,
+                    x : cvs.width - win.width / 2,
+                    y : cvs.height - win.height / 2,
                 } }
             } }
         } ).top.left
@@ -35,7 +37,7 @@
         var pos = ( state[ 'offset' ] >= 1
                       ? dest
                       : ( function() {
-                          
+                          return dest
                         } )() )
         return pos
     }
