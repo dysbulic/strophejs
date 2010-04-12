@@ -33,6 +33,7 @@
           
           this.interval = {
               id: undefined,
+              length: 30 /* seconds */ * 1000,
           }
           
           this.__defineGetter__( 'go', function() {
@@ -87,11 +88,7 @@
           height : root.scrollHeight,
       }
       function ScrollWatcher() {
-          this.interval = $.merge(
-              this.interval || {},
-              { length: 30 /* seconds */ * 1000, }
-          )
-
+          var scroll = { interval : 30 /* seconds */ * 1000, }
           var current = {
               top : root.scrollTop,
               left : root.scrollLeft,
@@ -131,7 +128,7 @@
               }
               state.scroller.end = $.merge( {
                   time : ( state.scroller.start.time
-                           + this.interval.length )
+                           + scroll.interval )
                 },
                 ( {
                     get top() { return {
@@ -157,8 +154,8 @@
                 } ).bottom.left
              )
           }
+          if( state.scroller ) state.scroller.scroll
       }
-      
       
       $( function() {
           var watcher = new ScrollWatcher()
