@@ -29,7 +29,6 @@
 
           this.interval = {
               id: undefined,
-              length: 30 /* seconds */ * 1000,
           }
 
           this.__defineGetter__( 'go', function() {
@@ -54,6 +53,12 @@
       }
       
       function Scroller() {
+          this.interval = $.merge(
+              this.interval || {},
+              { length: 30 /* seconds */ * 1000, }
+          )
+          console.log(this.interval.length)
+
           var root = document.documentElement
           var win = {
               width : root.clientWidth,
@@ -61,19 +66,44 @@
           }
           var start = {
               x : ( root.scrollLeft
-                    + root.clientWidth / 2 ),
+                    + win.width / 2 ),
               y: ( root.scrollTop
-                   + root.clientHeight / 2 ),
+                   + win.height / 2 ),
               width: win.width,
               height: win.height,
-                  width: root.clientWidth,
-                  height: root.clientHeight,
-              }
-              var cnvs = {
-                  width : root.scrollWidth,
-                  height : root.scrollHeight,
-              }
-
+              time : ( new Date() ).getTime(),
+          }
+          var canvas = {
+              width : root.scrollWidth,
+              height : root.scrollHeight,
+          }
+          var end = $.merge( {
+              time : ( start.time
+                       + this.interval.length )
+            },
+            ( {
+                get top() { return {
+                    get left() { return {
+                        x : win.width / 2,
+                        y : win.height / 2,
+                    } },
+                    get right() { return {
+                        x : cvs.width - win.width / 2,
+                        y : win.height / 2,
+                    } },
+                } },
+                get bottom() { return {
+                    get left() { return {
+                        x : win.width / 2,
+                        y : cnvs.height - win.height / 2,
+                    } },
+                    get right() { return {
+                        x : cnvs.width - win.width / 2,
+                        y : cnvs.height - win.height / 2,
+                    } },
+                } }
+            } ).bottom.left
+          )
       }
 
       $(window).bind( 'scroll', function() {
@@ -95,31 +125,6 @@
                   x : state.last.x,
                   y : state.last.y,
               }
-              state['end'] = end = end || $.merge( {
-                  time : ( new Date() ).getTime(),
-                },
-                ( {
-                  get top() { return {
-                      get left() { return {
-                          x : win.width / 2,
-                          y : win.height / 2,
-                      } },
-                      get right() { return {
-                          x : cvs.width - win.width / 2,
-                          y : win.height / 2,
-                      } },
-                  } },
-                    get bottom() { return {
-                        get left() { return {
-                            x : win.width / 2,
-                            y : cnvs.height - win.height / 2,
-                        } },
-                        get right() { return {
-                            x : cnvs.width - win.width / 2,
-                            y : cnvs.height - win.height / 2,
-                        } },
-                    } }
-                } ).bottom.left
                                                  )
               var callTime = new Date()
               var offset = ( ( callTime.getTime() - startTime.getTime() )
