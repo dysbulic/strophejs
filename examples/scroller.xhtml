@@ -28,7 +28,7 @@
               } )
               fields.__.each( function( val, key ) {
                   console.log( key )
-                  $(this).parent('#connect').descendant( '#' + key ).val( val )
+                  $(this).parent('#connect').find( '#' + key ).val( val )
               } )
               return false
           } )
