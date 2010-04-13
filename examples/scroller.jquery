@@ -92,21 +92,36 @@ $( function() {
     
     $('#connect input')
         .focus( function() {
-            $label = ( $(this).parents()
-                       .find( '[for=' + $(this).attr( 'id' ) + ']' ) )
-            $box = $(this)
+            var $label = ( $(this).parents()
+                           .find( '[for=' + $(this).attr( 'id' ) + ']' ) )
+            var $box = $(this)
             $label.animate( {
                 left : -( $box.width() / 2 * 1.1 + $label.width() / 2 ),
-                opacity : 1,
             }, speed )
         } )
         .blur( function() {
             if( $(this).val() == '' ) {
                 $label.animate( {
                     left : 0,
-                    opacity : .5,
                 } )
+            } else {
+                console.log( $(this).val() )
             }
-        }, speed )
+        }, speed ).hover( 
+            function() {
+                var $label = ( $(this).parents()
+                               .find( '[for=' + $(this).attr( 'id' ) + ']' ) )
+                $label.animate( {
+                    opacity : 1,
+                }, speed )
+            },
+            function() {
+                var $label = ( $(this).parents()
+                               .find( '[for=' + $(this).attr( 'id' ) + ']' ) )
+                $label.animate( {
+                    opacity : .5,
+                }, speed )
+            }
+        )
 
 } )
