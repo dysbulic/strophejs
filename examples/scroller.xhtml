@@ -37,7 +37,9 @@
               $(this).parents()
                   .find( '[for=' + $(this).attr( 'for' ) + ']' )
                   .find( 'label' ).fadeOut( 'fast' )
-              console.log( this )
+              console.log( $(this).parents()
+                           .find( '[for=' + $(this).attr( 'for' ) + ']' )
+                           .find( 'label' ).size() )
           } )
       } )
   ]]></script>
