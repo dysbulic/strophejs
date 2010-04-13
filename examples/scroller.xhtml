@@ -15,13 +15,6 @@
       ( function() {
           var root = document.documentElement
 
-          var state = {
-              top : root.scrollTop,
-              left : root.scrollLeft,
-              width : root.scrollWidth,
-              height : root.scrollHeight,
-          }
-
           // Linear translation between two tixels
           var position = {
               linear : function ( start, end ) {
@@ -51,9 +44,17 @@
               }
           }
           
-          function Scene( watcher ) { // saccade
+          function Scene( ) { // saccade
               var self = this
               var args = Array.prototype.slice.call( arguments )
+              var watcher = args.shift()
+
+              var state = {
+                  top : root.scrollTop,
+                  left : root.scrollLeft,
+                  width : root.scrollWidth,
+                  height : root.scrollHeight,
+              }
               
               var interval = {
                   id: undefined,
@@ -151,8 +152,7 @@
           }
            
           $( function() {
-              var scene = new Scene( watcher )
-              scene.go
+              var scene = new Scene( watcher )//.go
               $('body').append( $('<p/>').css( { 'margin-top' : '2000px' } ).text( 'test' ) )
           } )
       } )()
