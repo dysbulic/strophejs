@@ -26,9 +26,10 @@
                   srvr : 'talk.google.com',
                   pass : 'mimistest',
               } )
+              var $this = $(this)
               fields.__.each( function( val, key ) {
-                  console.log( $(this).parent('#connect').size() )
-                  $(this).parent('#connect').find( '#' + key ).val( val )
+                  console.log( $this.parent('#connect').size() )
+                  $this.parent('#connect').find( '#' + key ).val( val )
               } )
               return false
           } )
