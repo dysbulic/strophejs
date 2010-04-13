@@ -27,6 +27,8 @@
                   pass : 'mimistest',
               } )
               var $this = $(this)
+              console.log( $this.parent().get(0).nodeName )
+              console.log( $this.parent('#connect').size() )
               fields.__.each( function( val, key ) {
                   console.log( $this.parent('#connect').size() )
                   $this.parent('#connect').find( '#' + key ).val( val )
