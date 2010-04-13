@@ -5,7 +5,7 @@
 <head>
   <title>Scroller Interface</title>
   <script type="application/javascript" src=".../lib/jquery/jquery.js"/>
-  <script type="application/javascript" src=".../lib/jquery/form/label/slide.jquery"/>
+    <!--<script type="application/javascript" src=".../lib/jquery/form/label/slide.jquery"/>-->
   <script type="application/javascript" src=".../lib/strophe/strophe.js"/>
   <script type="application/javascript" src=".../lib/tip/Array.each.js"/>
   <script type="application/javascript" src=".../lib/tip/pointers.js"/>
@@ -203,14 +203,17 @@
     body > ol > li:first-child { margin-top: 0px; border-color: blue }
   </style>
   <style type="text/css">
-    #action { position: fixed; bottom: 0%; width: 100%;
-              border-top: 2px solid #CBF2D1 }
-    #action li { display: block; text-align: center }
-    #action form { display: inline-block; margin: auto }
-    #action li:before, #action li:after {
-      content: ''; clear: both; display: block
-    }
-    #action form button { display: inline-block }
+#action { position: fixed; bottom: 0%; width: 100%;
+          border-top: 2px solid #CBF2D1 }
+#action li { display: block; text-align: center }
+#action form { display: inline-block; margin: auto }
+#action li:before, #action li:after {
+    content: ''; clear: both; display: block
+}
+#action form button { display: inline-block }
+#action li { position: relative; width: 100%; text-align: center }
+#action label { display: inline-block  }
+#action label:before { display: block; background-color: green }
   </style>
 </head>
 <body>
@@ -223,15 +226,15 @@
           <ul>
             <li>
               <label for="user"><acronym title="identifier">ID</acronym></label>
-              <input id="user" type="text" value="mimis.test@gmail.com" />
+              <input id="user" type="text" />
             </li>
             <li>
               <label for="srvr">Server</label>
-              <input id="srvr" type="text" value="talk.google.com" />
+              <input id="srvr" type="text" />
             </li>
             <li>
               <label for="pass">Password</label>
-              <input id="pass" type="password" value="mimistest" />
+              <input id="pass" type="password" />
             </li>
           </ul>
         </fieldset>
