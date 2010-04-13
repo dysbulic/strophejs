@@ -27,12 +27,17 @@
                   pass : 'mimistest',
               } )
               var $this = $(this)
-              console.log( $this.parent().parent().parent().parent().attr('id') )
-              console.log( $this.parents('#connect').size() )
               fields.__.each( function( val, key ) {
                   $this.parents('#connect').find( '#' + key ).val( val )
               } )
               return false
+          } )
+          
+          $('#connect input').focus( function() {
+              $(this).parents()
+                  .find( '[for=' + $(this).attr( 'for' ) + ']' )
+                  .find( 'label' ).fadeOut( 'fast' )
+              console.log( this )
           } )
       } )
   ]]></script>
