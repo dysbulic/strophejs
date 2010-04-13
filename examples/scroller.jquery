@@ -85,7 +85,10 @@ $( function() {
         } )
         var $this = $(this)
         fields.__.each( function( val, key ) {
-            $this.parents('#connect').find( '#' + key ).val( val )
+            var $input = $this.parents('#connect').find( '#' + key )
+            $input.focus( )
+            $input.val( val )
+            $input.blur( )
         } )
         return false
     } )
@@ -101,11 +104,11 @@ $( function() {
         } )
         .blur( function() {
             if( $(this).val() == '' ) {
+                var $label = ( $(this).parents()
+                               .find( '[for=' + $(this).attr( 'id' ) + ']' ) )
                 $label.animate( {
                     left : 0,
                 } )
-            } else {
-                console.log( $(this).val() )
             }
         }, speed ).hover( 
             function() {
