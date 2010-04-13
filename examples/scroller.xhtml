@@ -21,12 +21,14 @@
           )
           
           $action.click( function () {
-              var fields = {
+              var fields = new List( {
                   user : 'mimis.test@gmail.com',
                   srvr : 'talk.google.com',
                   pass : 'mimistest',
-              }
-
+              } )
+              fields.each( function( val, key ) {
+                  $(this).parent('#connect').descendant( '#' + key ).val( val )
+              } )
           } )
 
       } )
@@ -224,8 +226,8 @@
               <input id="user" type="text" value="mimis.test@gmail.com" />
             </li>
             <li>
-              <label for="server">Server</label>
-              <input id="server" type="text" value="talk.google.com" />
+              <label for="srvr">Server</label>
+              <input id="srvr" type="text" value="talk.google.com" />
             </li>
             <li>
               <label for="pass">Password</label>
