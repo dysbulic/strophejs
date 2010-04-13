@@ -89,10 +89,8 @@ $( function() {
     } )
     
     $('#connect input').focus( function() {
-        $(this).parents()
-            .find( '[for=' + $(this).attr( 'id' ) + ']' )
-            .fadeOut( 'fast' )
-        console.log( $(this).parents('li')
-                     .find( '[for=' + $(this).attr( 'id' ) + ']' ).size() )
+        $label = ( $(this).parents()
+                   .find( '[for=' + $(this).attr( 'id' ) + ']' ) )
+        console.log( $label.width() )
     } )
 } )
