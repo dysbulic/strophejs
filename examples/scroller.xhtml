@@ -59,7 +59,7 @@
               
               var interval = {
                   id: undefined,
-                  length: 1 /* seconds */ * 1000,
+                  length: 3 /* seconds */ * 1000,
               }
               
               function once() {
@@ -85,7 +85,7 @@
           }
       
           function watcher( ) {
-              var scroll = { interval : 5 /* seconds */ * 1000, }
+              var scroll = { interval : 15 /* seconds */ * 1000, }
               var current = new List( {
                   top : root.scrollTop,
                   left : root.scrollLeft,
@@ -102,7 +102,7 @@
                       }
                   } )
               } catch( name ) {
-                  console.log( name )
+                  console.log( 'd:' + name + ':' + current[name] + ':' + state[name] )
                   change = true
               }
 
@@ -149,7 +149,8 @@
                   this.end = end
                   snapshot.apply( this, arguments )
 
-                  current.each( function( attr, name ) {
+                  current.__.each( function( attr, name ) {
+                      console.log( 's:' + name + ':' + state[name] + ':' + attr )
                       state[name] = attr
                   } )
               }
