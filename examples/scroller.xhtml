@@ -36,10 +36,11 @@
           
           function snapshot( ) {
               var moveTo = position.linear( this.start, this.end )
-              console.log( 'snap:' + moveTo.offset + ':' + this.start.y + ':' + moveTo.y )
+              console.log( 'snap:' + moveTo.offset + ':' + moveTo.done + ':' + moveTo.y )
               window.scroll( moveTo.x - this.win.width / 2,
                              moveTo.y - this.win.height / 2 )
               if( moveTo.done ) {
+                  console.log( 'removing' )
                   this.start = undefined
               }
           }
@@ -97,14 +98,16 @@
               try {
                   current.__.each( function( attr, name ) {
                       if( state[name] !== attr ) {
-                          throw true
+                          throw name
                       }
                   } )
-              } catch( val ) {
-                  change = val
+              } catch( name ) {
+                  console.log( name )
+                  change = true
               }
 
               if( change || this.start ) {
+                  console.log( 'check:' + change + ':' + this.start )
                   this.win = {
                       width : root.clientWidth,
                       height : root.clientHeight,
@@ -153,10 +156,8 @@
           }
            
           $( function() {
-              var scene = new Scene( watcher ).once
+              var scene = new Scene( watcher ).go
               $('body').append( $('<p/>').css( { 'margin-top' : '2000px' } ).text( 'test' ) )
-              scene.once
-              scene.once
           } )
       } )()
   ]]></script>
