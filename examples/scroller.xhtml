@@ -43,7 +43,7 @@
           }
           
           function snapshot( ) {
-              var moveTo = position( this.start, this.end )
+              var moveTo = position.linear( this.start, this.end )
               console.log( moveTo.done )
               window.scroll( moveTo.x - this.win.width / 2,
                              moveTo.y - this.win.height / 2 )
@@ -91,20 +91,22 @@
               } )
           
               var change = false
+              var self = this
               try {
-                  var self = this
                   current.each( function( attr, name ) {
-                      console.log( name + ':' + attr + ':' +  current[name] )
                       if( self[name] !== attr ) {
                           throw true
                       }
                   } )
               } catch( val ) {
                   change = val
+                  current.each( function( attr, name ) {
+                      self[name] = attr
+                  } )
               }
 
               if( change || this.start ) {
-                  console.log( 'change' )
+                  console.log( 'change:' + change )
                   this.win = {
                       width : root.clientWidth,
                       height : root.clientHeight,
@@ -112,41 +114,38 @@
                   if( this.start === undefined ) {
                       this.start = {
                           x : ( current.left
-                                + this.win.width / 2 ),
+                                + self.win.width / 2 ),
                           y : ( current.top
-                                + this.win.height / 2 ),
-                          width : this.win.width,
-                          height : this.win.height,
+                                + self.win.height / 2 ),
+                          width : self.win.width,
+                          height : self.win.height,
                           time : ( new Date() ).getTime(),
                       }
                   }
-                  this.end = $.merge( {
-                      time : ( this.start.time
-                               + scroll.interval )
-                    },
-                    ( {
-                        get top() { return {
-                            get left() { return {
-                                x : win.width / 2,
-                                y : win.height / 2,
+                  var end = ( {
+                      get top() { return {
+                          get left() { return {
+                              x : self.win.width / 2,
+                              y : self.win.height / 2,
+                          } },
+                          get right() { return {
+                              x : current.width - self.win.width / 2,
+                              y : self.win.height / 2,
+                          } },
+                      } },
+                      get bottom() { return {
+                          get left() { return {
+                              x : self.win.width / 2,
+                              y : current.height - self.win.height / 2,
                             } },
-                            get right() { return {
-                                x : current.width - win.width / 2,
-                                y : win.height / 2,
-                            } },
-                        } },
-                        get bottom() { return {
-                            get left() { return {
-                                x : win.width / 2,
-                                y : current.height - win.height / 2,
-                            } },
-                            get right() { return {
-                                x : current.width - win.width / 2,
-                                y : current.height - win.height / 2,
-                            } },
-                        } }
-                    } ).bottom.left
-                  )
+                          get right() { return {
+                              x : current.width - self.win.width / 2,
+                              y : current.height - self.win.height / 2,
+                          } },
+                      } }
+                  } ).bottom.left
+                  end.time = this.start.time + scroll.interval
+                  this.end = end
                   snapshot.apply( this, arguments )
               }
           }
