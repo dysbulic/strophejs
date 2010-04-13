@@ -36,7 +36,7 @@
           $('#connect input').focus( function() {
               $(this).parents()
                   .find( '[for=' + $(this).attr( 'id' ) + ']' )
-                  .find( 'label' ).fadeOut( 'fast' )
+                  .fadeOut( 'fast' )
               console.log( $(this).parents('li')
                            .find( '[for=' + $(this).attr( 'id' ) + ']' ).size() )
           } )
