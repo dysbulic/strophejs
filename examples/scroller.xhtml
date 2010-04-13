@@ -191,8 +191,6 @@
   ]]></script>
   <style type="text/css">
     html, body { margin: 0; min-height: 200px }
-    label:after { content: ":" }
-    label { display: inline-block; min-width: 5.5em; text-align: right }
     li { list-style: none; padding: .1em 0 }
     body > ol { margin: 0; padding: 0 }
     body > ol > li:before, body > ol > li:after {
@@ -212,8 +210,10 @@
 }
 #action form button { display: inline-block }
 #action li { position: relative; width: 100%; text-align: center }
-#action label { display: inline-block  }
-#action label:before { display: block; background-color: green }
+#action label { display: inline-block; background-color: green }
+#action label:before { display: block;  }
+#action 
+li li:hover label:after { content: ":" }
   </style>
 </head>
 <body>
