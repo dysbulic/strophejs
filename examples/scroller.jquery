@@ -93,6 +93,6 @@ $( function() {
                    .find( '[for=' + $(this).attr( 'id' ) + ']' ) )
         $box = $(this)
         console.log($box.width() / 2 + $label.width() / 2)
-        $label.attr( 'left', $box.width() / 2 + $label.width() / 2 )
+        $label.css( 'left', ( $box.width() / 2 + $label.width() / 2 ) + 'px' )
     } )
 } )
