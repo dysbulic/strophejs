@@ -44,11 +44,10 @@
           
           function snapshot( ) {
               var moveTo = position.linear( this.start, this.end )
-              console.log( moveTo.done )
               window.scroll( moveTo.x - this.win.width / 2,
                              moveTo.y - this.win.height / 2 )
               if( moveTo.done ) {
-                  state.scroller = undefined
+                  this.snapshot = undefined
               }
           }
           
@@ -82,7 +81,7 @@
           }
       
           function watcher( ) {
-              var scroll = { interval : 30 /* seconds */ * 1000, }
+              var scroll = { interval : 5 /* seconds */ * 1000, }
               var current = new List( {
                   top : root.scrollTop,
                   left : root.scrollLeft,
@@ -106,7 +105,6 @@
               }
 
               if( change || this.start ) {
-                  console.log( 'change:' + change )
                   this.win = {
                       width : root.clientWidth,
                       height : root.clientHeight,
