@@ -91,21 +91,17 @@
                   width : root.scrollWidth,
                   height : root.scrollHeight,
               } )
-              console.log( 'scrollTop:' + root.scrollTop + ":" + current.top )
-              return
+
               var change = false
-              var self = this
+              var state = this
               try {
-                  current.each( function( attr, name ) {
-                      if( self[name] !== attr ) {
+                  current.__.each( function( attr, name ) {
+                      if( state[name] !== attr ) {
                           throw true
                       }
                   } )
               } catch( val ) {
                   change = val
-                  current.each( function( attr, name ) {
-                      self[name] = attr
-                  } )
               }
 
               if( change || this.start ) {
@@ -116,46 +112,50 @@
                   if( this.start === undefined ) {
                       this.start = {
                           x : ( current.left
-                                + self.win.width / 2 ),
+                                + state.win.width / 2 ),
                           y : ( current.top
-                                + self.win.height / 2 ),
-                          width : self.win.width,
-                          height : self.win.height,
+                                + state.win.height / 2 ),
+                          width : state.win.width,
+                          height : state.win.height,
                           time : ( new Date() ).getTime(),
                       }
-                      console.log( 'start:' + current.top )
                   }
                   var end = ( {
                       get top() { return {
                           get left() { return {
-                              x : self.win.width / 2,
-                              y : self.win.height / 2,
+                              x : state.win.width / 2,
+                              y : state.win.height / 2,
                           } },
                           get right() { return {
-                              x : current.width - self.win.width / 2,
-                              y : self.win.height / 2,
+                              x : current.width - state.win.width / 2,
+                              y : state.win.height / 2,
                           } },
                       } },
                       get bottom() { return {
                           get left() { return {
-                              x : self.win.width / 2,
-                              y : current.height - self.win.height / 2,
+                              x : state.win.width / 2,
+                              y : current.height - state.win.height / 2,
                             } },
                           get right() { return {
-                              x : current.width - self.win.width / 2,
-                              y : current.height - self.win.height / 2,
+                              x : current.width - state.win.width / 2,
+                              y : current.height - state.win.height / 2,
                           } },
                       } }
                   } ).bottom.left
                   end.time = this.start.time + scroll.interval
                   this.end = end
                   snapshot.apply( this, arguments )
+
+                  current.each( function( attr, name ) {
+                      state[name] = attr
+                  } )
               }
           }
            
           $( function() {
               var scene = new Scene( watcher ).once
               $('body').append( $('<p/>').css( { 'margin-top' : '2000px' } ).text( 'test' ) )
+              scene.once
               scene.once
           } )
       } )()
