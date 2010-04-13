@@ -36,11 +36,11 @@
           
           function snapshot( ) {
               var moveTo = position.linear( this.start, this.end )
-              console.log( 'snap:' + moveTo.offset + ':' + moveTo.done + ':' + moveTo.y )
+              console.log( 'snap:' + Math.round( moveTo.offset * 10000 ) / 100 + '%:'
+                  + ':<' + moveTo.x + ',' + moveTo.y + '>' )
               window.scroll( moveTo.x - this.win.width / 2,
                              moveTo.y - this.win.height / 2 )
               if( moveTo.done ) {
-                  console.log( 'removing' )
                   this.start = undefined
               }
           }
@@ -59,7 +59,7 @@
               
               var interval = {
                   id: undefined,
-                  length: 3 /* seconds */ * 1000,
+                  length: .1 /* seconds */ * 1000,
               }
               
               function once() {
@@ -85,7 +85,7 @@
           }
       
           function watcher( ) {
-              var scroll = { interval : 15 /* seconds */ * 1000, }
+              var scroll = { interval : 3 /* seconds */ * 1000, }
               var current = new List( {
                   top : root.scrollTop,
                   left : root.scrollLeft,
@@ -102,12 +102,11 @@
                       }
                   } )
               } catch( name ) {
-                  console.log( 'd:' + name + ':' + current[name] + ':' + state[name] )
+                  //console.log( 'dirty:' + name + ':' + current[name] + ':' + state[name] )
                   change = true
               }
 
               if( change || this.start ) {
-                  console.log( 'check:' + change + ':' + this.start )
                   this.win = {
                       width : root.clientWidth,
                       height : root.clientHeight,
