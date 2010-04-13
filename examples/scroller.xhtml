@@ -5,12 +5,32 @@
 <head>
   <title>Scroller Interface</title>
   <script type="application/javascript" src=".../lib/jquery/jquery.js"/>
+  <script type="application/javascript" src=".../lib/jquery/form/label/slide.jquery"/>
   <script type="application/javascript" src=".../lib/strophe/strophe.js"/>
   <script type="application/javascript" src=".../lib/tip/Array.each.js"/>
   <script type="application/javascript" src=".../lib/tip/pointers.js"/>
   <script type="application/javascript" src=".../lib/tip/List.js"/>
     
   <script type="application/javascript" src="scroller.jquery"/>
+  <script type="application/javascript"><![CDATA[
+      $( function() {
+          var text = { 'default' : '⟰  Default ⟰', }
+          var $action = $('<button/>').text( text['default'] )
+          $('#connect ul').eq( 0 ).append(
+              $('<li/>').append( $action )
+          )
+          
+          $action.click( function () {
+              var fields = {
+                  user : 'mimis.test@gmail.com',
+                  srvr : 'talk.google.com',
+                  pass : 'mimistest',
+              }
+
+          } )
+
+      } )
+  ]]></script>
   <script type="application/javascript"><![CDATA[
       ( function() {
           var root = document.documentElement
@@ -162,6 +182,8 @@
            
           $( function() {
               var scene = new Scene( watcher )//.go
+
+              $('#action form')
           } )
       } )()
   ]]></script>
@@ -169,7 +191,6 @@
     html, body { margin: 0; min-height: 200px }
     label:after { content: ":" }
     label { display: inline-block; min-width: 5.5em; text-align: right }
-    li:last-child button { float: right }
     li { list-style: none; padding: .1em 0 }
     body > ol { margin: 0; padding: 0 }
     body > ol > li:before, body > ol > li:after {
@@ -184,6 +205,10 @@
               border-top: 2px solid #CBF2D1 }
     #action li { display: block; text-align: center }
     #action form { display: inline-block; margin: auto }
+    #action li:before, #action li:after {
+      content: ''; clear: both; display: block
+    }
+    #action form button { display: inline-block }
   </style>
 </head>
 <body>
