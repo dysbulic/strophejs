@@ -11,7 +11,7 @@
   <script type="application/javascript" src=".../lib/tip/List.js"/>
     
   <style type="text/css">
-    html { height: 2000px }
+    body { height: 2000px }
     #out { position: absolute; bottom: 0% }
   </style>
 
@@ -41,8 +41,8 @@
           
           function snapshot( ) {
               var moveTo = position.linear( this.start, this.end )
-              //console.log( 'snap:' + Math.round( moveTo.offset * 10000 ) / 100 + '%:'
-              //    + ':<' + moveTo.x + ',' + moveTo.y + '>' )
+              console.log( 'snap:' + Math.round( moveTo.offset * 10000 ) / 100 + '%:'
+                  + ':<' + moveTo.x + ',' + moveTo.y + '>' )
               window.scroll( moveTo.x - this.win.width / 2,
                              moveTo.y - this.win.height / 2 )
               if( moveTo.done ) {
@@ -166,7 +166,7 @@
           }
            
           $( function() {
-              var scene = new Scene( watcher ).go
+              var scene = new Scene( watcher )//.go
           } )
       } )()
   ]]></script>
