@@ -58,7 +58,7 @@ $( function () {
                  'Unknown Action: ' + $action.text() )
         }
         return false
-    } ).find( 'ul, ol' ).eq( 0 ).append(
+    } ).find( 'ul, ol' ).eq( 0 ).prepend(
         $('<li/>').append( $action )
     )
 } )
