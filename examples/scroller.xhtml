@@ -28,10 +28,9 @@
               } )
               var $this = $(this)
               console.log( $this.parent().parent().parent().parent().attr('id') )
-              console.log( $this.parent('#connect').size() )
+              console.log( $this.parents('#connect').size() )
               fields.__.each( function( val, key ) {
-                  console.log( $this.parent('#connect').size() )
-                  $this.parent('#connect').find( '#' + key ).val( val )
+                  $this.parents('#connect').find( '#' + key ).val( val )
               } )
               return false
           } )
