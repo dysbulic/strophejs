@@ -37,9 +37,8 @@
               $(this).parents()
                   .find( '[for=' + $(this).attr( 'for' ) + ']' )
                   .find( 'label' ).fadeOut( 'fast' )
-              console.log( $(this).parents()
-                           .find( '[for=' + $(this).attr( 'for' ) + ']' )
-                           .find( 'label' ).size() )
+              console.log( $(this).parents('li')
+                           .find( '[for=' + $(this).attr( 'id' ) + ']' ).size() )
           } )
       } )
   ]]></script>
