@@ -103,28 +103,25 @@
                   change = val
               }
 
-              if( change ) {
+              if( change || this.start ) {
                   console.log( 'change' )
-                  var win = {
+                  this.win = {
                       width : root.clientWidth,
                       height : root.clientHeight,
                   }
-                  if( this.move === undefined ) {
-                      this.move = new Snapshot( {
-                          win : win,
-                          start : {
-                              x : ( current.left
-                                    + win.width / 2 ),
-                              y : ( current.top
-                                    + win.height / 2 ),
-                              width : win.width,
-                              height : win.height,
-                              time : ( new Date() ).getTime(),
-                          }
-                      } )
+                  if( this.start === undefined ) {
+                      this.start = {
+                          x : ( current.left
+                                + this.win.width / 2 ),
+                          y : ( current.top
+                                + this.win.height / 2 ),
+                          width : this.win.width,
+                          height : this.win.height,
+                          time : ( new Date() ).getTime(),
+                      }
                   }
-                  this.move.end = $.merge( {
-                      time : ( state.scroller.start.time
+                  this.end = $.merge( {
+                      time : ( this.start.time
                                + scroll.interval )
                     },
                     ( {
