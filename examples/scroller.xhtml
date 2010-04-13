@@ -210,9 +210,10 @@
     #action form button { display: inline-block }
     #action li { position: relative; width: 100%; text-align: center }
     #action label { display: inline-block; background-color: green;
-                    opacity: .5; padding: 0 .25em; z-index: -1 }
+                    opacity: .5; padding: 0 .25em; z-index: 1; position: relative }
     #action label:before { display: block;  }
     #action input { position: absolute; top: 0; left: 0; z-index: 0 }
+    li li label:after { content: " " }
     li li:hover label:after { content: ":" }
   </style>
 </head>
