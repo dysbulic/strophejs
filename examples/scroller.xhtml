@@ -212,8 +212,10 @@
     #action label { display: inline-block; background-color: green;
                     opacity: .5; padding: 0 .25em; z-index: 1; position: relative }
     #action label:before { display: block;  }
-    #action input { position: absolute; top: 0; left: 0; z-index: 0 }
-    li li label:after { content: " " }
+    #action input { position: absolute; top: 0; z-index: 0;
+                     left: -3em; width: 100% }
+    li li label { padding-right: .5em ! important }
+    li li:hover label { padding-right: .2em ! important }
     li li:hover label:after { content: ":" }
   </style>
 </head>
