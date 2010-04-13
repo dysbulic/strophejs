@@ -61,14 +61,16 @@
                   length: 1 /* seconds */ * 1000,
               }
               
+              function once() {
+                  watcher.apply( state, args )
+                  return this
+              }
+
+              this.__defineGetter__( 'once', once )
               this.__defineGetter__( 'go', function() {
                   if( interval.id === undefined ) {
                       interval.id =
-                          setInterval( function() {
-                              watcher.apply( state, args )
-                          },
-                                       interval.length
-                                     )
+                          setInterval( once, interval.length )
                   }
                   return this
               } )
@@ -152,7 +154,7 @@
           }
            
           $( function() {
-              var scene = new Scene( watcher )//.go
+              var scene = new Scene( watcher )
               $('body').append( $('<p/>').css( { 'margin-top' : '2000px' } ).text( 'test' ) )
           } )
       } )()
