@@ -13,34 +13,6 @@
     
   <script type="application/javascript" src="scroller.jquery"/>
   <script type="application/javascript"><![CDATA[
-      $( function() {
-          var text = { 'default' : '⟰  Default ⟰', }
-          var $action = $('<button/>').text( text['default'] )
-          $('#connect ul').eq( 0 ).append(
-              $('<li/>').append( $action )
-          )
-          
-          $action.click( function () {
-              var fields = new List( {
-                  user : 'mimis.test@gmail.com',
-                  srvr : 'talk.google.com',
-                  pass : 'mimistest',
-              } )
-              var $this = $(this)
-              fields.__.each( function( val, key ) {
-                  $this.parents('#connect').find( '#' + key ).val( val )
-              } )
-              return false
-          } )
-          
-          $('#connect input').focus( function() {
-              $(this).parents()
-                  .find( '[for=' + $(this).attr( 'id' ) + ']' )
-                  .fadeOut( 'fast' )
-              console.log( $(this).parents('li')
-                           .find( '[for=' + $(this).attr( 'id' ) + ']' ).size() )
-          } )
-      } )
   ]]></script>
   <script type="application/javascript"><![CDATA[
       ( function() {
