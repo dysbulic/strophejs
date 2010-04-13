@@ -1,8 +1,10 @@
 function log( level, msg ) {
     msg = msg || level
-    if( msg && msg.length > 0 ) {
+    if( ( msg && msg.length > 0
+          && typeof level == 'number'
+          && level >= Strophe.LogLevel.INFO ) ) {
         $('#log, body ol').eq( 0 ).append(
-            $('<li/>').text( msg )
+            $('<li/>').text( level )
         )
     }
 }
@@ -10,13 +12,13 @@ function log( level, msg ) {
 $( function () {
     function rawInput( ) {
         var data = Array.prototype.slice.call( arguments ).join()
-        log( Strophe.LogLevel.INFO,
+        log( Strophe.LogLevel.DEBUG,
              '⍟: ' + data )
     }
 
     function rawOutput( ) {
         var data = Array.prototype.slice.call( arguments ).join()
-        log( Strophe.LogLevel.INFO,
+        log( Strophe.LogLevel.DEBUG,
              '⋆: ' + data )
     }
     
@@ -39,8 +41,8 @@ $( function () {
     connection.rawOutput = rawOutput
 
     var $action = $('<button/>')
-    var text = { connect : '⟱ Connect ⟱',
-                 'break' : '⟰ Break ⟰',
+    var text = { connect : '⟰ Connect ⟰',
+                 'break' : '⟱ Break ⟱',
                }
     $action.text( text['connect'] )
     $('#connect').submit( function () {

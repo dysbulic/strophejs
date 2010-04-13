@@ -199,6 +199,7 @@
     body > ol > li { border-style: double none; padding: 1em;
                      border-width: 3px; margin-top: -3px }
     body > ol > li:first-child { margin-top: 0px; border-color: blue }
+    ol, ul { margin: 0; padding: 0 }
   </style>
   <style type="text/css">
     #action { position: fixed; bottom: 0%; width: 100%;
@@ -210,10 +211,11 @@
     #action form button { display: inline-block }
     #action li { position: relative; width: 100%; text-align: center }
     #action label { display: inline-block; background-color: green;
-                    opacity: .5; padding: 0 .25em; z-index: 1; position: relative }
+                    opacity: .5; padding: 0 .25em; z-index: 1; position: relative;
+                    margin-top: 2px }
     #action label:before { display: block;  }
     #action input { position: absolute; top: 0; z-index: 0;
-                     left: -3em; width: 100% }
+                     left: 0; width: 100% }
     li li label { padding-right: .5em ! important }
     li li:hover label { padding-right: .2em ! important }
     li li:hover label:after { content: ":" }
