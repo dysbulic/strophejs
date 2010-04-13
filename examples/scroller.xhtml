@@ -26,11 +26,12 @@
                   srvr : 'talk.google.com',
                   pass : 'mimistest',
               } )
-              fields.each( function( val, key ) {
+              fields.__.each( function( val, key ) {
+                  console.log( key )
                   $(this).parent('#connect').descendant( '#' + key ).val( val )
               } )
+              return false
           } )
-          return false
       } )
   ]]></script>
   <script type="application/javascript"><![CDATA[
