@@ -10,11 +10,6 @@
   <script type="application/javascript" src=".../lib/tip/pointers.js"/>
   <script type="application/javascript" src=".../lib/tip/List.js"/>
     
-  <style type="text/css">
-    body { height: 2000px }
-    #out { position: absolute; bottom: 0% }
-  </style>
-
   <script type="application/javascript" src="scroller.jquery"/>
   <script type="application/javascript"><![CDATA[
       ( function() {
@@ -170,6 +165,11 @@
           } )
       } )()
   ]]></script>
+  <style type="text/css">
+    body { height: 2000px }
+    #action { position: absolute; bottom: 0%; width: 100% }
+    #action > * { display: inline-block; margin: auto }
+  </style>
   <style type="text/css">
     html, body { margin: 0; min-height: 200px }
     form { float: left }
