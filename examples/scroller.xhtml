@@ -27,7 +27,7 @@
                   pass : 'mimistest',
               } )
               fields.__.each( function( val, key ) {
-                  console.log( key )
+                  console.log( $(this).parent('#connect').size() )
                   $(this).parent('#connect').find( '#' + key ).val( val )
               } )
               return false
