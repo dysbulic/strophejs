@@ -102,7 +102,7 @@
                       }
                   } )
               } catch( name ) {
-                  //console.log( 'dirty:' + name + ':' + current[name] + ':' + state[name] )
+                  console.log( 'offset:' + name + ':' + current[name] + ':' + state[name] )
                   change = true
               }
 
@@ -148,6 +148,12 @@
                   this.end = end
                   snapshot.apply( this, arguments )
 
+                  current = new List( {
+                      top : root.scrollTop,
+                      left : root.scrollLeft,
+                      width : root.scrollWidth,
+                      height : root.scrollHeight,
+                  } )
                   current.__.each( function( attr, name ) {
                       state[name] = attr
                   } )
