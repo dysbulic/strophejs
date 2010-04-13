@@ -16,7 +16,6 @@
           var root = document.documentElement
 
           var state = {
-              scroller : undefined,
               top : root.scrollTop,
               left : root.scrollLeft,
               width : root.scrollWidth,
@@ -43,6 +42,7 @@
           }
           
           function snapshot( ) {
+              console.log( 'snap:' + this.start )
               var moveTo = position.linear( this.start, this.end )
               window.scroll( moveTo.x - this.win.width / 2,
                              moveTo.y - this.win.height / 2 )
