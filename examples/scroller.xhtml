@@ -43,7 +43,7 @@
           
           function snapshot( ) {
               var moveTo = position.linear( this.start, this.end )
-              console.log( 'snap:' + moveTo.y )
+              console.log( 'snap:' + moveTo.offset + ':' + this.start.y + ':' + moveTo.y )
               window.scroll( moveTo.x - this.win.width / 2,
                              moveTo.y - this.win.height / 2 )
               if( moveTo.done ) {
@@ -88,6 +88,7 @@
                   width : root.scrollWidth,
                   height : root.scrollHeight,
               } )
+              console.log( 'scrollTop:' + root.scrollTop + ":" + current.top )
           
               var change = false
               var self = this
@@ -119,6 +120,7 @@
                           height : self.win.height,
                           time : ( new Date() ).getTime(),
                       }
+                      console.log( 'start:' + current.top )
                   }
                   var end = ( {
                       get top() { return {
