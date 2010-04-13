@@ -91,6 +91,8 @@ $( function() {
     $('#connect input').focus( function() {
         $label = ( $(this).parents()
                    .find( '[for=' + $(this).attr( 'id' ) + ']' ) )
-        console.log( $label.width() )
+        $box = $(this)
+        console.log($box.width() / 2 + $label.width() / 2)
+        $label.attr( 'left', $box.width() / 2 + $label.width() / 2 )
     } )
 } )
