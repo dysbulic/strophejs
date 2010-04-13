@@ -44,7 +44,7 @@ $( function () {
     var text = { connect : '⟰ Connect ⟰',
                  'break' : '⟱ Break ⟱',
                }
-    $action.text( text['connect'] ).click( function () {
+    function connect() {
 	if( $action.text() === text['connect'] ) {
 	    connection.connect( $('#user').val(),
 			        $('#pass').val(),
@@ -59,7 +59,9 @@ $( function () {
                  'Unknown Action: ' + $action.text() )
         }
         return false
-    } )
+    }
+    $action.text( text['connect'] ).click( connect )
+    $('#connect').submit( connect )
     $('#connect').find( 'ul, ol' ).eq( 0 ).prepend(
         $('<li/>').append( $action )
     )
