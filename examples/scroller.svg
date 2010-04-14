@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg viewBox="0 0 1000 1000" width="100%" height="100%"
+<svg viewBox="0 0 100 100" width="100%" height="100%"
      xmlns="http://www.w3.org/2000/svg"
      xmlns:html="http://www.w3.org/1999/xhtml"
      xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -20,7 +20,17 @@
       </style>
       <!---->
       <script type="text/javascript"><![CDATA[
-        console.log($.__.$('#'))
+          console.log($.__.$('#'))
+          var connection = {
+              username : 'mimis.test@gmail.com',
+              password : 'mimistest',
+              server : 'talk.google.com',
+          }
+          
+          connection.__.each( function( val, key ) {
+              $input.val = val
+          } )
+
       ]]></script>
   </defs>
 </svg>
