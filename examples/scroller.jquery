@@ -144,7 +144,6 @@ $( function() {
 // Clear on label click
 $( function() {
     $('#connect').find('label').click( function() {
-        alert('hi')
         var $input = $(this).sibling('input')
         $input.text('')
         $input.blur( )
