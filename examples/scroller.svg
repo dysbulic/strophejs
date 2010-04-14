@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1000 1000" width="100%" height="100%"
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:html="http://www.w3.org/1999/xhtml"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Move</title>
+    <defs>
+      <script type="text/javascript"><![CDATA[
+        var userId = '例如';
+      ]]></script>
+      <script type="text/javascript" xlink:href="pointers.js"/>
+      <script type="text/javascript" xlink:href="Array.each.js"/>
+      <script type="text/javascript" xlink:href="MutableString.js"/>
+      <script type="text/javascript" xlink:href="List.js"/>
+      <script type="text/javascript">window.__ = new List();</script>
+      
+      <script type="text/javascript" xlink:href="~/lib/jquery/dist/jquery.js"/>
+      <script type="text/javascript" xlink:href="__.jquery"/>
+      <script type="text/javascript" xlink:href="timestamp.js"/>
+
+      <script type="application/javascript;version=1.7" xlink:href="start.js"/>
+      <style type="text/css">
+        svg { fill: black; }
+        foreignObject { overflow: visible; stroke: black; stroke-width: 1px; }
+      </style>
+      <!---->
+      <script type="text/javascript"><![CDATA[
+      ]]></script>
+    </defs>
+</svg>
+<!DOCTYPE html PUBLIC
+  "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Scroller Interface</title>
+  <script type="application/javascript" src=".../lib/jquery/jquery.js"/>
+    <!--<script type="application/javascript" src=".../lib/jquery/form/label/slide.jquery"/>-->
+  <script type="application/javascript" src=".../lib/strophe/strophe.js"/>
+  <script type="application/javascript" src=".../lib/tip/Array.each.js"/>
+  <script type="application/javascript" src=".../lib/tip/pointers.js"/>
+  <script type="application/javascript" src=".../lib/tip/List.js"/>
+    
+  <script type="application/javascript" src="scroller.jquery"/>
+  <script type="application/javascript"><![CDATA[
+  ]]></script>
+  <script type="application/javascript"><![CDATA[
+      ( function() {
+          var root = document.documentElement
+
+          // Linear translation between two tixels
+          var position = {
+              linear : function ( start, end ) {
+                  var current = { time : ( new Date() ).getTime() }
+                  var offset =
+                      Math.min(
+                          1,
+                          ( ( current.time - start.time )
+                            / ( end.time - start.time ) )
+                      )
+                  return {
+                      offset: offset,
+                      x : start.x + offset * ( end.x - start.x ),
+                      y : start.y + offset * ( end.y - start.y ),
+                      done : offset === 1, 
+                  }
+              },
+          }
+          
+          function snapshot( ) {
+              var moveTo = position.linear( this.start, this.end )
+              console.log( 'snap:' + Math.round( moveTo.offset * 10000 ) / 100 + '%:'
+                  + ':<' + moveTo.x + ',' + moveTo.y + '>' )
+              window.scroll( moveTo.x - this.win.width / 2,
+                             moveTo.y - this.win.height / 2 )
+              if( moveTo.done ) {
+                  this.start = undefined
+              }
+          }
+          
+          function Scene( ) { // saccade
+              var self = this
+              var args = Array.prototype.slice.call( arguments )
+              var watcher = args.shift()
+
+              var state = {
+                  top : root.scrollTop,
+                  left : root.scrollLeft,
+                  width : root.scrollWidth,
+                  height : root.scrollHeight,
+              }
+              
+              var interval = {
+                  id: undefined,
+                  length: .01 /* seconds */ * 1000,
+              }
+              
+              function once() {
+                  watcher.apply( state, args )
+                  return this
+              }
+
+              this.__defineGetter__( 'once', once )
+              this.__defineGetter__( 'go', function() {
+                  if( interval.id === undefined ) {
+                      interval.id =
+                          setInterval( once, interval.length )
+                  }
+                  return this
+              } )
+              this.__defineGetter__( 'stop', function() {
+                  if( interval.id !== undefined ) {
+                      clearInterval( interval.id )
+                      interval.id = undefined
+                  }
+                  return this
+              } )
+          }
+      
+          function watcher( ) {
+              var scroll = { interval : .75 /* seconds */ * 1000, }
+              var current = new List( {
+                  top : root.scrollTop,
+                  left : root.scrollLeft,
+                  width : root.scrollWidth,
+                  height : root.scrollHeight,
+              } )
+
+              var change = false
+              var state = this
+              try {
+                  current.__.each( function( attr, name ) {
+                      if( state[name] !== attr ) {
+                          throw name
+                      }
+                  } )
+              } catch( name ) {
+                  //console.log( 'offset:' + name + ':' + current[name] + ':' + state[name] )
+                  change = true
+              }
+
+              if( change || this.start ) {
+                  this.win = {
+                      width : root.clientWidth,
+                      height : root.clientHeight,
+                  }
+                  if( this.start === undefined ) {
+                      this.start = {
+                          x : ( current.left
+                                + state.win.width / 2 ),
+                          y : ( current.top
+                                + state.win.height / 2 ),
+                          width : state.win.width,
+                          height : state.win.height,
+                          time : ( new Date() ).getTime(),
+                      }
+                  }
+                  var end = ( {
+                      get top() { return {
+                          get left() { return {
+                              x : state.win.width / 2,
+                              y : state.win.height / 2,
+                          } },
+                          get right() { return {
+                              x : current.width - state.win.width / 2,
+                              y : state.win.height / 2,
+                          } },
+                      } },
+                      get bottom() { return {
+                          get left() { return {
+                              x : state.win.width / 2,
+                              y : current.height - state.win.height / 2,
+                            } },
+                          get right() { return {
+                              x : current.width - state.win.width / 2,
+                              y : current.height - state.win.height / 2,
+                          } },
+                      } }
+                  } ).bottom.left
+                  end.time = this.start.time + scroll.interval
+                  this.end = end
+                  snapshot.apply( this, arguments )
+
+                  current = new List( {
+                      top : root.scrollTop,
+                      left : root.scrollLeft,
+                      width : root.scrollWidth,
+                      height : root.scrollHeight,
+                  } )
+                  current.__.each( function( attr, name ) {
+                      state[name] = attr
+                  } )
+              }
+          }
+           
+          $( function() {
+              var scene = new Scene( watcher )//.go
+
+              $('#action form')
+          } )
+      } )()
+  ]]></script>
+  <style type="text/css">
+    html, body { margin: 0; min-height: 200px }
+    li { list-style: none; padding: .1em 0 }
+    body > ol { margin: 0; padding: 0 }
+    body > ol > li:before, body > ol > li:after {
+      content: ''; clear: both; display: block
+    }
+    body > ol > li { border-style: double none; padding: 1em;
+                     border-width: 3px; margin-top: -3px }
+    body > ol > li:first-child { margin-top: 0px; border-color: blue }
+    ol, ul { margin: 0; padding: 0 }
+  </style>
+  <style type="text/css">
+    #action { position: fixed; bottom: 0%; width: 100%;
+              border-top: 2px solid #CBF2D1 }
+    #connect { min-width: 15em }
+    #action li { display: block; text-align: center }
+    #action form { display: inline-block; margin: auto }
+    #action li:before, #action li:after {
+              content: ''; clear: both; display: block }
+    #action form button { display: inline-block }
+    #action li { position: relative; width: 100%; text-align: center }
+    #action label { display: inline-block;
+                    opacity: .5; padding: 0 .25em; z-index: 1; position: relative;
+                    margin-top: 2px }
+    #action input { position: absolute; top: 0; z-index: 0;
+                    left: 0; width: 100%; text-align: center;
+                    width: 15em }
+    li li label { padding-right: .5em ! important }
+    li li:focus label { padding-right: .2em ! important }
+    li li:focus label:after { content: ":" }
+    acronym { border: none }
+  </style>
+</head>
+<body>
+  <ol id="log"/>
+  <ol id="action">
+    <li>
+      <form id="connect" action="">
+        <fieldset>
+          <legend align="center">XMPP Connect?</legend>
+          <ul>
+            <li>
+              <label for="user"><acronym title="identifier">ID</acronym></label>
+              <input id="user" type="text" />
+            </li>
+            <li>
+              <label for="srvr">Server</label>
+              <input id="srvr" type="text" />
+            </li>
+            <li>
+              <label for="pass">Password</label>
+              <input id="pass" type="password" />
+            </li>
+          </ul>
+        </fieldset>
+      </form>
+    </li>
+  </ol>
+</body>
+</html>
