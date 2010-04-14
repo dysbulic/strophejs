@@ -4,7 +4,7 @@ function log( level, msg ) {
           && typeof level == 'number'
           && level >= Strophe.LogLevel.INFO ) ) {
         $('#log, body ol').eq( 0 ).append(
-            $('<li/>').text( level )
+            $('<li/>').text( msg )
         )
     }
 }
@@ -37,8 +37,55 @@ $( function () {
              msg[ status ] || ( name + ' Unknown:' + status ) )
     }
 
+    function onMessage( msg ) {
+        var to = msg.getAttribute( 'to' )
+        var from = msg.getAttribute( 'from' )
+        var type = msg.getAttribute( 'type' )
+        var elems = msg.getElementsByTagName( 'body' )
+
+        if( type == "chat" && elems.length > 0 ) {
+	    var body = elems[0];
+
+	    log('ECHOBOT: I got a message from ' + from + ': ' + 
+	        Strophe.getText(body));
+    
+	    var reply = $msg( {
+                to : from,
+                from : to,
+                type : 'chat',
+            } )
+                .cnode( Strophe.copyElement( body ) )
+	    connection.send( reply.tree() )
+
+	    log( 'ECHOBOT: I sent ' + from + ': ' + Strophe.getText( body ) );
+        }
+    }
+    // we must return true to keep the handler alive.  
+    // returning false would remove it after it finishes.
+    return true;
+}
+
+
     var BOSH_SERVICE = 'http://bosh.metajack.im:5280/xmpp-httpbind'
     var connection = new Strophe.Connection( BOSH_SERVICE )
+    var handler = {
+        func : onMessage,
+        namespace : null,
+        name : 'message',
+        type : null,
+        id : null,
+        from : null,
+        options : null,
+    }
+    connection.addHandler(
+        handler.func,
+        handler.namespace,
+        handler.name,
+        handler.type,
+        handler.id,
+        handler.from,
+        handler.options
+    )
     connection.rawInput = rawInput
     connection.rawOutput = rawOutput
 
@@ -51,6 +98,7 @@ $( function () {
 	    connection.connect( $('#user').val(),
 			        $('#pass').val(),
 			        onConnect )
+	connection.send($pres().tree());
 
 	    $action.text( text['break'] )
 	} else if( $action.text() === text['break'] ) {
