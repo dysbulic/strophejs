@@ -14,7 +14,7 @@
       <script type="text/javascript" xlink:href="List.js"/>
       
       <script type="text/javascript" xlink:href=".../lib/jquery/jquery.js"/>
-      <script type="text/javascript" xlink:href=".../lib/tip/__.jquery"/>
+      <script type="application/javascript" xlink:href=".../lib/tip/__.jquery"/>
 
       <style type="text/css">
       </style>
