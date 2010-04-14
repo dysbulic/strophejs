@@ -18,10 +18,10 @@ $( function () {
     var $connect_text = $connect.text
     $connect.__defineGetter__( 'text', function() {
         return $connect_text.apply( $connect, arguments )
-    }
+    } )
     $connect.__defineSetter__( 'text', function() {
         return $connect_text.apply( $connect, arguments )
-    }
+    } )
 
     var BOSH_SERVICE = 'http://bosh.metajack.im:5280/xmpp-httpbind'
     var connection = new Strophe.Connection( BOSH_SERVICE )
