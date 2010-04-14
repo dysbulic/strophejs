@@ -95,9 +95,17 @@ $( function() {
     
     $('#connect input')
         .focus( function() {
-            var $label = ( $(this).parents()
-                           .find( '[for=' + $(this).attr( 'id' ) + ']' ) )
+            var $connect = $(this).parents('#connect')
+            var current = { width : 0 };
+            $connect.find('label').each( function() {
+                current.width =
+                    Math.max( current.width,
+                              $(this).css('left') )
+            } )
+            var $label = $connect.find( '[for=' + $(this).attr( 'id' ) + ']' )
             var $box = $(this)
+            
+            if( $label.width() > 
             $label.animate( {
                 left : -( $box.width() / 2 * 1.1 + $label.width() / 2 ),
             }, speed )
