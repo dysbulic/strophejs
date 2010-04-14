@@ -20,16 +20,24 @@
       </style>
       <!---->
       <script type="text/javascript"><![CDATA[
-          console.log($.__.$('#'))
+          var agent = {
+              marks : [],
+              get mark() { marks.push( this.length ) }
+              set clear() {
+                  
+                  this = this.slice(
+          }
+
           var connection = {
               username : 'mimis.test@gmail.com',
               password : 'mimistest',
               server : 'talk.google.com',
           }
           
-          connection.__.each( function( val, key ) {
-              $input.val = val
-          } )
+          //connection.__.each( function( val, key ) {
+              //$input.val = val
+          //} )
+          $.__.$ ('#').append( $.__.$ ('<rect />') )
 
       ]]></script>
   </defs>
