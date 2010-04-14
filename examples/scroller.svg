@@ -6,21 +6,21 @@
   <title>Scroller Interface</title>
   <defs>
       <script type="text/javascript"><![CDATA[
-        var def = { userId = '例如' }
+        var def = { userId : '例如' }
       ]]></script>
       <script type="text/javascript" xlink:href="pointers.js"/>
       <script type="text/javascript" xlink:href="Array.each.js"/>
       <script type="text/javascript" xlink:href="MutableString.js"/>
       <script type="text/javascript" xlink:href="List.js"/>
       
-      <script type="text/javascript" xlink:href="~/lib/jquery/dist/jquery.js"/>
-      <script type="text/javascript" xlink:href="__.jquery"/>
+      <script type="text/javascript" xlink:href=".../lib/jquery/jquery.js"/>
+      <script type="text/javascript" xlink:href=".../lib/tip/__.jquery"/>
 
       <style type="text/css">
       </style>
       <!---->
       <script type="text/javascript"><![CDATA[
-        console.log($.__$('#'))
+        console.log($.__.$('#'))
       ]]></script>
   </defs>
 </svg>
