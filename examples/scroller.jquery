@@ -108,8 +108,11 @@ $( function() {
             var offset = - ( $box.width() / 2 * 1.1 + $label.width() / 2 )
             $label.animate( {
                 left : offset,
-            }, speed ).data( 'offset', offset )
+            }, speed ).data( {
+                offset : offset,
+            } )
             if( offset > desired.width ) {
+                $connect.animate( { width : 400 } )
             }
         } )
         .blur( function() {
