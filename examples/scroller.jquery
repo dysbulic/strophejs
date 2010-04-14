@@ -33,7 +33,7 @@ $( function () {
         msg[ Strophe.Status.DISCONNECTED ] = name + ' Disconnected'
         msg[ Strophe.Status.CONNECTED ] = name + ' Connected'
         
-        log( Strophe.LogLevel.DEBUG,
+        log( Strophe.LogLevel.INFO,
              msg[ status ] || ( name + ' Unknown:' + status ) )
     }
 
@@ -95,9 +95,9 @@ $( function() {
     
     $('#connect input')
         .focus( function() {
-            var $connect = $(this).parents('#connect')
-            var $label = $connect.siblings( 'label' )
             var $box = $(this)
+            var $connect = $box.parents('#connect')
+            var $label = $box.siblings( 'label' )
             
             var offset = - ( $box.width() / 2 * 1.1 + $label.width() / 2 )
             $label.animate( {
@@ -107,17 +107,27 @@ $( function() {
             } )
         } )
         .blur( function() {
-            if( $(this).val() == '' ) {
-                var $label = ( $(this).parents()
-                               .find( '[for=' + $(this).attr( 'id' ) + ']' ) )
+            var $box = $(this)
+            var $label = $box.siblings( 'label' )
+            if( $box.val() == '' ) {
                 $label.animate( {
                     left : 0,
+                } )
+            } else {
+                var $container = $('#connect')
+                $container.animate( {
+                    width : 400
+                } )
+                $label.animate( {
+                    left : - $label.width() / 2
+                } )
+                $box.animate( {
+                    left : $box.width() / 2
                 } )
             }
         }, speed ).hover( 
             function() {
-                var $label = ( $(this).parents()
-                               .find( '[for=' + $(this).attr( 'id' ) + ']' ) )
+                var $label = $(this).siblings( 'label' )
                 $label.animate( {
                     opacity : 1,
                 }, speed )
@@ -135,7 +145,7 @@ $( function() {
 // Clear on label click
 $( function() {
     $('#connect').find('label').click( function() {
-        var $input = $(this).sibling('input')
+        var $input = $(this).siblings('input')
         $input.text('')
         $input.blur( )
     } )
