@@ -96,19 +96,21 @@ $( function() {
     $('#connect input')
         .focus( function() {
             var $connect = $(this).parents('#connect')
-            var current = { width : 0 };
+            var desired = { width : 0 };
             $connect.find('label').each( function() {
-                current.width =
-                    Math.max( current.width,
-                              $(this).css('left') )
+                desired.width =
+                    Math.max( desired.width,
+                              $(this).data('offset') )
             } )
             var $label = $connect.find( '[for=' + $(this).attr( 'id' ) + ']' )
             var $box = $(this)
             
-            if( $label.width() > 
+            var offset = - ( $box.width() / 2 * 1.1 + $label.width() / 2 )
             $label.animate( {
-                left : -( $box.width() / 2 * 1.1 + $label.width() / 2 ),
-            }, speed )
+                left : offset,
+            }, speed ).data( 'offset', offset )
+            if( offset > desired.width ) {
+            }
         } )
         .blur( function() {
             if( $(this).val() == '' ) {
