@@ -60,11 +60,6 @@ $( function () {
 	    log( 'ECHOBOT: I sent ' + from + ': ' + Strophe.getText( body ) );
         }
     }
-    // we must return true to keep the handler alive.  
-    // returning false would remove it after it finishes.
-    return true;
-}
-
 
     var BOSH_SERVICE = 'http://bosh.metajack.im:5280/xmpp-httpbind'
     var connection = new Strophe.Connection( BOSH_SERVICE )
@@ -98,7 +93,7 @@ $( function () {
 	    connection.connect( $('#user').val(),
 			        $('#pass').val(),
 			        onConnect )
-	connection.send($pres().tree());
+	    connection.send( $pres().tree() )
 
 	    $action.text( text['break'] )
 	} else if( $action.text() === text['break'] ) {
