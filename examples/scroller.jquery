@@ -10,8 +10,22 @@ function log( level, msg ) {
 }
 
 var speed = 100
+var $connect
 
 $( function () {
+    $connect = $('#action #connect')
+
+    var $connect_text = $connect.text
+    $connect.__defineGetter__( 'text', function() {
+        return $connect_text.apply( $connect, arguments )
+    }
+    $connect.__defineSetter__( 'text', function() {
+        return $connect_text.apply( $connect, arguments )
+    }
+
+    var BOSH_SERVICE = 'http://bosh.metajack.im:5280/xmpp-httpbind'
+    var connection = new Strophe.Connection( BOSH_SERVICE )
+
     function rawInput( ) {
         var data = Array.prototype.slice.call( arguments ).join()
         log( Strophe.LogLevel.DEBUG,
@@ -25,16 +39,23 @@ $( function () {
     }
     
     function onConnect( status ) {
-        var name = 'Strophe XMPP'
+        var name = 'XMPP'
         var msg = {}
-        msg[ Strophe.Status.CONNECTING ] = name + ' Connecting'
-        msg[ Strophe.Status.CONNFAIL ] = name + ' Connect Failed'
-        msg[ Strophe.Status.DISCONNECTING ] = name + ' Disconnecting'
-        msg[ Strophe.Status.DISCONNECTED ] = name + ' Disconnected'
-        msg[ Strophe.Status.CONNECTED ] = name + ' Connected'
+        msg[ Strophe.Status.CONNECTING ] = 'XMPP ⬌ …'
+        msg[ Strophe.Status.DISCONNECTING ] = 'XMPP ⇎ …'
+        msg[ Strophe.Status.CONNFAIL ] =
+            msg[ Strophe.Status.DISCONNECTED ] = 'Connect'
+        msg[ Strophe.Status.CONNECTED ] = 'Break'
         
-        log( Strophe.LogLevel.INFO,
-             msg[ status ] || ( name + ' Unknown:' + status ) )
+        $connect.text = msg[ status ] || ( name + ' Unknown:' + status )
+	
+        if( status === Strophe.Status.CONNECTED ) {
+            connection.send( $pres().tree() )
+            $connect.text.dir = 'back'
+        }
+        if( status ===Strophe.Status.CONNFAIL ) {
+            log( 'Connection Failed' )
+        }
     }
 
     function onMessage( msg ) {
@@ -61,8 +82,6 @@ $( function () {
         }
     }
 
-    var BOSH_SERVICE = 'http://bosh.metajack.im:5280/xmpp-httpbind'
-    var connection = new Strophe.Connection( BOSH_SERVICE )
     var handler = {
         func : onMessage,
         namespace : null,
@@ -93,8 +112,6 @@ $( function () {
 	    connection.connect( $('#user').val(),
 			        $('#pass').val(),
 			        onConnect )
-	    connection.send( $pres().tree() )
-
 	    $action.text( text['break'] )
 	} else if( $action.text() === text['break'] ) {
 	    connection.disconnect()
@@ -110,7 +127,14 @@ $( function () {
     $('#connect').find( 'ul, ol' ).eq( 0 ).prepend(
         $('<li/>').append( $action )
     )
+
+    $connect.bind( 'prop.change', function() {
+        console.log( 'prop change' )
+    } )
+    
 } )
+
+
 
 // Login defaults
 $( function() {
@@ -139,7 +163,6 @@ $( function() {
     $('#connect input')
         .focus( function() {
             var $box = $(this)
-            var $connect = $box.parents('#connect')
             var $label = $box.siblings( 'label' )
             
             var offset = - ( $box.width() / 2 * 1.1 + $label.width() / 2 )
