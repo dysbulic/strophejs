@@ -17,9 +17,11 @@ $( function () {
 
     var $connect_text = $connect.text
     $connect.__defineGetter__( 'text', function() {
+        
         return $connect_text.apply( $connect, arguments )
     } )
     $connect.__defineSetter__( 'text', function() {
+        arguments[ -1 ] = '⟰ ' + arguments[ -1 ] + ' ⟰'
         return $connect_text.apply( $connect, arguments )
     } )
 
