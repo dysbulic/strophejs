@@ -20,11 +20,20 @@
       </style>
       <!---->
       <script type="text/javascript"><![CDATA[
+          var ui = new List()
+          ui.__.each( function traverse( ) {
+              var keys = Array.prototype.slice.call( arguments )
+              if( this instanceof List ) {
+                  this.each( function() { traverse.apply( this, keys ) } )
+              }
+          } )
           var agent = {
+              count : 0,
               marks : [],
-              get mark() { marks.push( this.length ) }
-              set clear() {
-                  
+              get mark() { marks.( this.length ); return  }
+              set clear( idx ) {
+                  var idx = marks.pop()
+                  var rm = 
                   this = this.slice(
           }
 
