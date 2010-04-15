@@ -35,6 +35,11 @@
           var box = new Box()
           $.__.$('#').append( box.$rect )
 
+          var scene = new List()
+          scene.__defineSetter__( '+', function( val ) {
+              var tixels = this.__.let( 'tixels', new List() )
+          } )
+
           scene['+'] = { 
               t : 1,
               elem : box,
@@ -42,7 +47,6 @@
               val : '25%',
           }
 
-          var state = new List()
           
           var ui = new List( {
               impress : function( state ) {
