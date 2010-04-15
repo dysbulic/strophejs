@@ -20,20 +20,19 @@
       </style>
       <!---->
       <script type="text/javascript"><![CDATA[
-          var state = {}
+          var state = new List()
           
           var ui = new List( {
               impress : function() {
-                  this.test = 'test'
+                  this.__.set( 'test', 'test' )
               },
               child : new List( {
                   impress : function() {
-                      this.test = 'tst'
+                      this.__.set( 'test', 'tst' )
                   },
               } ),
           } )
 
-          console.log( ui )
           ui.__.impress.apply( state )
           console.log( state.test )
 /*
