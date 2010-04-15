@@ -60,14 +60,17 @@
                       'impression.display.time.predicted' : ( new Date() ).getTime() + 20,
                       'impression.state' : 'configuration',
                   } )
+                  var count = 0
                   do {
                       state.__.set( {
                           'impression.configuration.done' : true,
                       } )
                       this.__.impress.apply( state )
-                  } while( ! state[ 'impression.configuration.done' ] )
+                  } while( ++count < 100
+                           && ! state[ 'impression.configuration.done' ] )
                   state.__.set( {
                       'impression.display.time' : ( new Date() ).getTime(),
+                      'impression.configuration.loop.count' : count,
                       'impression.configuration.time' : (
                           ( new Date() ).getTime()
                           + state.__.get( 'tixel.capture.frequency.mHz' )
@@ -79,7 +82,8 @@
                           'impression.display.done' : true
                       } )
                       this.__.impress.apply( state )
-                  } while( ! state[ 'impression.display.done' ] )
+                  } while( ++count < 100
+                           && ! state[ 'impression.display.done' ] )
                   return state
               }
               
