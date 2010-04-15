@@ -97,21 +97,11 @@
               } )
           } )
             
-          var ui = new List( {
+          scene.add( {
               impress : function( state ) {
                   box.width = 25
               },
-              child : new List( {
-                  impress : function( state ) {
-                      state.__.del( 'test' )
-                      state.__.set( 'test', 'tst' )
-                  },
-              } ),
           } )
-
-          var state = new List( )
-          ui.__.impress.apply( scene, [ state ] )
-          if( typeof console != 'undefined' ) console.log( state.test )
       ]]></script>
       <style type="text/css">
         rect { fill: #F0F0F0; fill-opacity: .75;
