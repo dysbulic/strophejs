@@ -8,10 +8,10 @@
       <script type="text/javascript"><![CDATA[
         var def = { userId : '例如' }
       ]]></script>
-      <script type="text/javascript" xlink:href="pointers.js"/>
-      <script type="text/javascript" xlink:href="Array.each.js"/>
-      <script type="text/javascript" xlink:href="MutableString.js"/>
-      <script type="text/javascript" xlink:href="List.js"/>
+      <script type="text/javascript" xlink:href=".../lib/tip/pointers.js"/>
+      <script type="text/javascript" xlink:href=".../lib/tip/Array.each.js"/>
+      <script type="text/javascript" xlink:href=".../lib/tip/MutableString.js"/>
+      <script type="text/javascript" xlink:href=".../lib/tip/List.js"/>
       
       <script type="text/javascript" xlink:href=".../lib/jquery/jquery.js"/>
       <script type="application/javascript" xlink:href=".../lib/tip/__.jquery"/>
@@ -20,6 +20,16 @@
       </style>
       <!---->
       <script type="text/javascript"><![CDATA[
+          var state = {}
+          var observer = {
+              set impress( state ) {
+                  state.test = 'test'
+                  return state
+              }
+          }
+          state = observer.impress = state
+          console.log( state.test )
+          
           var ui = new List()
           ui.__.each( function traverse( ) {
               var keys = Array.prototype.slice.call( arguments )
@@ -38,11 +48,11 @@
           var agent = {
               count : 0,
               marks : [],
-              get mark() { marks.( this.length ); return  }
+              get mark() { marks.( this.length ); return  },
               set clear( idx ) {
-                  var idx = marks.pop()
-                  var rm = 
-                  this = this.slice(
+                  var state = marks.pop()
+                  //this = this.slice(
+              },
           }
 
           var connection = {
