@@ -43,15 +43,16 @@
           $.__.$('#').append( box.$rect )
 
           var scene = new List()
-          scene.__defineGetter__( 'once', function() {
-              console.log( 'scene.get.once' )
-              return 3
-          } )
           ;
           ( function() {
               var interval = {
                   id: undefined,
               }
+
+          scene.__defineGetter__( 'once', function() {
+              console.log( 'scene.get.once' )
+              return 3
+          } )
 
               function once() {
                   console.log( 'Starting: once' )
