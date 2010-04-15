@@ -33,7 +33,7 @@
               } ),
           } )
 
-          ui.impress.apply( state )
+          ui.__.impress.apply( state )
           console.log( state.test )
 
           var agent = {
