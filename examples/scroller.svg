@@ -21,7 +21,7 @@
       <!---->
       <script type="text/javascript"><![CDATA[
           var state = new List( {
-              'tixel.capture.frequency' : .1, // Hz
+              'tixel.capture.frequency.mHz' : .1 * 1000,
           } )
           ;
           ( function() {
@@ -68,7 +68,9 @@
                   state.copy( 'impression.display.time', '.predicted' )
                   state.set( {
                       'impression.display.time' : ( new Date() ).getTime(),
-                      'impression.configuration.time' : ( new Date() ).getTime() + 20,
+                      'impression.configuration.time' : (
+                          ( new Date() ).getTime() + state.get( 'tixel.capture.frequency.mHz' )
+                      ),
                       'impression.state' : 'display',
                   } )
                   do {
@@ -84,7 +86,7 @@
                   if( interval.id === undefined ) {
                       interval.id =
                           setInterval( once,
-                                       state.get( 'tixel.capture.frequency' ) * 1000 )
+                                       state.get( 'tixel.capture.frequency.mHz' ) )
                   }
                   return this
               } )
