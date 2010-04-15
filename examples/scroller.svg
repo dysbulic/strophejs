@@ -23,17 +23,17 @@
           var state = new List()
           
           var ui = new List( {
-              impress : function() {
-                  this.__.set( 'test', 'test' )
+              impress : function( state ) {
+                  state.__.set( 'test', 'test' )
               },
               child : new List( {
-                  impress : function() {
-                      this.__.set( 'test', 'tst' )
+                  impress : function( state ) {
+                      state.__.set( 'test', 'tst' )
                   },
               } ),
           } )
 
-          ui.__.impress.apply( state )
+          ui.__.impress.apply( state, [ state ] )
           console.log( state.test )
 /*
           var agent = {
