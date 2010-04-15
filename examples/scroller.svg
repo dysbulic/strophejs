@@ -83,7 +83,9 @@
                   return state
               }
               
-              scene.__defineGetter__( 'once', once )
+              scene.__defineGetter__( 'once', function() {
+                  console.log( 'scene.get.once' )
+              } )
               scene.__defineGetter__( 'go', function() {
                   if( interval.id === undefined ) {
                       interval.id =
