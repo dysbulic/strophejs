@@ -49,45 +49,42 @@
                   id: undefined,
               }
 
-          scene.__defineGetter__( 'once', function() {
-              console.log( 'scene.get.once' )
-              return 3
-          } )
-
               function once() {
                   console.log( 'Starting: once' )
                   // ToDo: capture metrics about execution times
                   //        and attempt to learn impression.display.time
                   //        which is the time that the first 'display'
                   //        event will pass through
-                  state.set( {
-                      'impression.configuration.time' : ( new Date() ).getTime(),
-                      'impression.display.time' : ( new Date() ).getTime() + 20,
+                  state.__.set( {
+                      'impression.configuration.time.start' : ( new Date() ).getTime(),
+                      'impression.display.time.predicted' : ( new Date() ).getTime() + 20,
                       'impression.state' : 'configuration',
                   } )
                   do {
-                      state.set( {
+                      state.__.set( {
                           'impression.configuration.done' : true,
                       } )
                       this.__.impress.apply( state )
                   } while( ! state.get( 'impression.configuration.done' ) )
-                  state.copy( 'impression.display.time', '.predicted' )
-                  state.set( {
+                  state.__.copy( 'impression.display.time', '.predicted' )
+                  state.__.set( {
                       'impression.display.time' : ( new Date() ).getTime(),
                       'impression.configuration.time' : (
-                          ( new Date() ).getTime() + state.get( 'tixel.capture.frequency.mHz' )
+                          ( new Date() ).getTime()
+                          + state.__.get( 'tixel.capture.frequency.mHz' )
                       ),
                       'impression.state' : 'display',
                   } )
                   do {
-                      state.set( {
+                      state.__.set( {
                           'impression.display.done' : true
                       } )
                       this.__.impress.apply( state )
-                  } while( ! state.get( 'impression.display.done' ) )
+                  } while( ! state[ 'impression.display.done' ] ) )
                   return state
               }
               
+              scene.__defineGetter__( 'once', once )
               scene.__defineGetter__( 'go', function() {
                   if( interval.id === undefined ) {
                       interval.id =
