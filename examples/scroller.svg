@@ -50,7 +50,6 @@
               }
 
               function once() {
-                  console.log( 'Starting: once' )
                   // ToDo: capture metrics about execution times
                   //        and attempt to learn impression.display.time
                   //        which is the time that the first 'display'
@@ -66,6 +65,7 @@
                           'impression.configuration.done' : true,
                       } )
                       this.__.impress.apply( state )
+                      console.log( 'Starting: once' )
                   } while( ++count < 100
                            && ! state[ 'impression.configuration.done' ] )
                   state.__.set( {
