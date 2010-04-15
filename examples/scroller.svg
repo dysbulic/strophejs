@@ -20,23 +20,6 @@
       </style>
       <!---->
       <script type="text/javascript"><![CDATA[
-          var state = new List()
-          
-          var ui = new List( {
-              impress : function( state ) {
-                  state.__.set( 'test', 'test' )
-              },
-              child : new List( {
-                  impress : function( state ) {
-                      state.__.del( 'test' )
-                      state.__.set( 'test', 'tst' )
-                  },
-              } ),
-          } )
-
-          ui.__.impress.apply( state, [ state ] )
-          if( typeof console != 'undefined' ) console.log( state.test )
-
           var connection = {
               username : 'mimis.test@gmail.com',
               password : 'mimistest',
@@ -51,7 +34,31 @@
 
           var box = new Box()
           $.__.$('#').append( box.$rect )
-          box.width = 25
+
+          scene['+'] = { 
+              t : 1,
+              elem : box,
+              attr : 'width',
+              val : '25%',
+          }
+
+          var state = new List()
+          
+          var ui = new List( {
+              impress : function( state ) {
+                  box.width = 25
+              },
+              child : new List( {
+                  impress : function( state ) {
+                      state.__.del( 'test' )
+                      state.__.set( 'test', 'tst' )
+                  },
+              } ),
+          } )
+
+          ui.__.impress.apply( state, [ state ] )
+          if( typeof console != 'undefined' ) console.log( state.test )
+
 
       ]]></script>
       <style type="text/css">
