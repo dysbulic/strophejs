@@ -27,14 +27,16 @@
                   return state
               }
           }
-          state = observer.impress = state
-          console.log( state.test )
           
           var ui = new List( {
               impress : function() {
                   this.test = 'test'
               },
           } )
+
+          ui.impress.apply( state )
+          console.log( state.test )
+
           var agent = {
               count : 0,
               marks : [],
