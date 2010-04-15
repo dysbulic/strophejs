@@ -23,9 +23,10 @@
           var state = new List( {
               'tixel.capture.frequency' : .1, // Hz
           } )
+          ;
           ( function() {
-              var state = new Suplist( state )
-              state.__.push( {
+              //var state′ = new Suplist( state )
+              state.__.set( {
                   'connection.username' : 'mimis.test@gmail.com',
                   'connection.password' : 'mimistest',
                   'connection.server' : 'talk.google.com',
@@ -42,7 +43,7 @@
           $.__.$('#').append( box.$rect )
 
           var scene = new List()
-
+          ;
           ( function() {
               var interval = {
                   id: undefined,
@@ -60,7 +61,7 @@
                   } )
                   do {
                       state.set( {
-                          'impression.configuration.done', true,
+                          'impression.configuration.done' : true,
                       } )
                       this.__.impress.apply( state )
                   } while( ! state.get( 'impression.configuration.done' ) )
@@ -72,7 +73,7 @@
                   } )
                   do {
                       state.set( {
-                          'impression.display.done', true
+                          'impression.display.done' : true
                       } )
                       this.__.impress.apply( state )
                   } while( ! state.get( 'impression.display.done' ) )
@@ -94,10 +95,8 @@
                   }
                   return this
               } )
-          }
+          } )
             
-            
-          
           var ui = new List( {
               impress : function( state ) {
                   box.width = 25
