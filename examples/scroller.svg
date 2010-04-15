@@ -23,6 +23,8 @@
           var state = new List( {
               'tixel.capture.frequency.mHz' : .1 * 1000,
           } )
+          state.__.set( 'test', 'test' )
+          console.log( state.__.get('test') )
           ;
           ( function() {
               //var state′ = new Suplist( state )
