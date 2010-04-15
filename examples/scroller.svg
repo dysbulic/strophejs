@@ -64,8 +64,8 @@
                       state.__.set( new List( {
                           'impression.configuration.done' : true,
                       } ) )
-                      this.__.impress.apply( state + ':' + state.__.get('impression.configuration.done') )
-                      console.log( 'Starting: once' )
+                      this.__.impress.apply( state )
+                      console.log( 'Starting: once'  + ':' + state.__.get('impression.configuration.done') )
                   } while( ++count < 100
                            && ! state[ 'impression.configuration.done' ] )
                   state.__.set( {
