@@ -40,12 +40,55 @@
               var tixels = this.__.let( 'tixels', new List() )
           } )
 
+              var self = this
+              var args = Array.prototype.slice.call( arguments )
+              var watcher = args.shift()
+
+              var state = {
+                  top : root.scrollTop,
+                  left : root.scrollLeft,
+                  width : root.scrollWidth,
+                  height : root.scrollHeight,
+              }
+              
+              var interval = {
+                  id: undefined,
+                  length: .01 /* seconds */ * 1000,
+              }
+              
+              function once() {
+                  var state = {}
+                  state.set( {
+                      'impression.start.time' : ( new Date() ).getTime() + 20,
+                  } )
+                  this.__.impress.apply( state )
+              }
+
+              this.__defineGetter__( 'once', once )
+              this.__defineGetter__( 'go', function() {
+                  if( interval.id === undefined ) {
+                      interval.id =
+                          setInterval( once, interval.length )
+                  }
+                  return this
+              } )
+              this.__defineGetter__( 'stop', function() {
+                  if( interval.id !== undefined ) {
+                      clearInterval( interval.id )
+                      interval.id = undefined
+                  }
+                  return this
+              } )
+          }
+
+
           scene['+'] = { 
               t : 1,
               elem : box,
               attr : 'width',
               val : '25%',
           }
+
 
           
           var ui = new List( {
@@ -60,10 +103,9 @@
               } ),
           } )
 
-          ui.__.impress.apply( state, [ state ] )
+          var state = new List( )
+          ui.__.impress.apply( scene, [ state ] )
           if( typeof console != 'undefined' ) console.log( state.test )
-
-
       ]]></script>
       <style type="text/css">
         rect { fill: #F0F0F0; fill-opacity: .75;
