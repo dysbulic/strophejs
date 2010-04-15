@@ -43,9 +43,12 @@
               server : 'talk.google.com',
           }
           
-          $.__.$('#').append( $.__.$(
-            '<rect x="25" y="25" width="50" height="50" rx=".5" ry=".5"/>'
-          ) )
+          function Box() {
+              this.$rect = $.__.$('<rect x="25" y="25" width="50" height="50" rx=".5" ry=".5"/>')
+          }
+
+          var box = new Box()
+          $.__.$('#').append( box.$rect )
       ]]></script>
       <style type="text/css">
         rect { fill: #F0F0F0; fill-opacity: .75;
