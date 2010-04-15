@@ -54,17 +54,17 @@
                   //        and attempt to learn impression.display.time
                   //        which is the time that the first 'display'
                   //        event will pass through
-                  state.__.set( {
+                  state.__.set( new List( {
                       'impression.configuration.time.start' : ( new Date() ).getTime(),
                       'impression.display.time.predicted' : ( new Date() ).getTime() + 20,
                       'impression.state' : 'configuration',
-                  } )
+                  } ) )
                   var count = 0
                   do {
-                      state.__.set( {
+                      state.__.set( new List( {
                           'impression.configuration.done' : true,
-                      } )
-                      this.__.impress.apply( state )
+                      } ) )
+                      this.__.impress.apply( state + ':' + state.__.get('impression.configuration.done') )
                       console.log( 'Starting: once' )
                   } while( ++count < 100
                            && ! state[ 'impression.configuration.done' ] )
