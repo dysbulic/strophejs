@@ -65,8 +65,7 @@
                           'impression.configuration.done' : true,
                       } )
                       this.__.impress.apply( state )
-                  } while( ! state.get( 'impression.configuration.done' ) )
-                  state.__.copy( 'impression.display.time', '.predicted' )
+                  } while( ! state[ 'impression.configuration.done' ] )
                   state.__.set( {
                       'impression.display.time' : ( new Date() ).getTime(),
                       'impression.configuration.time' : (
@@ -80,7 +79,7 @@
                           'impression.display.done' : true
                       } )
                       this.__.impress.apply( state )
-                  } while( ! state[ 'impression.display.done' ] ) )
+                  } while( ! state[ 'impression.display.done' ] )
                   return state
               }
               
