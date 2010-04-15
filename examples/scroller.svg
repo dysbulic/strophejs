@@ -20,12 +20,18 @@
       </style>
       <!---->
       <script type="text/javascript"><![CDATA[
-          var connection = {
-              username : 'mimis.test@gmail.com',
-              password : 'mimistest',
-              server : 'talk.google.com',
-          }
-          
+          var state = new List( {
+              'tixel.capture.frequency' : .1, // Hz
+          } )
+          ( function() {
+              var state = new Suplist( state )
+              state.__.push( {
+                  'connection.username' : 'mimis.test@gmail.com',
+                  'connection.password' : 'mimistest',
+                  'connection.server' : 'talk.google.com',
+              } )
+          } )()
+
           function Box() {
               this.$rect = $.__.$('<rect x="25" y="25" width="50" height="50" rx=".5" ry=".5"/>')
               this.__defineGetter__( 'width', function() { return this.$rect.attr( 'width' ) } )
@@ -40,28 +46,44 @@
           ( function() {
               var interval = {
                   id: undefined,
-                  length: .01 /* seconds */ * 1000,
               }
 
-              var tixels = new List()
-              scene.__defineSetter__( '+', function( val ) {
-                  tixels.add( '' )
-              } )
-              
               function once() {
-                  var state = {}
+                  // ToDo: capture metrics about execution times
+                  //        and attempt to learn impression.display.time
+                  //        which is the time that the first 'display'
+                  //        event will pass through
                   state.set( {
-                      'impression.start.time' : ( new Date() ).getTime() + 20,
-                      'impression.state' : 'negotiation',
+                      'impression.configuration.time' : ( new Date() ).getTime(),
+                      'impression.display.time' : ( new Date() ).getTime() + 20,
+                      'impression.state' : 'configuration',
                   } )
-                  this.__.impress.apply( state )
+                  do {
+                      state.set( {
+                          'impression.configuration.done', true,
+                      } )
+                      this.__.impress.apply( state )
+                  } while( ! state.get( 'impression.configuration.done' ) )
+                  state.copy( 'impression.display.time', '.predicted' )
+                  state.set( {
+                      'impression.display.time' : ( new Date() ).getTime(),
+                      'impression.configuration.time' : ( new Date() ).getTime() + 20,
+                      'impression.state' : 'display',
+                  } )
+                  do {
+                      state.set( {
+                          'impression.display.done', true
+                      } )
+                      this.__.impress.apply( state )
+                  } while( ! state.get( 'impression.display.done' ) )
               }
-
+              
               scene.__defineGetter__( 'once', once )
               scene.__defineGetter__( 'go', function() {
                   if( interval.id === undefined ) {
                       interval.id =
-                          setInterval( once, interval.length )
+                          setInterval( once,
+                                       state.get( 'tixel.capture.frequency' ) * 1000 )
                   }
                   return this
               } )
@@ -73,16 +95,8 @@
                   return this
               } )
           }
-
-
-          scene['+'] = { 
-              t : 1,
-              elem : box,
-              attr : 'width',
-              val : '25%',
-          }
-
-
+            
+            
           
           var ui = new List( {
               impress : function( state ) {
