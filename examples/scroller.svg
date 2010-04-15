@@ -36,43 +36,36 @@
           $.__.$('#').append( box.$rect )
 
           var scene = new List()
-          scene.__defineSetter__( '+', function( val ) {
-              var tixels = this.__.let( 'tixels', new List() )
-          } )
 
-              var self = this
-              var args = Array.prototype.slice.call( arguments )
-              var watcher = args.shift()
-
-              var state = {
-                  top : root.scrollTop,
-                  left : root.scrollLeft,
-                  width : root.scrollWidth,
-                  height : root.scrollHeight,
-              }
-              
+          ( function() {
               var interval = {
                   id: undefined,
                   length: .01 /* seconds */ * 1000,
               }
+
+              var tixels = new List()
+              scene.__defineSetter__( '+', function( val ) {
+                  tixels.add( '' )
+              } )
               
               function once() {
                   var state = {}
                   state.set( {
                       'impression.start.time' : ( new Date() ).getTime() + 20,
+                      'impression.state' : 'negotiation',
                   } )
                   this.__.impress.apply( state )
               }
 
-              this.__defineGetter__( 'once', once )
-              this.__defineGetter__( 'go', function() {
+              scene.__defineGetter__( 'once', once )
+              scene.__defineGetter__( 'go', function() {
                   if( interval.id === undefined ) {
                       interval.id =
                           setInterval( once, interval.length )
                   }
                   return this
               } )
-              this.__defineGetter__( 'stop', function() {
+              scene.__defineGetter__( 'stop', function() {
                   if( interval.id !== undefined ) {
                       clearInterval( interval.id )
                       interval.id = undefined
