@@ -36,7 +36,6 @@
           ui.__.impress.apply( state )
           console.log( state.test )
 /*
-
           var agent = {
               count : 0,
               marks : [],
