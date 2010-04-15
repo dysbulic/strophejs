@@ -25,6 +25,7 @@
           } )
           state.__.set( new List( { 'test' : 'test' } ) )
           console.log( state.__.get('test') )
+          throw 'done'
           ;
           ( function() {
               //var state′ = new Suplist( state )
