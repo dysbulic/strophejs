@@ -97,7 +97,7 @@
               } )
           } )
             
-          scene.add( {
+          scene.__.add( {
               impress : function( state ) {
                   box.width = 25
               },
