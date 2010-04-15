@@ -36,16 +36,6 @@
 
           ui.__.impress.apply( state, [ state ] )
           console.log( state.test )
-/*
-          var agent = {
-              count : 0,
-              marks : [],
-              get mark() { marks.( this.length ); return  },
-              set clear( idx ) {
-                  var state = marks.pop()
-                  //this = this.slice(
-              },
-          }
 
           var connection = {
               username : 'mimis.test@gmail.com',
@@ -53,11 +43,16 @@
               server : 'talk.google.com',
           }
           
-          //connection.__.each( function( val, key ) {
-              //$input.val = val
-          //} )
-          $.__.$('#').append( $.__.$('<rect />') )
-*/
+          $.__.$('#').append( $.__.$(
+            '<rect x="25" y="25" width="50" height="50" rx=".5" ry=".5"/>'
+          ) )
       ]]></script>
+      <style type="text/css">
+        rect { fill: #F0F0F0; fill-opacity: .75;
+               stroke-width: .3; stroke: black; stroke-opacity: .5 }
+      </style>
   </defs>
+  <g class="box">
+    
+  </g>
 </svg>
