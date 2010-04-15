@@ -35,7 +35,7 @@
           } )
 
           ui.__.impress.apply( state, [ state ] )
-          console.log( state.test )
+          if( typeof console != 'undefined' ) console.log( state.test )
 
           var connection = {
               username : 'mimis.test@gmail.com',
