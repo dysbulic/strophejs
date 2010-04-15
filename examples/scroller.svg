@@ -102,6 +102,7 @@
                   box.width = 25
               },
           } )
+          scene.once
       ]]></script>
       <style type="text/css">
         rect { fill: #F0F0F0; fill-opacity: .75;
