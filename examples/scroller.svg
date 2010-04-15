@@ -30,20 +30,10 @@
           state = observer.impress = state
           console.log( state.test )
           
-          var ui = new List()
-          ui.__.each( function traverse( ) {
-              var keys = Array.prototype.slice.call( arguments )
-              if( this instanceof List ) {
-                  var mark;
-                  if( this.name !== undefined ) {
-                      mark = keys.mark
-                      keys.push( this.name )
-                  }
-                  this.each( function() { traverse.apply( this, keys ) } )
-                  if( mark !== undefined ) {
-                      keys.clear = mark
-                  }
-              }
+          var ui = new List( {
+              impress : function() {
+                  this.test = 'test'
+              },
           } )
           var agent = {
               count : 0,
