@@ -50,6 +50,7 @@
               }
 
               function once() {
+                  console.log( 'Starting: once' )
                   // ToDo: capture metrics about execution times
                   //        and attempt to learn impression.display.time
                   //        which is the time that the first 'display'
@@ -79,6 +80,7 @@
                       } )
                       this.__.impress.apply( state )
                   } while( ! state.get( 'impression.display.done' ) )
+                  return state
               }
               
               scene.__defineGetter__( 'once', once )
@@ -104,7 +106,7 @@
                   box.width = 25
               },
           } )
-          scene.once
+          console.log( 'script.once = ' + scene.once )
       ]]></script>
       <style type="text/css">
         rect { fill: #F0F0F0; fill-opacity: .75;
