@@ -103,7 +103,7 @@
                   }
                   return this
               } )
-          } )
+          } )()
             
           scene.__.add( {
               impress : function( state ) {
