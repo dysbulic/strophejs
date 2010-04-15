@@ -21,12 +21,6 @@
       <!---->
       <script type="text/javascript"><![CDATA[
           var state = {}
-          var observer = {
-              set impress( state ) {
-                  state.test = 'test'
-                  return state
-              }
-          }
           
           var ui = new List( {
               impress : function() {
