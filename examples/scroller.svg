@@ -43,6 +43,10 @@
           $.__.$('#').append( box.$rect )
 
           var scene = new List()
+          scene.__defineGetter__( 'once', function() {
+              console.log( 'scene.get.once' )
+              return 3
+          } )
           ;
           ( function() {
               var interval = {
@@ -83,9 +87,6 @@
                   return state
               }
               
-              scene.__defineGetter__( 'once', function() {
-                  console.log( 'scene.get.once' )
-              } )
               scene.__defineGetter__( 'go', function() {
                   if( interval.id === undefined ) {
                       interval.id =
