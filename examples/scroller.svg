@@ -23,7 +23,7 @@
           var state = new List( {
               'tixel.capture.frequency.mHz' : .1 * 1000,
           } )
-          state.__.set( 'test', 'test' )
+          state.__.set( new List( { 'test' : 'test' } ) )
           console.log( state.__.get('test') )
           ;
           ( function() {
