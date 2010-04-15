@@ -26,6 +26,11 @@
               impress : function() {
                   this.test = 'test'
               },
+              child : new List( {
+                  impress : function() {
+                      this.test = 'tst'
+                  },
+              } ),
           } )
 
           ui.impress.apply( state )
