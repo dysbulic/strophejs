@@ -59,7 +59,7 @@
           function exec( id ) {
               console.log($node.get(0).nodeName)
           }
-          $.__.$('#').each( function traverse( 'will@DoH:test' ) {
+          $.__.$('#').each( function traverse( ) {
               var $this = $(this)
               exec.apply( this, arguments )
               $(this).children().each( traverse ) 
