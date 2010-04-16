@@ -1,0 +1,221 @@
+function log( level, msg ) {
+    msg = msg || level
+    if( ( msg && msg.length > 0
+          && typeof level == 'number'
+          && level >= Strophe.LogLevel.INFO ) ) {
+        $('#log, body ol').eq( 0 ).append(
+            $('<li/>').text( msg )
+        )
+    }
+}
+
+var speed = 100
+var $connect
+
+$( function () {
+    $connect = $('#action #connect')
+
+    var $connect_text = $connect.text
+    $connect.__defineGetter__( 'text', function() {
+        
+        return $connect_text.apply( $connect, arguments )
+    } )
+    $connect.__defineSetter__( 'text', function() {
+        arguments[ -1 ] = '⟰ ' + arguments[ -1 ] + ' ⟰'
+        return $connect_text.apply( $connect, arguments )
+    } )
+
+    var BOSH_SERVICE = 'http://bosh.metajack.im:5280/xmpp-httpbind'
+    var connection = new Strophe.Connection( BOSH_SERVICE )
+
+    function rawInput( ) {
+        var data = Array.prototype.slice.call( arguments ).join()
+        log( Strophe.LogLevel.DEBUG,
+             '⍟: ' + data )
+    }
+
+    function rawOutput( ) {
+        var data = Array.prototype.slice.call( arguments ).join()
+        log( Strophe.LogLevel.DEBUG,
+             '⋆: ' + data )
+    }
+    
+    function onConnect( status ) {
+        var name = 'XMPP'
+        var msg = {}
+        msg[ Strophe.Status.CONNECTING ] = 'XMPP ⬌ …'
+        msg[ Strophe.Status.DISCONNECTING ] = 'XMPP ⇎ …'
+        msg[ Strophe.Status.CONNFAIL ] =
+            msg[ Strophe.Status.DISCONNECTED ] = 'Connect'
+        msg[ Strophe.Status.CONNECTED ] = 'Break'
+        
+        $connect.text = msg[ status ] || ( name + ' Unknown:' + status )
+	
+        if( status === Strophe.Status.CONNECTED ) {
+            connection.send( $pres().tree() )
+            $connect.text.dir = 'back'
+        }
+        if( status ===Strophe.Status.CONNFAIL ) {
+            log( 'Connection Failed' )
+        }
+    }
+
+    function onMessage( msg ) {
+        var to = msg.getAttribute( 'to' )
+        var from = msg.getAttribute( 'from' )
+        var type = msg.getAttribute( 'type' )
+        var elems = msg.getElementsByTagName( 'body' )
+
+        if( type == "chat" && elems.length > 0 ) {
+	    var body = elems[0];
+
+	    log('ECHOBOT: I got a message from ' + from + ': ' + 
+	        Strophe.getText(body));
+    
+	    var reply = $msg( {
+                to : from,
+                from : to,
+                type : 'chat',
+            } )
+                .cnode( Strophe.copyElement( body ) )
+	    connection.send( reply.tree() )
+
+	    log( 'ECHOBOT: I sent ' + from + ': ' + Strophe.getText( body ) );
+        }
+    }
+
+    var handler = {
+        func : onMessage,
+        namespace : null,
+        name : 'message',
+        type : null,
+        id : null,
+        from : null,
+        options : null,
+    }
+    connection.addHandler(
+        handler.func,
+        handler.namespace,
+        handler.name,
+        handler.type,
+        handler.id,
+        handler.from,
+        handler.options
+    )
+    connection.rawInput = rawInput
+    connection.rawOutput = rawOutput
+
+    var $action = $('<button/>')
+    var text = { connect : '⟰ Connect ⟰',
+                 'break' : '⟱ Break ⟱',
+               }
+    function connect() {
+	if( $action.text() === text['connect'] ) {
+	    connection.connect( $('#user').val(),
+			        $('#pass').val(),
+			        onConnect )
+	    $action.text( text['break'] )
+	} else if( $action.text() === text['break'] ) {
+	    connection.disconnect()
+	    $action.text( text['break'] )
+	} else {
+            log( Strophe.LogLevel.ERROR,
+                 'Unknown Action: ' + $action.text() )
+        }
+        return false
+    }
+    $action.text( text['connect'] ).click( connect )
+    $('#connect').submit( connect )
+    $('#connect').find( 'ul, ol' ).eq( 0 ).prepend(
+        $('<li/>').append( $action )
+    )
+
+    $connect.bind( 'prop.change', function() {
+        console.log( 'prop change' )
+    } )
+    
+} )
+
+
+
+// Login defaults
+$( function() {
+    var text = { 'default' : '⟰  Default ⟰', }
+    var $action = $('<button/>').text( text['default'] )
+    $('#connect ul').eq( 0 ).append(
+        $('<li/>').append( $action )
+    )
+    
+    $action.click( function () {
+        var fields = new List( {
+            user : 'mimis.test@gmail.com',
+            srvr : 'talk.google.com',
+            pass : 'mimistest',
+        } )
+        var $this = $(this)
+        fields.__.each( function( val, key ) {
+            var $input = $this.parents('#connect').find( '#' + key )
+            $input.focus( )
+            $input.val( val )
+            $input.blur( )
+        } )
+        return false
+    } )
+    
+    $('#connect input')
+        .focus( function() {
+            var $box = $(this)
+            var $label = $box.siblings( 'label' )
+            
+            var offset = - ( $box.width() / 2 * 1.1 + $label.width() / 2 )
+            $label.animate( {
+                left : offset,
+            }, speed ).data( {
+                offset : offset,
+            } )
+        } )
+        .blur( function() {
+            var $box = $(this)
+            var $label = $box.siblings( 'label' )
+            if( $box.val() == '' ) {
+                $label.animate( {
+                    left : 0,
+                } )
+            } else {
+                var $container = $('#connect')
+                $container.animate( {
+                    width : 400
+                } )
+                $label.animate( {
+                    left : - $label.width() / 2
+                } )
+                $box.animate( {
+                    left : $box.width() / 2
+                } )
+            }
+        }, speed ).hover( 
+            function() {
+                var $label = $(this).siblings( 'label' )
+                $label.animate( {
+                    opacity : 1,
+                }, speed )
+            },
+            function() {
+                var $label = ( $(this).parents()
+                               .find( '[for=' + $(this).attr( 'id' ) + ']' ) )
+                $label.animate( {
+                    opacity : .5,
+                }, speed )
+            }
+        )
+} )
+
+// Clear on label click
+$( function() {
+    $('#connect').find('label').click( function() {
+        var $input = $(this).siblings('input')
+        $input.text('')
+        $input.blur( )
+    } )
+} )
+        
