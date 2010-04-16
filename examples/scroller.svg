@@ -54,15 +54,12 @@
           var scene = new List()
           ;
           ( function() {
-              var interval = {
-                  id: undefined,
-              }
-
               function once() {
                   // ToDo: capture metrics about execution times
                   //        and attempt to learn impression.display.time
                   //        which is the time that the first 'display'
                   //        event will pass through
+                  state.__.let( 'tixels', new List( ) )
                   state.__.set( new List( {
                       'impression.configuration.time.start' : ( new Date() ).getTime(),
                       'impression.display.time.predicted' : ( new Date() ).getTime() + 20,
@@ -72,15 +69,15 @@
                   do {
                       state.__.set( new List( {
                           'impression.configuration.done' : true,
+                          'impression.loop.count' : ++count,
                       } ) )
                       //console.log( 'Starting: once: config:' + state.__.get('impression.configuration.done') )
                       this.__.impress.apply( state )
                       //console.log( 'Finished: once: config:' + state.__.get('impression.configuration.done') )
-                  } while( ++count < 100
+                  } while( count < 100
                            && ! state[ 'impression.configuration.done' ] )
                   state.__.set( {
                       'impression.display.time' : ( new Date() ).getTime(),
-                      'impression.configuration.loop.count' : count,
                       'impression.configuration.time' : (
                           ( new Date() ).getTime()
                           + state.__.get( 'tixel.capture.frequency.mHz' )
@@ -89,60 +86,20 @@
                   } )
                   do {
                       state.__.set( new List( {
-                          'impression.display.done' : true
+                          'impression.display.done' : true,
+                          'impression.loop.count' : ++count,
                       } ) )
                       this.__.impress.apply( state )
                       //console.log( 'Finished: once: display:' + state.__.get('impression.display.done') )
                   } while( ++count < 100
                            && ! state[ 'impression.display.done' ] )
-                  return state
-              }
-              
-              scene.__defineGetter__( 'once', once )
-              scene.__defineGetter__( 'go', function() {
-                  if( interval.id === undefined ) {
-                      var self = this
-                      interval.id =
-                          setInterval( function() {
-                              once.apply( self, arguments )
-                          },
-                                       state.__.get( 'tixel.capture.frequency.mHz' ) )
-                  }
-                  return this
-              } )
-              scene.__defineGetter__( 'stop', function() {
-                  if( interval.id !== undefined ) {
-                      clearInterval( interval.id )
-                      interval.id = undefined
-                  }
-                  return this
-              } )
-          } )()
-          
-          var tixels = new List()
 
-          scene.__.merge( [ {
-              impress : function( state ) {
-                  if( tixels.__.count == 0 ) {
-                      var time = new Date().getTime()
-                      tixels.__.add( {
-                          obj : box,
-                          prop : [ 'width', 'height' ],
-                          time : {
-                              start : time,
-                              end : time + 250,
-                          },
-                          val : {
-                              start : 0,
-                              end : 10,
-                          },
-                      } )
-                  }
-              }
-          }, {
-              impress : function( state ) {
+                  var tixels = state.__.get( 'tixels' )
+                  if( ! tixels )
+                      throw 'no tixels'
+                  var time = state.__.get( 'impression.display.time' )
+                  
                   tixels.__.each( function( txl ) {
-                      var time = ( new Date() ).getTime()
                       if( time > txl.time.start && time <= txl.time.end
                           || time >= txl.time.end && ! txl.done ) {
                           txl.time.delta = ( txl.time.delta
@@ -167,6 +124,57 @@
                           txl.done = offset === 1
                       }
                   } )
+
+                  return state
+              }
+              
+              var interval = {
+                  id: undefined,
+              }
+
+              scene.__defineGetter__( 'once', once )
+              scene.__defineGetter__( 'go', function() {
+                  if( interval.id === undefined ) {
+                      var self = this
+                      interval.id =
+                          setInterval( function() {
+                              once.apply( self, arguments )
+                          },
+                                       state.__.get( 'tixel.capture.frequency.mHz' ) )
+                  }
+                  return this
+              } )
+              scene.__defineGetter__( 'stop', function() {
+                  if( interval.id !== undefined ) {
+                      clearInterval( interval.id )
+                      interval.id = undefined
+                  }
+                  return this
+              } )
+          } )()
+          
+
+          scene.__.merge( [ {
+              impress : function( state ) {
+                  var tixels = state.__.get( 'tixels' )
+                  if( tixels.__.count == 0 ) {
+                      var time = new Date().getTime()
+                      tixels.__.add( {
+                          obj : box,
+                          prop : [ 'width', 'height' ],
+                          time : {
+                              start : time,
+                              end : time + 250,
+                          },
+                          val : {
+                              start : 0,
+                              end : 10,
+                          },
+                      } )
+                  }
+              }
+          }, {
+              impress : function( state ) {
               }
           } ] )
           console.log( 'script.once:' )
