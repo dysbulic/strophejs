@@ -53,14 +53,30 @@
                   return this.$rect.attr( 'height', val )
               } )
           }
+
+          $work = ( $.__.$('<g class="holder"/>')
+                    .css({ 'visibility' : 'hidden' }) )
+          $.__.$('#').append( $work )
+
           var label = new Box()
           $.__.$('#').append( label.$base )
+
           label.$base.data( 'state', new List( {
-             
           } ) )
+
           label.$base.data( 'tx', function() {
+              var str = 'Hello World'
               if( ! this.firstRun ) {
                   this.firstRun = true
+                  var $caller = this.$caller = $( this.__.get( 'caller' ) )
+                  var $txt = this.$txt = $('<text/>')
+                  this.$caller.append( this.$txt )
+                  var bboxes = []
+                  for( var i = 1; i < str.length; i++ ) {
+                      $txt.text( str.substring( 0, i ) )
+                      bboxes[ i ] = $txt.get(0).getBBox()
+                  }
+                  this.bboxes = bboxes
               }
           } )
 
@@ -83,26 +99,20 @@
               $(this).children().each( traverse ) 
           } )
 
-          $work = ( $.__.$('<g class="holder"/>')
-                    .css({ 'visibility' : 'hidden' }) )
-          $.__.$('#').append( $work )
-
           var tixels = new List()
-              
-              tixels.__.add( {
-                  time : {
-                      start : new Date().getTime(),
-                      delta : .1,
-                      set display( offset ) {
-                          if( ! this.runBefore ) {
-                              this.runBefore = true
-                              this.$base.append( $txt )
-                          }
-                                  
-                      },
+          tixels.__.add( {
+              time : {
+                  start : new Date().getTime(),
+                  delta : .1,
+                  set display( offset ) {
+                      if( ! this.runBefore ) {
+                          this.runBefore = true
+                          this.$base.append( $txt )
+                      }
+                      
                   },
-              } )
-          }
+              },
+          } )
       ]]></script>
       <style type="text/css">
         rect { fill: #F0F0F0; fill-opacity: .75;
