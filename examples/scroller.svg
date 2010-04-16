@@ -92,9 +92,12 @@
               scene.__defineGetter__( 'once', once )
               scene.__defineGetter__( 'go', function() {
                   if( interval.id === undefined ) {
+                      var self = this
                       interval.id =
-                          setInterval( once,
-                                       state.get( 'tixel.capture.frequency.mHz' ) )
+                          setInterval( function() {
+                              once.apply( self, arguments )
+                          },
+                                       state.__.get( 'tixel.capture.frequency.mHz' ) )
                   }
                   return this
               } )
@@ -144,7 +147,7 @@
               }
           } ] )
           console.log( 'script.once:' )
-          console.log( scene.once )
+          console.log( scene.go )
       ]]></script>
       <style type="text/css">
         rect { fill: #F0F0F0; fill-opacity: .75;
