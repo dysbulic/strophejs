@@ -179,12 +179,13 @@
                                             || txl.val.end - txl.val.start )
                           txl.obj[ txl.prop ] = 
                               txl.val.start + offset * txl.val.delta
+                          txl.done = offset === 1
                       }
                   } )
               }
           } ] )
           console.log( 'script.once:' )
-          console.log( scene.go )
+          scene.go
       ]]></script>
       <style type="text/css">
         rect { fill: #F0F0F0; fill-opacity: .75;
