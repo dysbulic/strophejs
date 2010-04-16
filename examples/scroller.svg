@@ -21,7 +21,7 @@
       <!---->
       <script type="text/javascript"><![CDATA[
           var state = new List( {
-              'tixel.capture.frequency.mHz' : .1 * 1000,
+              'tixel.capture.frequency.mHz' : .01 * 1000,
           } )
           ;
           ( function() {
@@ -37,6 +37,8 @@
               this.$rect = $.__.$('<rect x="25" y="25" width="50" height="50" rx=".5" ry=".5"/>')
               this.__defineGetter__( 'width', function() { return this.$rect.attr( 'width' ) } )
               this.__defineSetter__( 'width', function(val) { return this.$rect.attr( 'width', val ) } )
+              this.__defineGetter__( 'height', function() { return this.$rect.attr( 'height' ) } )
+              this.__defineSetter__( 'height', function(val) { return this.$rect.attr( 'height', val ) } )
           }
 
           var box = new Box()
@@ -120,7 +122,19 @@
                           prop : 'width',
                           time : {
                               start : new Date().getTime(),
-                              end : new Date().getTime() + 5000,
+                              end : new Date().getTime() + 1000,
+                          },
+                          val : {
+                              start : 0,
+                              end : 25,
+                          },
+                      } )
+                      tixels.__.add( {
+                          obj : box,
+                          prop : 'height',
+                          time : {
+                              start : new Date().getTime(),
+                              end : new Date().getTime() + 1000,
                           },
                           val : {
                               start : 0,
