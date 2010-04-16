@@ -125,6 +125,7 @@
               }
           }, {
               impress : function( state ) {
+                  console.log( 'tixles' )
                   tixels.__.each( function( txl ) {
                       var time = ( new Date() ).getTime()
                       txl.time.delta = ( txl.delta.time
