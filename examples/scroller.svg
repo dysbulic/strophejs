@@ -156,7 +156,7 @@
 
           scene.__.merge( [ {
               impress : function( state ) {
-                  var tixels = state.__.get( 'tixels' )
+                  var tixels = this.__.get( 'tixels' )
                   if( tixels.__.count == 0 ) {
                       var time = new Date().getTime()
                       tixels.__.add( {
