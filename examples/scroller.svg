@@ -127,10 +127,10 @@
                       var time = new Date().getTime()
                       tixels.__.add( {
                           obj : box,
-                          prop : 'height',
+                          prop : [ 'width', 'height' ],
                           time : {
-                              start : time + 50,
-                              end : time + 1000,
+                              start : time,
+                              end : time + 500,
                           },
                           val : {
                               start : 0,
@@ -177,6 +177,15 @@
                                              / txl.time.delta ) )
                           txl.val.delta = ( txl.val.delta
                                             || txl.val.end - txl.val.start )
+                          var val = txl.val.start + offset * txl.val.delta
+                          if( txl.prop.each ) {
+                              txl.prop.each( function( prop ) {
+                                  txl.obj[ prop ] = val
+                              } )
+                          } else {
+                              txl.obj[ txl.prop ] = val
+                          }
+                                      
                           txl.obj[ txl.prop ] = 
                               txl.val.start + offset * txl.val.delta
                           txl.done = offset === 1
