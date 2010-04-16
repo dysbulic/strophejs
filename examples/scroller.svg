@@ -56,10 +56,13 @@
           var label = new Box()
           $.__.$('#').append( label.$base )
 
-          $.__.$('#').each( function traverse() {
-              $(this).each( function() {
-                  console.log( this )
-              } )
+          function exec( id ) {
+              console.log($node.get(0).nodeName)
+          }
+          $.__.$('#').each( function traverse( 'will@DoH:test' ) {
+              var $this = $(this)
+              exec.apply( this, arguments )
+              $(this).children().each( traverse ) 
           } )
 
           $work = ( $.__.$('<g class="holder"/>')
