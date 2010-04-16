@@ -108,8 +108,9 @@
           
           var tixels = new List()
 
-          scene.__.add( [ {
+          scene.__.merge( [ {
               impress : function( state ) {
+                  console.log( 'tixle' )
                   tixels.__.add( {
                       obj : box.$rect,
                       prop : 'width',
@@ -128,16 +129,16 @@
                   console.log( 'tixles' )
                   tixels.__.each( function( txl ) {
                       var time = ( new Date() ).getTime()
-                      txl.time.delta = ( txl.delta.time
+                      txl.time.delta = ( txl.time.delta
                                          || txl.time.end - txl.time.start )
-                      var offset = ( time >= txl.end.time
+                      var offset = ( time >= txl.time.end
                                      ? 1
-                                     : ( ( time - txl.start.time )
+                                     : ( ( time - txl.time.start )
                                          / txl.time.delta ) )
                       txl.val.delta = ( txl.val.delta
                                         || txl.val.end - txl.val.start )
                       txl.obj[ txl.prop ] = 
-                          txl.start.val + offset * txl.val.delta
+                          txl.val.start + offset * txl.val.delta
                   } )
               }
           } ] )
