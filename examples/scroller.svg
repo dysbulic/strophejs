@@ -69,9 +69,9 @@
               var tx = $('this').data( 'tx' )
               if( typeof tx == 'function'
                   && tx != undefined ) {
+                  console.log(this.nodeName)
                   tx.apply( state, arguments )
               }
-              console.log(this.nodeName)
           }
           $.__.$('#').each( function traverse( ) {
               exec.apply( this, arguments )
@@ -82,7 +82,7 @@
                     .css({ 'visibility' : 'hidden' }) )
           $.__.$('#').append( $work )
 
-          var tixels = this.__.get( 'tixels' )
+          var tixels = new List()
           if( tixels.__.count == 0 ) {
               var str = 'Hello World'
               var $txt = $('<text/>')
