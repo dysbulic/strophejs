@@ -124,12 +124,25 @@
           scene.__.merge( [ {
               impress : function( state ) {
                   if( tixels.__.count == 0 ) {
+                      var time = new Date().getTime()
+                      tixels.__.add( {
+                          obj : box,
+                          prop : 'height',
+                          time : {
+                              start : time + 50,
+                              end : time + 1000,
+                          },
+                          val : {
+                              start : 0,
+                              end : 1,
+                          },
+                      } )
                       tixels.__.add( {
                           obj : box,
                           prop : 'width',
                           time : {
-                              start : new Date().getTime(),
-                              end : new Date().getTime() + 1000,
+                              start : time,
+                              end : time + 500,
                           },
                           val : {
                               start : 0,
@@ -140,8 +153,8 @@
                           obj : box,
                           prop : 'height',
                           time : {
-                              start : new Date().getTime(),
-                              end : new Date().getTime() + 1000,
+                              start : time + 500,
+                              end : time + 1000,
                           },
                           val : {
                               start : 0,
@@ -154,16 +167,19 @@
               impress : function( state ) {
                   tixels.__.each( function( txl ) {
                       var time = ( new Date() ).getTime()
-                      txl.time.delta = ( txl.time.delta
-                                         || txl.time.end - txl.time.start )
-                      var offset = ( time >= txl.time.end
-                                     ? 1
-                                     : ( ( time - txl.time.start )
-                                         / txl.time.delta ) )
-                      txl.val.delta = ( txl.val.delta
-                                        || txl.val.end - txl.val.start )
-                      txl.obj[ txl.prop ] = 
-                          txl.val.start + offset * txl.val.delta
+                      if( time > txl.time.start && time <= txl.time.end
+                          || time >= txl.time.end && ! txl.done ) {
+                          txl.time.delta = ( txl.time.delta
+                                             || txl.time.end - txl.time.start )
+                          var offset = ( time >= txl.time.end
+                                         ? 1
+                                         : ( ( time - txl.time.start )
+                                             / txl.time.delta ) )
+                          txl.val.delta = ( txl.val.delta
+                                            || txl.val.end - txl.val.start )
+                          txl.obj[ txl.prop ] = 
+                              txl.val.start + offset * txl.val.delta
+                      }
                   } )
               }
           } ] )
