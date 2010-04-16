@@ -66,11 +66,11 @@
               if( state && state.__ && typeof state.__.set == 'function' ) {
                   state.__.set( 'caller', this )
               }
-              state = state || {}
-              var tx = $('this').data( 'tx' )
+              //state = state || {}
+              var tx = $this.data( 'tx' )
+              console.log( typeof tx + ':' + typeof state )
               if( typeof tx == 'function'
                   && tx != undefined ) {
-                  console.log( tx + ':' + state )
                   tx.apply( state, arguments )
               }
           }
