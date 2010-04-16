@@ -64,9 +64,9 @@
                       state.__.set( new List( {
                           'impression.configuration.done' : true,
                       } ) )
-                      console.log( 'Starting: once'  + ':' + state.__.get('impression.configuration.done') )
+                      //console.log( 'Starting: once: config:' + state.__.get('impression.configuration.done') )
                       this.__.impress.apply( state )
-                      console.log( 'Finished: once'  + ':' + state.__.get('impression.configuration.done') )
+                      //console.log( 'Finished: once: config:' + state.__.get('impression.configuration.done') )
                   } while( ++count < 100
                            && ! state[ 'impression.configuration.done' ] )
                   state.__.set( {
@@ -79,10 +79,11 @@
                       'impression.state' : 'display',
                   } )
                   do {
-                      state.__.set( {
+                      state.__.set( new List( {
                           'impression.display.done' : true
-                      } )
+                      } ) )
                       this.__.impress.apply( state )
+                      //console.log( 'Finished: once: display:' + state.__.get('impression.display.done') )
                   } while( ++count < 100
                            && ! state[ 'impression.display.done' ] )
                   return state
@@ -110,23 +111,23 @@
 
           scene.__.merge( [ {
               impress : function( state ) {
-                  console.log( 'tixle' )
-                  tixels.__.add( {
-                      obj : box.$rect,
-                      prop : 'width',
-                      time : {
-                          start : new Date().getTime(),
-                          end : new Date().getTime() + 1000,
-                      },
-                      val : {
-                          start : 0,
-                          end : 25,
-                      },
-                  } )
+                  if( tixels.__.count == 0 ) {
+                      tixels.__.add( {
+                          obj : box,
+                          prop : 'width',
+                          time : {
+                              start : new Date().getTime(),
+                              end : new Date().getTime() + 5000,
+                          },
+                          val : {
+                              start : 0,
+                              end : 25,
+                          },
+                      } )
+                  }
               }
           }, {
               impress : function( state ) {
-                  console.log( 'tixles' )
                   tixels.__.each( function( txl ) {
                       var time = ( new Date() ).getTime()
                       txl.time.delta = ( txl.time.delta
