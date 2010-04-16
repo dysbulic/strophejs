@@ -55,9 +55,13 @@
           }
           var label = new Box()
           $.__.$('#').append( label.$base )
-          label.$base.data( 'state', new List() )
+          label.$base.data( 'state', new List( {
+             
+          } ) )
           label.$base.data( 'tx', function() {
-              console.log( 'tx:' + this.__.get( 'caller' ) )
+              if( ! this.firstRun ) {
+                  this.firstRun = true
+              }
           } )
 
           function exec( ) {
@@ -66,7 +70,7 @@
               if( state && state.__ && typeof state.__.set == 'function' ) {
                   state.__.set( 'caller', this )
               }
-              //state = state || {}
+              state = state || {}
               var tx = $this.data( 'tx' )
               console.log( typeof tx + ':' + typeof state )
               if( typeof tx == 'function'
@@ -84,16 +88,6 @@
           $.__.$('#').append( $work )
 
           var tixels = new List()
-          if( tixels.__.count == 0 ) {
-              var str = 'Hello World'
-              var $txt = $('<text/>')
-              $work.append( $txt )
-              var bboxes = []
-              for( var i = 1; i < str.length; i++ ) {
-                  $txt.text( str.substring( 0, i ) )
-                  bboxes[ i ] = $txt.get(0).getBBox()
-              }
-              $txt.data( 'bboxes', bboxes )
               
               tixels.__.add( {
                   time : {
