@@ -55,8 +55,22 @@
           }
           var label = new Box()
           $.__.$('#').append( label.$base )
+          label.$base.data( 'state', new List() )
+          label.$base.data( 'tx', function() {
+              console.log( 'tx:' + this.__.get( 'caller' ) )
+          } )
 
           function exec( ) {
+              var state = $('this').data( 'state' )
+              if( state && state.__ && typeof state.__.set == 'function' ) {
+                  state.__.set( 'caller', this )
+              }
+              state = state || {}
+              var tx = $('this').data( 'tx' )
+              if( typeof tx == 'function'
+                  && tx != undefined ) {
+                  tx.apply( state, arguments )
+              }
               console.log(this.nodeName)
           }
           $.__.$('#').each( function traverse( ) {
@@ -68,41 +82,32 @@
                     .css({ 'visibility' : 'hidden' }) )
           $.__.$('#').append( $work )
 
-          scene.__.merge( [ {
-              impress : function( state ) {
-                  var tixels = this.__.get( 'tixels' )
-                  if( tixels.__.count == 0 ) {
-                      var str = 'Hello World'
-                      var $txt = $('<text/>')
-                      $work.append( $txt )
-                      var bboxes = []
-                      for( var i = 1; i < str.length; i++ ) {
-                          $txt.text( str.substring( 0, i ) )
-                          bboxes[ i ] = $txt.get(0).getBBox()
-                      }
-                      $txt.data( 'bboxes', bboxes )
-
-                      tixels.__.add( {
-                          time : {
-                              start : new Date().getTime(),
-                              delta : .1,
-                              set display( offset ) {
-                                  if( ! this.runBefore ) {
-                                      this.runBefore = true
-                                      this.$base.append( $txt )
-                                  }
+          var tixels = this.__.get( 'tixels' )
+          if( tixels.__.count == 0 ) {
+              var str = 'Hello World'
+              var $txt = $('<text/>')
+              $work.append( $txt )
+              var bboxes = []
+              for( var i = 1; i < str.length; i++ ) {
+                  $txt.text( str.substring( 0, i ) )
+                  bboxes[ i ] = $txt.get(0).getBBox()
+              }
+              $txt.data( 'bboxes', bboxes )
+              
+              tixels.__.add( {
+                  time : {
+                      start : new Date().getTime(),
+                      delta : .1,
+                      set display( offset ) {
+                          if( ! this.runBefore ) {
+                              this.runBefore = true
+                              this.$base.append( $txt )
+                          }
                                   
-                              },
-                          },
-                      } )
-                  }
-              }
-          }, {
-              impress : function( state ) {
-              }
-          } ] )
-          console.log( 'script.once:' )
-          scene.once
+                      },
+                  },
+              } )
+          }
       ]]></script>
       <style type="text/css">
         rect { fill: #F0F0F0; fill-opacity: .75;
