@@ -57,7 +57,9 @@
           $.__.$('#').append( label.$base )
 
           $.__.$('#').each( function traverse() {
-              console.log( this )
+              $(this).each( function() {
+                  console.log( this )
+              } )
           } )
 
           $work = ( $.__.$('<g class="holder"/>')
