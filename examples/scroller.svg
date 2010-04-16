@@ -61,7 +61,8 @@
           } )
 
           function exec( ) {
-              var state = $('this').data( 'state' )
+              var $this = $(this)
+              var state = $this.data( 'state' )
               if( state && state.__ && typeof state.__.set == 'function' ) {
                   state.__.set( 'caller', this )
               }
@@ -69,7 +70,7 @@
               var tx = $('this').data( 'tx' )
               if( typeof tx == 'function'
                   && tx != undefined ) {
-                  console.log(this.nodeName)
+                  console.log( tx + ':' + state )
                   tx.apply( state, arguments )
               }
           }
