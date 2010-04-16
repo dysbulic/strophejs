@@ -12,7 +12,6 @@
       <script type="text/javascript" xlink:href=".../lib/tip/Array.each.js"/>
       <script type="text/javascript" xlink:href=".../lib/tip/MutableString.js"/>
       <script type="text/javascript" xlink:href=".../lib/tip/List.js"/>
-      <script type="text/javascript" xlink:href=".../lib/tip/scene.js"/>
       
       <script type="text/javascript" xlink:href=".../lib/jquery/jquery.js"/>
       <script type="application/javascript" xlink:href=".../lib/tip/__.jquery"/>
@@ -34,25 +33,32 @@
               } )
           } )()
 
-          
-
           function Box() {
-              this.$rect = $.__.$('<rect/>')
-              this.__defineGetter__( 'width', function() { return this.$rect.attr( 'width' ) } )
+              this.$base = $.__.$('<rect/>')
+              this.$base.append(
+                  this.$rect = $.__.$('<rect/>')
+              )
+              this.__defineGetter__( 'width', function() {
+                  return this.$rect.attr( 'width' )
+              } )
               this.__defineSetter__( 'width', function(val) {
                   this.$rect.attr( 'x', -val / 2 )
                   return this.$rect.attr( 'width', val )
               } )
-              this.__defineGetter__( 'height', function() { return this.$rect.attr( 'height' ) } )
+              this.__defineGetter__( 'height', function() {
+                  return this.$rect.attr( 'height' )
+              } )
               this.__defineSetter__( 'height', function(val) {
                   this.$rect.attr( 'y', -val / 2 )
                   return this.$rect.attr( 'height', val )
               } )
           }
+          var label = new Box()
+          $.__.$('#').append( label.$base )
 
-          var box = new Box()
-          $.__.$('#').append( box.$rect )
-
+          $.__.$('#').each( function traverse() {
+              console.log( this )
+          } )
 
           $work = ( $.__.$('<g class="holder"/>')
                     .css({ 'visibility' : 'hidden' }) )
