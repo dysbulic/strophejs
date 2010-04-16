@@ -113,11 +113,11 @@
                   tixels.__.add( {
                       obj : box.$rect,
                       prop : 'width',
-                      '⧔' : {
+                      start : {
                           time : new Date().getTime(),
                           val : 0,
                       },
-                      '⧕' : {
+                      end : {
                           time : new Date().getTime() + 1000,
                           val : 25,
                       },
@@ -125,6 +125,17 @@
               }
           }, {
               impress : function( state ) {
+                  tixels.__.each( function( txl ) {
+                      var time = ( new Date() ).getTime()
+                      txl.delta = txl.delta || {}
+                      txl.delta.time
+                      var offset = ( Math.min(
+                          1,
+                          ( time - txl.start.time )
+                              / ( txl.end.time - txl.start.time )
+                      txl.obj[ txl.prop ] = 
+                              txl.start.val + offset * ( txl.start.val - 
+                  } )
               }
           } ] )
           console.log( 'script.once:' )
