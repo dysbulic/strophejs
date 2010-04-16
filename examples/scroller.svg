@@ -130,35 +130,11 @@
                           prop : [ 'width', 'height' ],
                           time : {
                               start : time,
-                              end : time + 500,
+                              end : time + 250,
                           },
                           val : {
                               start : 0,
-                              end : 1,
-                          },
-                      } )
-                      tixels.__.add( {
-                          obj : box,
-                          prop : 'width',
-                          time : {
-                              start : time,
-                              end : time + 500,
-                          },
-                          val : {
-                              start : 0,
-                              end : 25,
-                          },
-                      } )
-                      tixels.__.add( {
-                          obj : box,
-                          prop : 'height',
-                          time : {
-                              start : time + 500,
-                              end : time + 1000,
-                          },
-                          val : {
-                              start : 0,
-                              end : 25,
+                              end : 10,
                           },
                       } )
                   }
