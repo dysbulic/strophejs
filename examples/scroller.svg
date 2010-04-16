@@ -23,9 +23,6 @@
           var state = new List( {
               'tixel.capture.frequency.mHz' : .1 * 1000,
           } )
-          state.__.set( new List( { 'test' : 'test' } ) )
-          console.log( state.__.get('test') )
-          throw 'done'
           ;
           ( function() {
               //var state′ = new Suplist( state )
@@ -108,12 +105,28 @@
                   return this
               } )
           } )()
-            
-          scene.__.add( {
+          
+          var tixels = new List()
+
+          scene.__.add( [ {
               impress : function( state ) {
-                  box.width = 25
-              },
-          } )
+                  tixels.__.add( {
+                      obj : box.$rect,
+                      prop : 'width',
+                      '⧔' : {
+                          time : new Date().getTime(),
+                          val : 0,
+                      },
+                      '⧕' : {
+                          time : new Date().getTime() + 1000,
+                          val : 25,
+                      },
+                  } )
+              }
+          }, {
+              impress : function( state ) {
+              }
+          } ] )
           console.log( 'script.once:' )
           console.log( scene.once )
       ]]></script>
