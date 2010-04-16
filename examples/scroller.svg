@@ -66,11 +66,11 @@
 
           label.$base.data( 'tx', function() {
               var str = 'Hello World'
+              var $txt = this.$txt || $('<text/>')
               if( ! this.firstRun ) {
                   this.firstRun = true
                   var $caller = this.$caller = $( this.__.get( 'caller' ) )
-                  var $txt = this.$txt = $('<text/>')
-                  this.$caller.append( this.$txt )
+                  $caller.append( $txt )
                   var bboxes = []
                   for( var i = 1; i < str.length; i++ ) {
                       $txt.text( str.substring( 0, i ) )
