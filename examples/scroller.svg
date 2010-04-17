@@ -87,22 +87,30 @@
                   this.bboxes = bboxes
               }
               this.time.offset = this.time.now - this.time.start
-          } )
 
-          label.$base.data( 'display', function() {
-              this.display = this.display || {}
-              if( ! this.display.before ) {
-                  this.display.before = true
-                  this.$txt.y = this.max.height / 2
-              }
+              this.props = new List()
               if( this.time.offset <= 4000 ) {
                   var offset = Math.min( 1, this.time.offset / 3000 )
-                  label.$rect.height = this.max.height * offset
+                  props.__.add( 'height', this.max.height * offset )
               }
               if( this.time.offset < 11000 ) {
                   var offset = Math.min( 1, this.time.offset / 10000 )
                   label.$rect.width = this.max.width * offset
               }
+
+          } )
+
+          label.$base.data( 'display', function() {
+              this.props.each( function( prop, val ) {
+                  switch( prop ) {
+                  case 'max.height':
+                      this.$txt.y = this.max.height / 2
+                      break
+                  case 'height': case 'width':
+                      label.$rect[ prop ] = this[ prop ]
+                      break
+                  }
+              } )
               
               var i, done
               for( i = 1, done = false; ! done && i < this.bboxes.length; i++ ) {
