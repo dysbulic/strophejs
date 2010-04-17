@@ -66,16 +66,21 @@
 
           label.$base.data( 'tx', function() {
               var str = 'Hello World'
-              var $txt = this.$txt = this.$txt || $('<text/>')
+              var $txt = this.$txt = this.$txt || $.__.$('<text/>')
               if( ! this.firstRun ) {
                   this.firstRun = true
                   var $caller = this.$caller = this.$caller || $( this.__.get( 'caller' ) )
                   $caller.append( $txt )
                   var bboxes = []
+                  var max = this.max = { width : 0, height : 0 }
                   for( var i = 1; i <= str.length; i++ ) {
                       $txt.text( str.substring( 0, i ) )
-                      //bboxes[ i ] = $txt.get(0).getBBox()
+                      bboxes[ i ] = $txt.get(0).getBBox()
+                      ;[ 'width', 'height' ].each( function( prop ) {
+                          max[ prop ] = Math.max( max[ prop ], bboxes[ i ][ prop ] )
+                      } )
                   }
+                  console.log( max )
                   this.bboxes = bboxes
               }
           } )
