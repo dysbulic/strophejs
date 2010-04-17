@@ -84,23 +84,24 @@
                   console.log( max )
                   this.bboxes = bboxes
               }
+              console.log(this.time.start)
           } )
 
-          function exec( ) {
+          function config( ) {
               var $this = $(this)
               var state = $this.data( 'state' )
               if( state && state.__ && typeof state.__.set == 'function' ) {
                   state.__.set( 'caller', this )
               }
               state = state || {}
-              var tx = $this.data( 'tx' )
-              if( typeof tx == 'function'
-                  && tx != undefined ) {
-                  tx.apply( state, arguments )
+              var cfg = $this.data( 'config' )
+              if( typeof cfg == 'function'
+                  && cfg != undefined ) {
+                  cfg.apply( state, arguments )
               }
           }
           $.__.$('#').each( function traverse( ) {
-              exec.apply( this, arguments )
+              config.apply( this, arguments )
               $(this).children().each( traverse ) 
           } )
 
