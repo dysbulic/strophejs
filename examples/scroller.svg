@@ -24,9 +24,6 @@
           var state = new List( {
               'tixel.capture.frequency.mHz' : .01 * 1000,
           } )
-          state.__.set( 'tixel.capture.frequency.mHz', 2 )
-          console.log(state.__.get( 'tixel.capture.frequency.mHz' ))
-          throw 'end'
           ;
           ( function() {
               //var state′ = new Suplist( state )
@@ -82,10 +79,8 @@
                           max[ prop ] = Math.max( max[ prop ], bboxes[ i ][ prop ] )
                       } )
                   }
-                  console.log( max )
                   this.bboxes = bboxes
               }
-              console.log(this.time.now)
               this.time.offset = this.time.now - this.time.start
           } )
 
@@ -96,8 +91,7 @@
               }
           } )
 
-          scene.once
-          scene.once
+          scene.go
       ]]></script>
       <style type="text/css">
         rect { fill: #F0F0F0; fill-opacity: .75;
