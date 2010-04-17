@@ -64,7 +64,7 @@
           label.$base.data( 'state', new List( {
           } ) )
 
-          label.$base.data( 'tx', function() {
+          label.$base.data( 'config', function() {
               var str = 'Hello World'
               var $txt = this.$txt = this.$txt || $.__.$('<text/>')
               this.time = this.time || {}
