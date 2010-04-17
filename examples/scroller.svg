@@ -12,6 +12,7 @@
       <script type="text/javascript" xlink:href=".../lib/tip/Array.each.js"/>
       <script type="text/javascript" xlink:href=".../lib/tip/MutableString.js"/>
       <script type="text/javascript" xlink:href=".../lib/tip/List.js"/>
+      <script type="text/javascript" xlink:href=".../lib/tip/scene.js"/>
       
       <script type="text/javascript" xlink:href=".../lib/jquery/jquery.js"/>
       <script type="application/javascript" xlink:href=".../lib/tip/__.jquery"/>
@@ -61,9 +62,6 @@
           var label = new Box()
           $.__.$('#').append( label.$base )
 
-          label.$base.data( 'state', new List( {
-          } ) )
-
           label.$base.data( 'config', function() {
               var str = 'Hello World'
               var $txt = this.$txt = this.$txt || $.__.$('<text/>')
@@ -87,38 +85,7 @@
               console.log(this.time.start)
           } )
 
-          function config( ) {
-              var $this = $(this)
-              var state = $this.data( 'state' )
-              if( state && state.__ && typeof state.__.set == 'function' ) {
-                  state.__.set( 'caller', this )
-              }
-              state = state || {}
-              var cfg = $this.data( 'config' )
-              if( typeof cfg == 'function'
-                  && cfg != undefined ) {
-                  cfg.apply( state, arguments )
-              }
-          }
-          $.__.$('#').each( function traverse( ) {
-              config.apply( this, arguments )
-              $(this).children().each( traverse ) 
-          } )
-
-          var tixels = new List()
-          tixels.__.add( {
-              time : {
-                  start : new Date().getTime(),
-                  delta : .1,
-                  set display( offset ) {
-                      if( ! this.runBefore ) {
-                          this.runBefore = true
-                          this.$base.append( $txt )
-                      }
-                      
-                  },
-              },
-          } )
+          scene.once
       ]]></script>
       <style type="text/css">
         rect { fill: #F0F0F0; fill-opacity: .75;
