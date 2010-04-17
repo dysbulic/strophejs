@@ -24,6 +24,9 @@
           var state = new List( {
               'tixel.capture.frequency.mHz' : .01 * 1000,
           } )
+          state.__.set( 'tixel.capture.frequency.mHz', 2 )
+          console.log(state.__.get( 'tixel.capture.frequency.mHz' ))
+          throw 'end'
           ;
           ( function() {
               //var state′ = new Suplist( state )
@@ -93,7 +96,8 @@
               }
           } )
 
-          scene.go
+          scene.once
+          scene.once
       ]]></script>
       <style type="text/css">
         rect { fill: #F0F0F0; fill-opacity: .75;
