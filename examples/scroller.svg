@@ -51,7 +51,7 @@
               } )
               this.$rect.__defineSetter__( 'height', function(val) {
                   this.attr( 'y', -val / 2 )
-                  return this.$rect.attr( 'height', val )
+                  return this.attr( 'height', val )
               } )
           }
 
@@ -82,7 +82,7 @@
                   console.log( max )
                   this.bboxes = bboxes
               }
-              console.log( this.time.now )
+              console.log(this.time.now)
               this.time.offset = this.time.now - this.time.start
           } )
 
@@ -93,10 +93,7 @@
               }
           } )
 
-          scene.once
-          scene.once
-          scene.once
-          scene.once
+          scene.go
       ]]></script>
       <style type="text/css">
         rect { fill: #F0F0F0; fill-opacity: .75;
