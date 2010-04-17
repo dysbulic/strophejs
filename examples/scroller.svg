@@ -66,8 +66,9 @@
               var str = 'Hello World'
               var $txt = this.$txt = this.$txt || $.__.$('<text/>')
               this.time = this.time || {}
-              if( ! this.time.start ) {
-                  this.time.start = ( new Date() ).getTime()
+              this.time.now = ( new Date() ).getTime()
+              this.time.start = this.time.start || ( new Date() ).getTime()
+              if( ! this.bboxes ) {
                   var $caller = this.$caller = this.$caller || $( this.__.get( 'caller' ) )
                   $caller.append( $txt )
                   var bboxes = []
@@ -85,6 +86,7 @@
               console.log(this.time.start)
           } )
 
+          scene.once
           scene.once
       ]]></script>
       <style type="text/css">
