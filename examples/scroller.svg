@@ -40,17 +40,17 @@
                   this.$rect = $.__.$('<rect/>')
               )
               this.$rect.__defineGetter__( 'width', function() {
-                  return this.$rect.attr( 'width' )
+                  return this.attr( 'width' )
               } )
               this.$rect.__defineSetter__( 'width', function(val) {
-                  this.$rect.attr( 'x', -val / 2 )
-                  return this.$rect.attr( 'width', val )
+                  this.attr( 'x', -val / 2 )
+                  return this.attr( 'width', val )
               } )
               this.$rect.__defineGetter__( 'height', function() {
-                  return this.$rect.attr( 'height' )
+                  return this.attr( 'height' )
               } )
               this.$rect.__defineSetter__( 'height', function(val) {
-                  this.$rect.attr( 'y', -val / 2 )
+                  this.attr( 'y', -val / 2 )
                   return this.$rect.attr( 'height', val )
               } )
           }
