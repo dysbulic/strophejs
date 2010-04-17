@@ -69,8 +69,7 @@
               this.time.now = this.__.get( 'time.impression.display.predicted' )
               this.time.start = this.time.start || ( new Date() ).getTime()
               if( ! this.bboxes ) {
-                  var $caller = this.$caller = this.$caller || $( this.__.get( 'caller' ) )
-                  $caller.append( $txt )
+                  this.$parent.append( $txt )
                   var bboxes = []
                   var max = this.max = { width : 0, height : 0 }
                   for( var i = 1; i <= str.length; i++ ) {
@@ -83,13 +82,14 @@
                   console.log( max )
                   this.bboxes = bboxes
               }
+              console.log( this.time.now )
               this.time.offset = this.time.now - this.time.start
           } )
 
           label.$base.data( 'display', function() {
               if( this.time.offset < 1000 ) {
-                  //label.$rect.height = this.max.height * this.time.offset / 1000
-                  //label.$rect.width = this.max.width * this.time.offset / 1000
+                  label.$rect.height = this.max.height * this.time.offset / 1000
+                  label.$rect.width = this.max.width * this.time.offset / 1000
               }
           } )
 
