@@ -18,6 +18,7 @@
       <script type="application/javascript" xlink:href=".../lib/tip/__.jquery"/>
 
       <style type="text/css">
+    text { text-anchor: middle }
       </style>
       <!---->
       <script type="text/javascript"><![CDATA[
@@ -85,19 +86,21 @@
           } )
 
           label.$base.data( 'display', function() {
-              if( this.time.offset < 300 ) {
-                  label.$rect.height = this.max.height * this.time.offset / 300
+              if( this.time.offset <= 4000 ) {
+                  var offset = Math.min( 1, this.time.offset / 3000 )
+                  label.$rect.height = this.max.height * offset
               }
-              if( this.time.offset < 1000 ) {
-                  label.$rect.width = this.max.width * this.time.offset / 1000
+              if( this.time.offset < 11000 ) {
+                  var offset = Math.min( 1, this.time.offset / 10000 )
+                  label.$rect.width = this.max.width * offset
               }
               
               var i, done
-              for( i = 1, done = false; i < this.bboxes.length; i++ ) {
-                  done = ( this.bboxes[ i ].width >= label.$rect.width
-                           && this.bboxes[ i ].height >= label.$rect.height )
+              for( i = 1, done = false; ! done && i < this.bboxes.length; i++ ) {
+                  done = ( this.bboxes[ i ].width > label.$rect.width
+                           || this.bboxes[ i ].height > label.$rect.height )
               }
-              label.$txt.text( this.str.substring( 0, i - 1 ) )
+              this.$txt.text( this.str.substring( 0, i - 1 ) )
           } )
 
           scene.go
