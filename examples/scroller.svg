@@ -63,7 +63,7 @@
           $.__.$('#').append( label.$base )
 
           label.$base.data( 'config', function() {
-              var str = 'Hello World'
+              var str = this.str = 'Hello World'
               var $txt = this.$txt = this.$txt || $.__.$('<text/>')
               this.time = this.time || {}
               this.time.now = this.__.get( 'time.impression.display.predicted' )
@@ -85,10 +85,19 @@
           } )
 
           label.$base.data( 'display', function() {
+              if( this.time.offset < 300 ) {
+                  label.$rect.height = this.max.height * this.time.offset / 300
+              }
               if( this.time.offset < 1000 ) {
-                  label.$rect.height = this.max.height * this.time.offset / 1000
                   label.$rect.width = this.max.width * this.time.offset / 1000
               }
+              
+              var i, done
+              for( i = 1, done = false; i < this.bboxes.length; i++ ) {
+                  done = ( this.bboxes[ i ].width >= label.$rect.width
+                           && this.bboxes[ i ].height >= label.$rect.height )
+              }
+              label.$txt.text( this.str.substring( 0, i - 1 ) )
           } )
 
           scene.go
