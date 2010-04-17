@@ -70,6 +70,10 @@
               this.time.now = this.__.get( 'time.impression.display.predicted' )
               this.time.start = this.time.start || ( new Date() ).getTime()
               if( ! this.bboxes ) {
+                  $txt.__defineSetter__( 'y', function(val) {
+                      this.attr( 'y', val )
+                  } )
+
                   this.$parent.append( $txt )
                   var bboxes = []
                   var max = this.max = { width : 0, height : 0 }
@@ -86,6 +90,11 @@
           } )
 
           label.$base.data( 'display', function() {
+              this.display = this.display || {}
+              if( ! this.display.before ) {
+                  this.display.before = true
+                  this.$txt.y = this.max.height / 2
+              }
               if( this.time.offset <= 4000 ) {
                   var offset = Math.min( 1, this.time.offset / 3000 )
                   label.$rect.height = this.max.height * offset
