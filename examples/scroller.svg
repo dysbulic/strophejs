@@ -34,7 +34,7 @@
           } )()
 
           function Box() {
-              this.$base = $.__.$('<rect/>')
+              this.$base = $.__.$('<g class="box"/>')
               this.$base.append(
                   this.$rect = $.__.$('<rect/>')
               )
@@ -66,15 +66,15 @@
 
           label.$base.data( 'tx', function() {
               var str = 'Hello World'
-              var $txt = this.$txt || $('<text/>')
+              var $txt = this.$txt = this.$txt || $('<text/>')
               if( ! this.firstRun ) {
                   this.firstRun = true
-                  var $caller = this.$caller = $( this.__.get( 'caller' ) )
+                  var $caller = this.$caller = this.$caller || $( this.__.get( 'caller' ) )
                   $caller.append( $txt )
                   var bboxes = []
-                  for( var i = 1; i < str.length; i++ ) {
+                  for( var i = 1; i <= str.length; i++ ) {
                       $txt.text( str.substring( 0, i ) )
-                      bboxes[ i ] = $txt.get(0).getBBox()
+                      //bboxes[ i ] = $txt.get(0).getBBox()
                   }
                   this.bboxes = bboxes
               }
@@ -88,7 +88,6 @@
               }
               state = state || {}
               var tx = $this.data( 'tx' )
-              console.log( typeof tx + ':' + typeof state )
               if( typeof tx == 'function'
                   && tx != undefined ) {
                   tx.apply( state, arguments )
