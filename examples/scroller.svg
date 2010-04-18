@@ -50,32 +50,36 @@
 
           label.$base.data( 'config', function() {
               var str = this.str = 'Hello World'
-              var $txt = this.$txt = this.$txt || $.__.$('<text/>')
-              var $bg = this.$bg = $.__.$('<rect/>')
+              var $txt = this.$txt = this.$txt || ( function() {
+                  var $txt = $.__.$('<text/>')
+                  $txt.__defineSetter__( 'y', function(val) {
+                      this.attr( 'y', val )
+                  } )
+                  return $txt
+              } )()
+              var $bg = this.$bg = this.$bg || ( function() {
+                  var $bg = $.__.$('<rect/>')
+                  $bg.__defineGetter__( 'width', function() {
+                      return this.attr( 'width' )
+                  } )
+                  $bg.__defineSetter__( 'width', function(val) {
+                      console.log( 'set' )
+                      this.attr( 'x', -val / 2 )
+                      return this.attr( 'width', val )
+                  } )
+                  $bg.__defineGetter__( 'height', function() {
+                      return this.attr( 'height' )
+                  } )
+                  $bg.__defineSetter__( 'height', function(val) {
+                      this.attr( 'y', -val / 2 )
+                      return this.attr( 'height', val )
+                  } )
+                  return $bg
+              } )()
               this.time = this.time || {}
               this.time.now = this.__.get( 'time.impression.display.predicted' )
               this.time.start = this.time.start || ( new Date() ).getTime()
               if( ! this.bboxes ) {
-                  $txt.__defineSetter__( 'y', function(val) {
-                      this.attr( 'y', val )
-                  } )
-
-                  this.$bg.__defineGetter__( 'width', function() {
-                      return this.attr( 'width' )
-                  } )
-                  this.$bg.__defineSetter__( 'width', function(val) {
-                      this.attr( 'x', -val / 2 )
-                      return this.attr( 'width', val )
-                  } )
-                  this.$bg.__defineGetter__( 'height', function() {
-                      return this.attr( 'height' )
-                  } )
-                  this.$bg.__defineSetter__( 'height', function(val) {
-                      this.attr( 'y', -val / 2 )
-                      return this.attr( 'height', val )
-                  } )
-
-
                   this.$parent.append( $txt )
                   var bboxes = []
                   var max = this.max = { width : 0, height : 0 }
@@ -114,12 +118,12 @@
 
           label.$base.data( 'display', function() {
               var show = function( val, prop ) {
-                  console.log( val )
                   switch( prop ) {
                   case 'max.height':
                       this.$txt.y = this.max.height / 2
                       break
                   case 'height': case 'width':
+                      this.$bg[ prop ] = 10
                       this.$bg[ prop ] = val
                       break
                   case 'text':
