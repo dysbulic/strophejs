@@ -48,6 +48,7 @@
 
           label.$base.data( 'config', function() {
               var str = this.str = 'Hello World'
+              var $parent = this.$parent
               var $txt = this.$txt = this.$txt || ( function() {
                   var $txt = $.__.$('<text/>')
                   $txt.__defineSetter__( 'y', function(val) {
@@ -57,6 +58,7 @@
                   $txt.__defineSetter__( 'text', function( ) {
                       $txt_text.apply( $txt, arguments )
                   } )
+                  $parent.append( $txt )
                   return $txt
               } )()
               var $bg = this.$bg = this.$bg || ( function() {
@@ -75,13 +77,13 @@
                       this.attr( 'y', -val / 2 )
                       return this.attr( 'height', val )
                   } )
+                  $parent.append( $bg )
                   return $bg
               } )()
               this.time = this.time || {}
               this.time.now = this.__.get( 'time.impression.display.predicted' )
               this.time.start = this.time.start || ( new Date() ).getTime()
               if( ! this.bboxes ) {
-                  this.$parent.append( $txt )
                   var bboxes = []
                   var max = this.max = { width : 0, height : 0 }
                   for( var i = 1; i <= str.length; i++ ) {
