@@ -37,8 +37,6 @@
 
           function Box() {
               this.$base = $.__.$('<g class="box"/>')
-              this.$base.append(
-              )
           }
 
           $work = ( $.__.$('<g class="holder"/>')
@@ -55,6 +53,9 @@
                   $txt.__defineSetter__( 'y', function(val) {
                       this.attr( 'y', val )
                   } )
+                  $txt.__defineSetter__( 'text', function(val) {
+                      this.text( val )
+                  } )
                   return $txt
               } )()
               var $bg = this.$bg = this.$bg || ( function() {
@@ -63,7 +64,6 @@
                       return this.attr( 'width' )
                   } )
                   $bg.__defineSetter__( 'width', function(val) {
-                      console.log( 'set' )
                       this.attr( 'x', -val / 2 )
                       return this.attr( 'width', val )
                   } )
@@ -113,7 +113,6 @@
                   this.props.__.set( 'text', this.str.substring( 0, i - 1 ) )
                   this.__.set( 'last.bbox.idx', i )
               }
-
           } )
 
           label.$base.data( 'display', function() {
@@ -127,7 +126,7 @@
                       this.$bg[ prop ] = val
                       break
                   case 'text':
-                      this.$txt.text( val )
+                      this.$txt.text = val
                       break
                   }
               }
