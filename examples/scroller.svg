@@ -85,7 +85,7 @@
               this.time.now = this.__.get( 'time.impression.display.predicted' )
               this.time.start = this.time.start || ( new Date() ).getTime()
               if( ! this.bboxes ) {
-                  var bboxes = []
+                  var bboxes = [ { x : 0, y : 0, width : 0, height : 0 } ]
                   var max = this.max = { width : 0, height : 0 }
                   for( var i = 1; i <= str.length; i++ ) {
                       $txt.text = str.substring( 0, i )
@@ -113,7 +113,6 @@
               for( i = 1, done = false; ! done && i < this.bboxes.length; i++ ) {
                   done = ( this.bboxes[ i ].width > $bg.width
                            || this.bboxes[ i ].height > $bg.height )
-                  done && --i
               }
               console.log( i + "::" + this.bboxes[ i ].width + ':' + $bg.width
                            + '::' + this.bboxes[ i ].height + ':' + $bg.height )
