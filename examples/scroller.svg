@@ -53,8 +53,9 @@
                   $txt.__defineSetter__( 'y', function(val) {
                       this.attr( 'y', val )
                   } )
+                  var $txt_text = $txt.text
                   $txt.__defineSetter__( 'text', function(val) {
-                      this.text( val )
+                      $txt_text( val )
                   } )
                   return $txt
               } )()
@@ -84,7 +85,7 @@
                   var bboxes = []
                   var max = this.max = { width : 0, height : 0 }
                   for( var i = 1; i <= str.length; i++ ) {
-                      $txt.text( str.substring( 0, i ) )
+                      $txt.text = str.substring( 0, i )
                       bboxes[ i ] = $txt.get(0).getBBox()
                       ;[ 'width', 'height' ].each( function( prop ) {
                           max[ prop ] = Math.max( max[ prop ], bboxes[ i ][ prop ] )
