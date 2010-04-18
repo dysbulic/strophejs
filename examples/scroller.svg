@@ -99,12 +99,16 @@
                   var offset = Math.min( 1, this.time.offset / 10000 )
                   this.props.__.add( 'width', this.max.width * offset )
               }
+
               var i, done
               for( i = 1, done = false; ! done && i < this.bboxes.length; i++ ) {
                   done = ( this.bboxes[ i ].width > $bg.width
                            || this.bboxes[ i ].height > $bg.height )
               }
-              this.$txt.text( this.str.substring( 0, i - 1 ) )
+              if( i != this.__.get( 'last.bbox.idx' ) ) {
+                  this.props.__.add( 'text', this.str.substring( 0, i - 1 ) )
+                  this.__.set( 'last.bbox.idx', i )
+              }
 
           } )
 
