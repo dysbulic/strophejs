@@ -38,22 +38,7 @@
           function Box() {
               this.$base = $.__.$('<g class="box"/>')
               this.$base.append(
-                  this.$rect = $.__.$('<rect/>')
               )
-              this.$rect.__defineGetter__( 'width', function() {
-                  return this.attr( 'width' )
-              } )
-              this.$rect.__defineSetter__( 'width', function(val) {
-                  this.attr( 'x', -val / 2 )
-                  return this.attr( 'width', val )
-              } )
-              this.$rect.__defineGetter__( 'height', function() {
-                  return this.attr( 'height' )
-              } )
-              this.$rect.__defineSetter__( 'height', function(val) {
-                  this.attr( 'y', -val / 2 )
-                  return this.attr( 'height', val )
-              } )
           }
 
           $work = ( $.__.$('<g class="holder"/>')
@@ -66,6 +51,7 @@
           label.$base.data( 'config', function() {
               var str = this.str = 'Hello World'
               var $txt = this.$txt = this.$txt || $.__.$('<text/>')
+              var $bg = this.$bg = $.__.$('<rect/>')
               this.time = this.time || {}
               this.time.now = this.__.get( 'time.impression.display.predicted' )
               this.time.start = this.time.start || ( new Date() ).getTime()
@@ -73,6 +59,22 @@
                   $txt.__defineSetter__( 'y', function(val) {
                       this.attr( 'y', val )
                   } )
+
+                  this.$bg.__defineGetter__( 'width', function() {
+                      return this.attr( 'width' )
+                  } )
+                  this.$bg.__defineSetter__( 'width', function(val) {
+                      this.attr( 'x', -val / 2 )
+                      return this.attr( 'width', val )
+                  } )
+                  this.$bg.__defineGetter__( 'height', function() {
+                      return this.attr( 'height' )
+                  } )
+                  this.$bg.__defineSetter__( 'height', function(val) {
+                      this.attr( 'y', -val / 2 )
+                      return this.attr( 'height', val )
+                  } )
+
 
                   this.$parent.append( $txt )
                   var bboxes = []
@@ -91,33 +93,35 @@
               this.props = new List()
               if( this.time.offset <= 4000 ) {
                   var offset = Math.min( 1, this.time.offset / 3000 )
-                  props.__.add( 'height', this.max.height * offset )
+                  this.props.__.add( 'height', this.max.height * offset )
               }
               if( this.time.offset < 11000 ) {
                   var offset = Math.min( 1, this.time.offset / 10000 )
-                  label.$rect.width = this.max.width * offset
+                  this.props.__.add( 'width', this.max.width * offset )
               }
+              var i, done
+              for( i = 1, done = false; ! done && i < this.bboxes.length; i++ ) {
+                  done = ( this.bboxes[ i ].width > $bg.width
+                           || this.bboxes[ i ].height > $bg.height )
+              }
+              this.$txt.text( this.str.substring( 0, i - 1 ) )
 
           } )
 
           label.$base.data( 'display', function() {
-              this.props.each( function( prop, val ) {
+              this.props && this.props.each( function( prop, val ) {
                   switch( prop ) {
                   case 'max.height':
                       this.$txt.y = this.max.height / 2
                       break
                   case 'height': case 'width':
-                      label.$rect[ prop ] = this[ prop ]
+                      this.$bg[ prop ] = val
+                      break
+                  case 'text':
+                      this.$txt.text( val )
                       break
                   }
               } )
-              
-              var i, done
-              for( i = 1, done = false; ! done && i < this.bboxes.length; i++ ) {
-                  done = ( this.bboxes[ i ].width > label.$rect.width
-                           || this.bboxes[ i ].height > label.$rect.height )
-              }
-              this.$txt.text( this.str.substring( 0, i - 1 ) )
           } )
 
           scene.go
