@@ -54,8 +54,8 @@
                       this.attr( 'y', val )
                   } )
                   var $txt_text = $txt.text
-                  $txt.__defineSetter__( 'text', function(val) {
-                      $txt_text( val )
+                  $txt.__defineSetter__( 'text', function( ) {
+                      $txt_text.apply( $txt, arguments )
                   } )
                   return $txt
               } )()
@@ -123,7 +123,6 @@
                       this.$txt.y = this.max.height / 2
                       break
                   case 'height': case 'width':
-                      this.$bg[ prop ] = 10
                       this.$bg[ prop ] = val
                       break
                   case 'text':
