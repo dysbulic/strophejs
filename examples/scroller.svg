@@ -93,11 +93,11 @@
               this.props = new List()
               if( this.time.offset <= 4000 ) {
                   var offset = Math.min( 1, this.time.offset / 3000 )
-                  this.props.__.add( 'height', this.max.height * offset )
+                  this.props.__.set( 'height', this.max.height * offset )
               }
               if( this.time.offset < 11000 ) {
                   var offset = Math.min( 1, this.time.offset / 10000 )
-                  this.props.__.add( 'width', this.max.width * offset )
+                  this.props.__.set( 'width', this.max.width * offset )
               }
 
               var i, done
@@ -106,14 +106,15 @@
                            || this.bboxes[ i ].height > $bg.height )
               }
               if( i != this.__.get( 'last.bbox.idx' ) ) {
-                  this.props.__.add( 'text', this.str.substring( 0, i - 1 ) )
+                  this.props.__.set( 'text', this.str.substring( 0, i - 1 ) )
                   this.__.set( 'last.bbox.idx', i )
               }
 
           } )
 
           label.$base.data( 'display', function() {
-              this.props && this.props.each( function( prop, val ) {
+              var show = function( val, prop ) {
+                  console.log( val )
                   switch( prop ) {
                   case 'max.height':
                       this.$txt.y = this.max.height / 2
@@ -125,6 +126,10 @@
                       this.$txt.text( val )
                       break
                   }
+              }
+              var store = this
+              this.props && this.props.__.each( function( ) {
+                  show.apply( store, arguments )
               } )
           } )
 
