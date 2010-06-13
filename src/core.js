@@ -647,7 +647,7 @@ Strophe = {
      */
     getBareJidFromJid: function (jid)
     {
-        return jid.split("/")[0];
+        return jid ? jid.split("/")[0] : null;
     },
 
     /** Function: log
@@ -828,7 +828,7 @@ Strophe = {
  *  DOM element easily and rapidly.  All the functions except for toString()
  *  and tree() return the object, so calls can be chained.  Here's an
  *  example using the $iq() builder helper.
- *  > $iq({to: 'you': from: 'me': type: 'get', id: '1'})
+ *  > $iq({to: 'you', from: 'me', type: 'get', id: '1'})
  *  >     .c('query', {xmlns: 'strophe:example'})
  *  >     .c('example')
  *  >     .toString()
@@ -1057,7 +1057,7 @@ Strophe.Handler = function (handler, ns, name, type, id, from, options)
     }
 
     if (this.options.matchBare) {
-        this.from = Strophe.getBareJidFromJid(from);
+        this.from = from ? Strophe.getBareJidFromJid(from) : null;
     } else {
         this.from = from;
     }
@@ -1103,9 +1103,9 @@ Strophe.Handler.prototype = {
 
         if (nsMatch &&
             (!this.name || Strophe.isTagEqual(elem, this.name)) &&
-            (!this.type || elem.getAttribute("type") === this.type) &&
-            (!this.id || elem.getAttribute("id") === this.id) &&
-            (!this.from || from === this.from)) {
+            (!this.type || elem.getAttribute("type") == this.type) &&
+            (!this.id || elem.getAttribute("id") == this.id) &&
+            (!this.from || from == this.from)) {
                 return true;
         }
 
@@ -1782,11 +1782,11 @@ Strophe.Connection.prototype = {
             }
 
             var iqtype = stanza.getAttribute('type');
-	    if (iqtype === 'result') {
+	    if (iqtype == 'result') {
 		if (callback) {
                     callback(stanza);
                 }
-	    } else if (iqtype === 'error') {
+	    } else if (iqtype == 'error') {
 		if (errback) {
                     errback(stanza);
                 }
