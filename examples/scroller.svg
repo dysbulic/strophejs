@@ -113,6 +113,13 @@
                         $obj.$lbl.attr( size )
                         $bg.attr( size )
 
+                        $bg.hover( function() {
+                                       alert('on')
+                                   },
+                                   function() {
+                                       alert( 'off' )
+                                   } )
+
                         return port
                     } )() )
                     max.width = Math.max( lines[-1].width, max.width )
