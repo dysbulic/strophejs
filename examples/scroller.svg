@@ -55,12 +55,20 @@
                 var max = { width: 0 }
                 obj.each( function( line ) {
                     lines.push( ( function() {
-                        var $text = ( $.__.$( '<text/>' )
-                                      .text( line ) )
+                        var $text = ( $.__.$( '<html:input/>' )
+                                      .attr( 'value', line ) )
+                        var $obj = ( $.__.$( '<foreignObject/>' )
+                                     .attr( {
+                                         x: -50,
+                                         y: -50,
+                                         width: 100,
+                                         height: 100,
+                                     } )
+                                     .append( $text ) )
                         container.add( $text )
                         return {
-                            get width() { return $text.get(0).getBBox().width },
-                            get height() { return $text.get(0).getBBox().height },
+                            get width() { return $text.width() },
+                            get height() { return $text.height() },
                             set x( x ) { $text.attr( 'x', x ) },
                             set y( y ) { $text.attr( 'y', y ) },
                             get text() { return $text.text() },
@@ -71,6 +79,7 @@
                 } )
                 var y = pad.top
                 lines.each( function( line ) {
+                    alert(line.height)
                     line.y = y
                     y += line.height + pad.between
                 } )
