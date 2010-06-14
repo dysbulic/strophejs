@@ -12,56 +12,52 @@
     <script type="application/javascript" xlink:href=".../lib/tip/__.jquery"/>
 
     <script type="application/javascript"><![CDATA[
-        var win = { width: window.clientWidth,
-                    height: window.clientHeight, }
+        var win = { width: window.innerWidth,
+                    height: window.innerHeight, }
         var viewBox = [ - win.width / 2, - win.height / 2, win.width, win.height ].join( ' ' )
         $.__.$( '#' ).attr( 'viewBox', viewBox )
-        alert( $.__.$( '#' ).attr( 'viewBox' ) )
     ]]></script>
 
     <script type="application/javascript"><![CDATA[
         var connection
         var BOSH_SERVICE = '/http-bind/'
+        
+        function log( msg ) {
+            $('#log').text( msg )
+        }
 
         function onConnect( status ) {
             if( status == Strophe.Status.CONNECTING ) {
-	        log('Strophe is connecting.');
+	        log('Strophe connecting')
             } else if( status == Strophe.Status.CONNFAIL ) {
-	        log('Strophe failed to connect.');
-	        $('#connect').get(0).value = 'connect';
+	        log( 'Strophe connect failed' )
+	        $('#connect').get(0).value = 'connect'
             } else if( status == Strophe.Status.DISCONNECTING ) {
-	        log('Strophe is disconnecting.');
+	        log( 'Strophe is disconnecting' )
             } else if( status == Strophe.Status.DISCONNECTED ) {
-	        log('Strophe is disconnected.');
-	        $('#connect').get(0).value = 'connect';
+	        log( 'Strophe disconnected' )
             } else if( status == Strophe.Status.CONNECTED ) {
-	        log('Strophe is connected.');
-	        connection.disconnect();
+	        log( 'Strophe connected' )
+	        connection.disconnect()
             }
         }
         
-        $(function() {
+        $( function() {
             connection = new Strophe.Connection( BOSH_SERVICE )
             //connection.rawInput = rawInput;
             //connection.rawOutput = rawOutput;
             
-            $('#connect').bind('click', function () {
-	        var button = $('#connect').get(0);
-	        if (button.value == 'connect') {
-	            button.value = 'disconnect';
-                    
-	            connection.connect($('#jid').get(0).value,
-			               $('#pass').get(0).value,
-			               onConnect);
-	        } else {
-	            button.value = 'connect';
-	            connection.disconnect();
-	        }
-            })
-        })
+            $('#connect').bind( 'click', function() {
+	        connection.connect( "bob@localhost",
+			            "bob'spass",
+			            onConnect )
+            } )
+        } )
     ]]></script>
     <style type="text/css">
+    #log { text-anchor: middle }
     </style>
-
   </defs>
+  <rect id="connect" x="-10" y="-10" width="20" height="20" />
+  <text id="log" y="2em" />
 </svg>
