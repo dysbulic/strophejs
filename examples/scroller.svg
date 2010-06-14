@@ -24,32 +24,59 @@
         var pad = { top: 5, between: 5, bottom: 5, left: 5, right: 5 }
         var display = {
             JSON: function( obj ) {
-                var $container = $.__.$( '<g/>' )
-                $work.append( $container )
-                var $lines = []
+                var lines = []
+                var container = ( function() {
+                    var $container = $.__.$( '<g/>' )
+                    var transform = {
+                        x: 0,
+                        y: 0,
+                        update: function() {
+                            $container.attr( 'transform',
+                                             'translate(' + this.x + ',' + this.y + ')' )
+                        },
+                    }
+                    return {
+                        add: function( $elem ) { $container.append( $elem ) },
+                        get $root() { return $container },
+                        get transform() { return {
+                            set x( x ) {
+                                transform.x = x
+                                transform.update()
+                            },
+                            set y( y ) {
+                                transform.y = y
+                                transform.update()
+                            },
+                        } },
+                    }
+                } )()
+                
+                $work.append( container.$root )
                 var max = { width: 0 }
                 obj.each( function( line ) {
-                    $lines.push( ( function() {
+                    lines.push( ( function() {
                         var $text = ( $.__.$( '<text/>' )
                                       .text( line ) )
-                        $container.append( $text )
+                        container.add( $text )
                         return {
-                            get width() { return $text.getBBox().width },
-                            get height() { return $text.getBBox().height },
+                            get width() { return $text.get(0).getBBox().width },
+                            get height() { return $text.get(0).getBBox().height },
                             set x( x ) { $text.attr( 'x', x ) },
                             set y( y ) { $text.attr( 'y', y ) },
                             get text() { return $text.text() },
                             set text( text ) { $text.text( text ) },
                         }
                     } )() )
-                    max.width = max( $lines[-1].width, max.width )
+                    max.width = Math.max( lines[-1].width, max.width )
                 } )
                 var y = pad.top
-                $lines.each( function( line ) {
+                lines.each( function( line ) {
                     line.y = y
-                    y += pad.between
+                    y += line.height + pad.between
                 } )
-                
+                y -= pad.between - pad.bottom
+                container.transform.y = - y / 2
+                $('#body').append( container.$root )
             },
         }
         $( function() {
@@ -97,4 +124,5 @@
     #log { text-anchor: middle }
     </style>
   </defs>
+    <g id="body"/>
 </svg>
