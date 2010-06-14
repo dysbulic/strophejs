@@ -30,10 +30,12 @@
                                      'translate(' + this.x + ',' + this.y + ')' )
                 },
             }
+            var elems = []
 
             function add( elem ) {
+                elems.push( elem )
                 if( elem && elem.$root ) {
-                    add( elem.$root )
+                    add.call( this, elem.$root )
                 } else {
                     $container.append( elem )
                 }
@@ -41,7 +43,7 @@
             this.add = add
 
             this.each = function( f ) {
-                $container.children().each( f )
+                elems.each( f )
             }
 
             this.__defineGetter__( '$root', function() { return $container } )
@@ -86,14 +88,9 @@
                          + parseFloat( $text.css( 'border-top-width' ) )
                          + parseFloat( $text.css( 'border-bottom-width' ) )
                        ) } )
-            this.__defineSetter__( 'x', function( x ) {
-                $obj.attr( 'x', x )
-                $bg.attr( 'x', x )
-            } )
-            this.__defineSetter__( 'y', function( y ) {
-                $obj.attr( 'y', y )
-                $bg.attr( 'y', y )
-            } )
+            this.__defineSetter__( 'x', container.transform.__lookupSetter__( 'x' ) ) 
+            this.__defineSetter__( 'y', container.transform.__lookupSetter__( 'y' ) ) 
+
             this.__defineGetter__( 'text', function() {
                 return $text.text()
             } )
@@ -108,6 +105,7 @@
                 width: this.width,
                 height: this.height,
             } 
+            alert( $text.width() )
             $obj.attr( size )
             $bg.attr( size )
         }
