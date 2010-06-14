@@ -60,14 +60,33 @@
                                       .attr( 'value', line ) )
                         var $obj = ( $.__.$( '<foreignObject/>' )
                                      .append( $text ) )
+                        var $bg = $.__.$( '<rect/>' )
 
+                        container.add( $bg )
                         container.add( $obj )
-                                           
                         var port = {
-                            get width() { return $text.width() + 7 },
-                            get height() { return $text.height() + 7 },
-                            set x( x ) { $obj.attr( 'x', x ) },
-                            set y( y ) { $obj.attr( 'y', y ) },
+                            get width() { return (
+                                parseFloat( $text.width() )
+                                    + parseFloat( $text.css( 'padding-left' ) )
+                                    + parseFloat( $text.css( 'padding-right' ) )
+                                    + parseFloat( $text.css( 'border-left-width' ) )
+                                    + parseFloat( $text.css( 'border-right-width' ) )
+                            ) },
+                            get height() { return (
+                                parseFloat( $text.height() )
+                                    + parseFloat( $text.css( 'padding-top' ) )
+                                    + parseFloat( $text.css( 'padding-bottom' ) )
+                                    + parseFloat( $text.css( 'border-top-width' ) )
+                                    + parseFloat( $text.css( 'border-bottom-width' ) )
+                            ) },
+                            set x( x ) {
+                                $obj.attr( 'x', x )
+                                $bg.attr( 'x', x )
+                            },
+                            set y( y ) {
+                                $obj.attr( 'y', y )
+                                $bg.attr( 'y', y )
+                            },
                             get text() { return $text.text() },
                             set text( text ) { $text.text( text ) },
                         }
@@ -79,7 +98,7 @@
                             height: port.height,
                         } 
                         $obj.attr( size )
-                        container.add( $.__.$( '<rect/>' ).attr( size ) )
+                        $bg.attr( size )
 
                         return port
                     } )() )
@@ -137,9 +156,10 @@
         } )
     ]]></script>
     <style type="text/css">
+    rect { fill: blue }
     #log { text-anchor: middle }
 input { text-align: center; padding: auto }
-foreignObject { border: 1px solid black }
+foreignObject { overflow: visible; }
     </style>
   </defs>
     <g id="body"/>
