@@ -5,158 +5,59 @@
      xmlns:xlink="http://www.w3.org/1999/xlink">
   <title>Scroller Interface</title>
   <defs>
-      <script type="text/javascript"><![CDATA[
-        var def = { userId : '例如' }
-      ]]></script>
-      <script type="text/javascript" xlink:href=".../lib/tip/pointers.js"/>
-      <script type="text/javascript" xlink:href=".../lib/tip/Array.each.js"/>
-      <script type="text/javascript" xlink:href=".../lib/tip/MutableString.js"/>
-      <script type="text/javascript" xlink:href=".../lib/tip/List.js"/>
-      <script type="text/javascript" xlink:href=".../lib/tip/scene.js"/>
-      
-      <script type="text/javascript" xlink:href=".../lib/jquery/jquery.js"/>
-      <script type="application/javascript" xlink:href=".../lib/tip/__.jquery"/>
+    <script type='application/javascript' xlink:href='.../lib/jquery/jquery.js'></script>
+    <script type='application/javascript' xlink:href='.../lib/strophe/strophe.js'></script>
 
-      <style type="text/css">
-    text { text-anchor: middle }
-      </style>
-      <!---->
-      <script type="text/javascript"><![CDATA[
-          var state = new List( {
-              'tixel.capture.frequency.mHz' : .01 * 1000,
-          } )
-          ;
-          ( function() {
-              //var state′ = new Suplist( state )
-              state.__.set( {
-                  'connection.username' : 'mimis.test@gmail.com',
-                  'connection.password' : 'mimistest',
-                  'connection.server' : 'talk.google.com',
-              } )
-          } )()
+    <script type="application/javascript" xlink:href=".../lib/tip/win.js"/>
+    <script type="application/javascript" xlink:href=".../lib/tip/__.jquery"/>
 
-          function Box() {
-              this.$base = $.__.$('<g class="box"/>')
-          }
+    <script type="application/javascript"><![CDATA[
 
-          $work = ( $.__.$('<g class="holder"/>')
-                    .css({ 'visibility' : 'hidden' }) )
-          $.__.$('#').append( $work )
+    ]]></script>
 
-          var label = new Box()
-          $.__.$('#').append( label.$base )
+    <script type="application/javascript"><![CDATA[
+        var connection
+        var BOSH_SERVICE = '/http-bind/'
 
-          label.$base.data( 'config', function() {
-              var str = this.str = 'Hello World'
-              var $parent = this.$parent
-              var $txt = this.$txt = this.$txt || ( function() {
-                  var $txt = $.__.$('<text/>')
-                  $txt.__defineSetter__( 'y', function(val) {
-                      this.attr( 'y', val )
-                  } )
-                  var $txt_text = $txt.text
-                  $txt.__defineSetter__( 'text', function( ) {
-                      $txt_text.apply( $txt, arguments )
-                  } )
-                  $parent.append( $txt )
-                  return $txt
-              } )()
-              var $bg = this.$bg = this.$bg || ( function() {
-                  var $bg = $.__.$('<rect/>')
-                  $bg.__defineGetter__( 'width', function() {
-                      return this.attr( 'width' )
-                  } )
-                  $bg.__defineSetter__( 'width', function(val) {
-                      this.attr( 'x', -val / 2 )
-                      return this.attr( 'width', val )
-                  } )
-                  $bg.__defineGetter__( 'height', function() {
-                      return this.attr( 'height' )
-                  } )
-                  $bg.__defineSetter__( 'height', function(val) {
-                      this.attr( 'y', -val / 2 )
-                      return this.attr( 'height', val )
-                  } )
-                  $bg.width = $bg.height = 0
-                  $parent.append( $bg )
-                  return $bg
-              } )()
-              this.time = this.time || {}
-              this.time.now = this.__.get( 'time.impression.display.predicted' )
-              this.time.start = this.time.start || ( new Date() ).getTime()
-              if( ! this.bboxes ) {
-                  var bboxes = [ { x : 0, y : 0, width : 0, height : 0 } ]
-                  var max = this.max = { width : 0, height : 0 }
-                  for( var i = 1; i <= str.length; i++ ) {
-                      $txt.text = str.substring( 0, i )
-                      bboxes[ i ] = $txt.get(0).getBBox()
-                      ;[ 'width', 'height' ].each( function( prop ) {
-                          max[ prop ] = Math.max( max[ prop ], bboxes[ i ][ prop ] )
-                      } )
-                  }
-                  this.bboxes = bboxes
-              }
-              this.time.offset = this.time.now - this.time.start
+        function onConnect( status ) {
+            if( status == Strophe.Status.CONNECTING ) {
+	        log('Strophe is connecting.');
+            } else if( status == Strophe.Status.CONNFAIL ) {
+	        log('Strophe failed to connect.');
+	        $('#connect').get(0).value = 'connect';
+            } else if( status == Strophe.Status.DISCONNECTING ) {
+	        log('Strophe is disconnecting.');
+            } else if( status == Strophe.Status.DISCONNECTED ) {
+	        log('Strophe is disconnected.');
+	        $('#connect').get(0).value = 'connect';
+            } else if( status == Strophe.Status.CONNECTED ) {
+	        log('Strophe is connected.');
+	        connection.disconnect();
+            }
+        }
+        
+        $(function() {
+            connection = new Strophe.Connection( BOSH_SERVICE )
+            //connection.rawInput = rawInput;
+            //connection.rawOutput = rawOutput;
+            
+            $('#connect').bind('click', function () {
+	        var button = $('#connect').get(0);
+	        if (button.value == 'connect') {
+	            button.value = 'disconnect';
+                    
+	            connection.connect($('#jid').get(0).value,
+			               $('#pass').get(0).value,
+			               onConnect);
+	        } else {
+	            button.value = 'connect';
+	            connection.disconnect();
+	        }
+            })
+        })
+    ]]></script>
+    <style type="text/css">
+    </style>
 
-              this.props = new List()
-              if( this.time.offset <= 4000 ) {
-                  var offset = Math.min( 1, this.time.offset / 3000 )
-                  this.props.__.set( 'height', this.max.height * offset )
-              }
-              if( this.time.offset < 11000 ) {
-                  var offset = Math.min( 1, this.time.offset / 10000 )
-                  this.props.__.set( 'width', this.max.width * offset )
-              }
-              console.log( this.props.width +":"+this.props.height )
-
-              var i, done
-              for( i = 1, done = false; ! done && i < this.bboxes.length; i++ ) {
-                  done = ( this.bboxes[ i ].width > $bg.width
-                           || this.bboxes[ i ].height > $bg.height )
-              }
-              console.log( i + "::" + this.bboxes[ i ].width + ':' + $bg.width
-                           + '::' + this.bboxes[ i ].height + ':' + $bg.height )
-              if( i != this.__.get( 'last.bbox.idx' ) ) {
-                  this.props.__.set( 'text', this.str.substring( 0, i - 1 ) )
-                  this.__.set( 'last.bbox.idx', i )
-              }
-          } )
-
-          label.$base.data( 'display', function() {
-              var show = function( val, prop ) {
-                  switch( prop ) {
-                  case 'max.height':
-                      this.$txt.y = this.max.height / 2
-                      break
-                  case 'height': case 'width':
-                      this.$bg[ prop ] = val
-                      break
-                  case 'text':
-                      this.$txt.text = val
-                      break
-                  }
-              }
-              var store = this
-              this.props && this.props.__.each( function( ) {
-                  show.apply( store, arguments )
-              } )
-          } )
-
-          scene.once
-          scene.once
-          scene.once
-          scene.once
-          scene.once
-          scene.once
-          scene.once
-          scene.once
-      ]]></script>
-      <style type="text/css">
-        rect { fill: #F0F0F0; fill-opacity: .75;
-               stroke-width: .3; stroke: black; stroke-opacity: .5 }
-      </style>
   </defs>
-  <g class="box">
-    
-  </g>
 </svg>

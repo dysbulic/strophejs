@@ -1,5 +1,6 @@
 var BOSH_SERVICE = '/xmpp-httpbind';
-var BOSH_SERVICE = 'http://bosh.metajack.im:5280/xmpp-httpbind'
+BOSH_SERVICE = 'http://bosh.metajack.im:5280/xmpp-httpbind'
+BOSH_SERVICE = '/http-bind/';
 var connection = null;
 
 function log(msg) 
