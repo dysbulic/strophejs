@@ -31,14 +31,13 @@
 	        log('Strophe connecting')
             } else if( status == Strophe.Status.CONNFAIL ) {
 	        log( 'Strophe connect failed' )
-	        $('#connect').get(0).value = 'connect'
             } else if( status == Strophe.Status.DISCONNECTING ) {
-	        log( 'Strophe is disconnecting' )
+	        log( 'Strophe disconnecting' )
             } else if( status == Strophe.Status.DISCONNECTED ) {
 	        log( 'Strophe disconnected' )
             } else if( status == Strophe.Status.CONNECTED ) {
 	        log( 'Strophe connected' )
-	        connection.disconnect()
+	        setTimeout( 150, function() { alert('hi'); connection.disconnect() } )
             }
         }
         
