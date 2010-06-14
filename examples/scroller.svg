@@ -58,15 +58,9 @@
                         var $text = ( $.__.$( '<html:input/>' )
                                       .attr( 'value', line ) )
                         var $obj = ( $.__.$( '<foreignObject/>' )
-                                     .attr( {
-                                         x: -50,
-                                         y: -50,
-                                         width: 100,
-                                         height: 100,
-                                     } )
                                      .append( $text ) )
-                        container.add( $text )
-                        return {
+                        container.add( $obj )
+                        var port = {
                             get width() { return $text.width() },
                             get height() { return $text.height() },
                             set x( x ) { $text.attr( 'x', x ) },
@@ -74,6 +68,13 @@
                             get text() { return $text.text() },
                             set text( text ) { $text.text( text ) },
                         }
+                        $obj.attr( {
+                            x: - port.width / 2,
+                            y: 0,
+                            width: port.width,
+                            height: port.height,
+                        } )
+                        return port
                     } )() )
                     max.width = Math.max( lines[-1].width, max.width )
                 } )
