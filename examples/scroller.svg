@@ -56,15 +56,16 @@
                 obj.each( function( line ) {
                     lines.push( ( function() {
                         var $text = ( $.__.$( '<html:input/>' )
+                                      .attr( 'class', 'value' )
                                       .attr( 'value', line ) )
                         var $obj = ( $.__.$( '<foreignObject/>' )
                                      .append( $text ) )
                         container.add( $obj )
                         var port = {
-                            get width() { return $text.width() },
-                            get height() { return $text.height() },
-                            set x( x ) { $text.attr( 'x', x ) },
-                            set y( y ) { $text.attr( 'y', y ) },
+                            get width() { return $text.width() + 7 },
+                            get height() { return $text.height() + 7 },
+                            set x( x ) { $obj.attr( 'x', x ) },
+                            set y( y ) { $obj.attr( 'y', y ) },
                             get text() { return $text.text() },
                             set text( text ) { $text.text( text ) },
                         }
@@ -80,7 +81,6 @@
                 } )
                 var y = pad.top
                 lines.each( function( line ) {
-                    alert(line.height)
                     line.y = y
                     y += line.height + pad.between
                 } )
@@ -132,6 +132,7 @@
     ]]></script>
     <style type="text/css">
     #log { text-anchor: middle }
+input { text-align: center; padding: auto }
     </style>
   </defs>
     <g id="body"/>
