@@ -1,4 +1,5 @@
 var BOSH_SERVICE = '/xmpp-httpbind'
+BOSH_SERVICE = 'http://localhost/http-bind'
 var connection = null;
 
 function log(msg) 

@@ -1,24 +1,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <title>Strophe.js Echobot Example</title>
-  <script type='text/javascript'
-	  src='http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js'></script>
-  <script type='text/javascript'
-	  src='../strophe.js'></script>
-  <script type='text/javascript'
-	  src='echobot.js'></script>
+  <title>Strophe.js Echobot</title>
+  <script type='application/javascript' src='.../lib/jquery/jquery.js'></script>
+  <script type='application/javascript' src='../strophe.js'></script>
+  <script type='application/javascript' src='echobot.js'></script>
 </head>
 <body>
-  <div id='login' style='text-align: center'>
-    <form name='cred'>
+  <form name='cred' action=''>
+    <div id='login' style='text-align: center'>
       <label for='jid'>JID:</label>
       <input type='text' id='jid' />
       <label for='pass'>Password:</label>
       <input type='password' id='pass' />
       <input type='button' id='connect' value='connect' />
-    </form>
-  </div>
+    </div>
+  </form>
   <hr />
   <div id='log'></div>
 </body>
