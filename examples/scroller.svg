@@ -32,13 +32,18 @@
             }
 
             function add( elem ) {
-                if( elem instanceof Container ) {
+                if( elem && elem.$root ) {
                     add( elem.$root )
                 } else {
                     $container.append( elem )
                 }
             }
-                this.add = add
+            this.add = add
+
+            this.each = function( f ) {
+                $container.children().each( f )
+            }
+
             this.__defineGetter__( '$root', function() { return $container } )
             this.__defineGetter__( 'transform', function() { return {
                 set x( x ) {
@@ -56,18 +61,64 @@
     <script type="application/javascript"><![CDATA[
         function Label( text ) {
             var container = new Container()
+
+            var $bg = $.__.$( '<rect/>' )
+            container.add( $bg )
+
             var $text = ( $.__.$( '<html:input/>' )
                           .attr( 'class', 'value' )
                           .attr( 'value', text ) )
             var $obj = ( $.__.$( '<foreignObject/>' )
                          .append( $text ) )
-
-            var $bg = $.__.$( '<rect/>' )
-
-            container.add( $bg )
             container.add( $obj )
-
             
+            this.__defineGetter__( 'width', function() {
+                return ( parseFloat( $text.width() )
+                         + parseFloat( $text.css( 'padding-left' ) )
+                         + parseFloat( $text.css( 'padding-right' ) )
+                         + parseFloat( $text.css( 'border-left-width' ) )
+                         + parseFloat( $text.css( 'border-right-width' ) )
+                       ) } )
+            this.__defineGetter__( 'height', function() {
+                return ( parseFloat( $text.height() )
+                         + parseFloat( $text.css( 'padding-top' ) )
+                         + parseFloat( $text.css( 'padding-bottom' ) )
+                         + parseFloat( $text.css( 'border-top-width' ) )
+                         + parseFloat( $text.css( 'border-bottom-width' ) )
+                       ) } )
+            this.__defineSetter__( 'x', function( x ) {
+                $obj.attr( 'x', x )
+                $bg.attr( 'x', x )
+            } )
+            this.__defineSetter__( 'y', function( y ) {
+                $obj.attr( 'y', y )
+                $bg.attr( 'y', y )
+            } )
+            this.__defineGetter__( 'text', function() {
+                return $text.text()
+            } )
+            this.__defineSetter__( 'text', function( text ) {
+                $text.text( text )
+            } )
+            this.__defineGetter__( '$root', function() { return container.$root } )
+
+            var size = {
+                x: - this.width / 2,
+                y: 0,
+                width: this.width,
+                height: this.height,
+            } 
+            $obj.attr( size )
+            $bg.attr( size )
+        }
+    ]]></script>
+
+    <script type="application/javascript"><![CDATA[
+        function Value( val, id ) {
+            var container = new Container()
+            container.add( new Label( val ) )
+            container.add( new Label( id ) )
+            this.__defineGetter__( '$root', function() { return container.$root } )
         }
     ]]></script>
 
@@ -83,71 +134,12 @@
 
                 var max = { width: 0 }
                 list.__.each( function( line, id ) {
-                    container.add( new Value( line, id ) )
-                    lines.push( ( function() {
-                        var $lbl = ( $.__.$( '<html:input/>' )
-                                      .attr( 'class', 'label' )
-                                      .attr( 'value', id ) )
-
-                        var $obj = ( $.__.$( '<foreignObject/>' )
-                                     .append( $lbl ) )
-                            
-
-                        container.add( $bg )
-                        container.add( $obj.$text )
-                        container.add( $obj.$lbl )
-                        var port = {
-                            get width() { return (
-                                parseFloat( $text.width() )
-                                    + parseFloat( $text.css( 'padding-left' ) )
-                                    + parseFloat( $text.css( 'padding-right' ) )
-                                    + parseFloat( $text.css( 'border-left-width' ) )
-                                    + parseFloat( $text.css( 'border-right-width' ) )
-                            ) },
-                            get height() { return (
-                                parseFloat( $text.height() )
-                                    + parseFloat( $text.css( 'padding-top' ) )
-                                    + parseFloat( $text.css( 'padding-bottom' ) )
-                                    + parseFloat( $text.css( 'border-top-width' ) )
-                                    + parseFloat( $text.css( 'border-bottom-width' ) )
-                            ) },
-                            set x( x ) {
-                                $obj.$text.attr( 'x', x )
-                                $obj.$lbl.attr( 'x', x )
-                                $bg.attr( 'x', x )
-                            },
-                            set y( y ) {
-                                $obj.$text.attr( 'y', y )
-                                $obj.$lbl.attr( 'y', y )
-                                $bg.attr( 'y', y )
-                            },
-                            get text() { return $text.text() },
-                            set text( text ) { $text.text( text ) },
-                        }
-
-                        var size = {
-                            x: - port.width / 2,
-                            y: 0,
-                            width: port.width,
-                            height: port.height,
-                        } 
-                        $obj.$text.attr( size )
-                        $obj.$lbl.attr( size )
-                        $bg.attr( size )
-
-                        $lbl.hover( function() {
-                                       alert('on')
-                                   },
-                                   function() {
-                                       alert( 'off' )
-                                   } )
-
-                        return port
-                    } )() )
-                    max.width = Math.max( lines[-1].width, max.width )
+                    var val = new Value( line, id )
+                    container.add( val )
+                    max.width = Math.max( val.width, max.width )
                 } )
                 var y = pad.top
-                lines.each( function( line ) {
+                container.each( function( line ) {
                     line.y = y
                     y += line.height + pad.between
                 } )
