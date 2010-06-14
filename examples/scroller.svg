@@ -72,12 +72,15 @@
                             set text( text ) { $text.text( text ) },
                         }
 
-                        $obj.attr( {
+                        var size = {
                             x: - port.width / 2,
                             y: 0,
                             width: port.width,
                             height: port.height,
-                        } )
+                        } 
+                        $obj.attr( size )
+                        container.add( $.__.$( '<rect/>' ).attr( size ) )
+
                         return port
                     } )() )
                     max.width = Math.max( lines[-1].width, max.width )
