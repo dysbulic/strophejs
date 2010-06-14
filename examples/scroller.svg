@@ -20,39 +20,42 @@
     ]]></script>
 
     <script type="application/javascript"><![CDATA[
+        function Container() {
+            var $container = $.__.$( '<g/>' )
+            var transform = {
+                x: 0,
+                y: 0,
+                update: function() {
+                    $container.attr( 'transform',
+                                     'translate(' + this.x + ',' + this.y + ')' )
+                },
+            }
+
+            this.add = function( $elem ) { $container.append( $elem ) }
+            this.__defineGetter__( '$root', function() { return $container } )
+            this.__defineGetter__( 'transform', function() { return {
+                set x( x ) {
+                    transform.x = x
+                    transform.update()
+                },
+                set y( y ) {
+                    transform.y = y
+                    transform.update()
+                },
+            } } )
+        }
+    ]]></script>
+
+    <script type="application/javascript"><![CDATA[
         var $work = $.__.$( '<g/>' ).css( 'visibility', 'hidden' )
         $.__.$( '#' ).append( $work )
         var pad = { top: 5, between: 5, bottom: 5, left: 5, right: 5 }
         var display = {
             JSON: function( list ) {
                 var lines = []
-                var container = ( function() {
-                    var $container = $.__.$( '<g/>' )
-                    var transform = {
-                        x: 0,
-                        y: 0,
-                        update: function() {
-                            $container.attr( 'transform',
-                                             'translate(' + this.x + ',' + this.y + ')' )
-                        },
-                    }
-                    return {
-                        add: function( $elem ) { $container.append( $elem ) },
-                        get $root() { return $container },
-                        get transform() { return {
-                            set x( x ) {
-                                transform.x = x
-                                transform.update()
-                            },
-                            set y( y ) {
-                                transform.y = y
-                                transform.update()
-                            },
-                        } },
-                    }
-                } )()
-                
+                var container = new Container()
                 $work.append( container.$root )
+
                 var max = { width: 0 }
                 list.__.each( function( line, id ) {
                     lines.push( ( function() {
