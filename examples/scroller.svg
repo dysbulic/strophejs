@@ -19,6 +19,30 @@
     ]]></script>
 
     <script type="application/javascript"><![CDATA[
+        var $work = $.__.$( '<g/>' ).css( 'visibility', 'hidden' )
+        $.__.$( '#' ).append( $work )
+        var pad = { top: 5, between: 5, bottom: 5, left: 5, right: 5 }
+        var display = {
+            JSON: function( obj ) {
+                var $container = $.__.$( '<g/>' )
+                $work.append( $container )
+                var $lines = []
+                obj.each( function( line ) {
+                    $lines.push( ( function() {
+                        var $text = ( $.__.$( '<text/>' )
+                                      .text( line ) )
+                        $container.append( $text )
+                        return $text
+                    } )() )
+                } )
+            },
+        }
+        $( function() {
+            display.JSON( [ 1, 2, 3 ] )
+        } )
+    ]]></script>
+
+    <script type="application/javascript"><![CDATA[
         var connection
         var BOSH_SERVICE = '/http-bind/'
         
@@ -37,16 +61,16 @@
 	        log( 'Strophe disconnected' )
             } else if( status == Strophe.Status.CONNECTED ) {
 	        log( 'Strophe connected' )
-                connection.send($pres().tree());
+                connection.send( $pres().tree() )
 	        setTimeout( "connection.disconnect()", 1500 )
             }
         }
         
         $( function() {
             connection = new Strophe.Connection( BOSH_SERVICE )
-            //connection.rawInput = rawInput;
-            //connection.rawOutput = rawOutput;
-            
+            connection.rawInput = log
+            connection.rawOutput = log
+
             $('#connect').bind( 'click', function() {
 	        connection.connect( "bob@localhost",
 			            "bob'spass",
@@ -58,6 +82,4 @@
     #log { text-anchor: middle }
     </style>
   </defs>
-  <rect id="connect" x="-10" y="-10" width="20" height="20" />
-  <text id="log" y="2em" />
 </svg>
