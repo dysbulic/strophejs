@@ -180,7 +180,7 @@
     #log { text-anchor: middle }
 input { text-align: center; padding: auto; }
 foreignObject { overflow: visible; }
-
+input[@class=~'value'] { background-color: transparent }
     </style>
   </defs>
     <g id="body"/>
