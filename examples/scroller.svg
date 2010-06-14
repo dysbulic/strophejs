@@ -9,6 +9,7 @@
     <script type='application/javascript' xlink:href='.../lib/strophe/strophe.js'></script>
 
     <script type="application/javascript" xlink:href=".../lib/tip/Array.each.js"/>
+    <script type="application/javascript" xlink:href=".../lib/tip/List.js"/>
     <script type="application/javascript" xlink:href=".../lib/tip/__.jquery"/>
 
     <script type="application/javascript"><![CDATA[
@@ -23,7 +24,7 @@
         $.__.$( '#' ).append( $work )
         var pad = { top: 5, between: 5, bottom: 5, left: 5, right: 5 }
         var display = {
-            JSON: function( obj ) {
+            JSON: function( list ) {
                 var lines = []
                 var container = ( function() {
                     var $container = $.__.$( '<g/>' )
@@ -53,7 +54,7 @@
                 
                 $work.append( container.$root )
                 var max = { width: 0 }
-                obj.each( function( line, id ) {
+                list.__.each( function( line, id ) {
                     lines.push( ( function() {
                         var $text = ( $.__.$( '<html:input/>' )
                                       .attr( 'class', 'value' )
@@ -135,7 +136,12 @@
             },
         }
         $( function() {
-            display.JSON( [ 1, 2, 3 ] )
+            display.JSON( new List( {
+                username: 'bob@localhost',
+                password: 'bob\'spass',
+                connect: function() {
+                },
+            } ) )
         } )
     ]]></script>
 
@@ -180,7 +186,7 @@
     #log { text-anchor: middle }
 input { text-align: center; padding: auto; }
 foreignObject { overflow: visible; }
-input[@class=~'value'] { background-color: transparent }
+[class~='value'] { background-color: transparent }
     </style>
   </defs>
     <g id="body"/>
