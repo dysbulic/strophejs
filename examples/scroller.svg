@@ -53,17 +53,27 @@
                 
                 $work.append( container.$root )
                 var max = { width: 0 }
-                obj.each( function( line ) {
+                obj.each( function( line, id ) {
                     lines.push( ( function() {
                         var $text = ( $.__.$( '<html:input/>' )
                                       .attr( 'class', 'value' )
                                       .attr( 'value', line ) )
-                        var $obj = ( $.__.$( '<foreignObject/>' )
-                                     .append( $text ) )
+                        var $lbl = ( $.__.$( '<html:input/>' )
+                                      .attr( 'class', 'label' )
+                                      .attr( 'value', id ) )
+
+                        var $obj = {
+                            $text: ( $.__.$( '<foreignObject/>' )
+                                     .append( $text ) ),
+                            $lbl: ( $.__.$( '<foreignObject/>' )
+                                    .append( $lbl ) ),
+                        }
+                            
                         var $bg = $.__.$( '<rect/>' )
 
                         container.add( $bg )
-                        container.add( $obj )
+                        container.add( $obj.$text )
+                        container.add( $obj.$lbl )
                         var port = {
                             get width() { return (
                                 parseFloat( $text.width() )
@@ -80,11 +90,13 @@
                                     + parseFloat( $text.css( 'border-bottom-width' ) )
                             ) },
                             set x( x ) {
-                                $obj.attr( 'x', x )
+                                $obj.$text.attr( 'x', x )
+                                $obj.$lbl.attr( 'x', x )
                                 $bg.attr( 'x', x )
                             },
                             set y( y ) {
-                                $obj.attr( 'y', y )
+                                $obj.$text.attr( 'y', y )
+                                $obj.$lbl.attr( 'y', y )
                                 $bg.attr( 'y', y )
                             },
                             get text() { return $text.text() },
@@ -97,7 +109,8 @@
                             width: port.width,
                             height: port.height,
                         } 
-                        $obj.attr( size )
+                        $obj.$text.attr( size )
+                        $obj.$lbl.attr( size )
                         $bg.attr( size )
 
                         return port
@@ -158,8 +171,9 @@
     <style type="text/css">
     rect { fill: blue }
     #log { text-anchor: middle }
-input { text-align: center; padding: auto }
+input { text-align: center; padding: auto; }
 foreignObject { overflow: visible; }
+
     </style>
   </defs>
     <g id="body"/>
