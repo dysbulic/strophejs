@@ -60,7 +60,9 @@
                                       .attr( 'value', line ) )
                         var $obj = ( $.__.$( '<foreignObject/>' )
                                      .append( $text ) )
+
                         container.add( $obj )
+                                           
                         var port = {
                             get width() { return $text.width() + 7 },
                             get height() { return $text.height() + 7 },
@@ -69,6 +71,7 @@
                             get text() { return $text.text() },
                             set text( text ) { $text.text( text ) },
                         }
+
                         $obj.attr( {
                             x: - port.width / 2,
                             y: 0,
@@ -133,6 +136,7 @@
     <style type="text/css">
     #log { text-anchor: middle }
 input { text-align: center; padding: auto }
+foreignObject { border: 1px solid black }
     </style>
   </defs>
     <g id="body"/>
