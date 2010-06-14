@@ -31,7 +31,14 @@
                 },
             }
 
-            this.add = function( $elem ) { $container.append( $elem ) }
+            function add( elem ) {
+                if( elem instanceof Container ) {
+                    add( elem.$root )
+                } else {
+                    $container.append( elem )
+                }
+            }
+                this.add = add
             this.__defineGetter__( '$root', function() { return $container } )
             this.__defineGetter__( 'transform', function() { return {
                 set x( x ) {
@@ -47,6 +54,24 @@
     ]]></script>
 
     <script type="application/javascript"><![CDATA[
+        function Label( text ) {
+            var container = new Container()
+            var $text = ( $.__.$( '<html:input/>' )
+                          .attr( 'class', 'value' )
+                          .attr( 'value', text ) )
+            var $obj = ( $.__.$( '<foreignObject/>' )
+                         .append( $text ) )
+
+            var $bg = $.__.$( '<rect/>' )
+
+            container.add( $bg )
+            container.add( $obj )
+
+            
+        }
+    ]]></script>
+
+    <script type="application/javascript"><![CDATA[
         var $work = $.__.$( '<g/>' ).css( 'visibility', 'hidden' )
         $.__.$( '#' ).append( $work )
         var pad = { top: 5, between: 5, bottom: 5, left: 5, right: 5 }
@@ -58,22 +83,15 @@
 
                 var max = { width: 0 }
                 list.__.each( function( line, id ) {
+                    container.add( new Value( line, id ) )
                     lines.push( ( function() {
-                        var $text = ( $.__.$( '<html:input/>' )
-                                      .attr( 'class', 'value' )
-                                      .attr( 'value', line ) )
                         var $lbl = ( $.__.$( '<html:input/>' )
                                       .attr( 'class', 'label' )
                                       .attr( 'value', id ) )
 
-                        var $obj = {
-                            $text: ( $.__.$( '<foreignObject/>' )
-                                     .append( $text ) ),
-                            $lbl: ( $.__.$( '<foreignObject/>' )
-                                    .append( $lbl ) ),
-                        }
+                        var $obj = ( $.__.$( '<foreignObject/>' )
+                                     .append( $lbl ) )
                             
-                        var $bg = $.__.$( '<rect/>' )
 
                         container.add( $bg )
                         container.add( $obj.$text )
