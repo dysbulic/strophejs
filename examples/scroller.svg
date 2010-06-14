@@ -37,7 +37,8 @@
 	        log( 'Strophe disconnected' )
             } else if( status == Strophe.Status.CONNECTED ) {
 	        log( 'Strophe connected' )
-	        setTimeout( 150, function() { alert('hi'); connection.disconnect() } )
+                connection.send($pres().tree());
+	        setTimeout( "connection.disconnect()", 1500 )
             }
         }
         
