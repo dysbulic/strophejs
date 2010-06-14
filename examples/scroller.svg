@@ -27,14 +27,29 @@
                 var $container = $.__.$( '<g/>' )
                 $work.append( $container )
                 var $lines = []
+                var max = { width: 0 }
                 obj.each( function( line ) {
                     $lines.push( ( function() {
                         var $text = ( $.__.$( '<text/>' )
                                       .text( line ) )
                         $container.append( $text )
-                        return $text
+                        return {
+                            get width() { return $text.getBBox().width },
+                            get height() { return $text.getBBox().height },
+                            set x( x ) { $text.attr( 'x', x ) },
+                            set y( y ) { $text.attr( 'y', y ) },
+                            get text() { return $text.text() },
+                            set text( text ) { $text.text( text ) },
+                        }
                     } )() )
+                    max.width = max( $lines[-1].width, max.width )
                 } )
+                var y = pad.top
+                $lines.each( function( line ) {
+                    line.y = y
+                    y += pad.between
+                } )
+                
             },
         }
         $( function() {
