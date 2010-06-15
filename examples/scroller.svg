@@ -76,6 +76,10 @@
             this.__defineGetter__( 'pause', function() {
                 return this.running ? this.stop : this.go
             } )
+            
+            this.add = function( tixel ) {
+                contents.__.add( tixel )
+            }
         }
 
         var scene = new Scene
@@ -197,20 +201,30 @@
             this.__defineSetter__( 'x', container.transform.__lookupSetter__( 'x' ) ) 
             this.__defineSetter__( 'y', container.transform.__lookupSetter__( 'y' ) ) 
 
+            var once = false
             var hover = {
                 start: false,
                 duration: .5 * 1000,
                 exec: function( percent ) {
-                    value.x = 
+                    if( ! once ) {
+                        alert( percent )
+                        once = true
+                    }
+                    value.x = percent * value.width
+                    id.x = percent * - id.width
                 },
             }
+            scene.add( hover )
 
+            var duration = hover.duration
             container.$root.hover(
                 function() {
                     hover.start = time.now
+                    hover.duration = duration
                 },
                 function() {
-                    
+                    hover.start = time.now
+                    hover.duration = - duration
                 }
             )
                                    
