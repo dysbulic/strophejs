@@ -20,6 +20,69 @@
     ]]></script>
 
     <script type="application/javascript"><![CDATA[
+        var time = {
+            get now() { return ( new Date() ).getTime() }
+        }
+
+        function Scene() {
+            var state = new List( {
+                'tixel.capture.frequency.mHz' : .1 * 1000,
+                'time.epoch' : time.now,
+            } )
+            var interval = {
+                id: undefined,
+            }
+
+            var contents = new List()
+
+            function once() {
+                var now = time.now
+                contents.__.each( function( tixel ) {
+                    var end = tixel.start + tixel.duration
+                    if( ( tixel.start <= now && end >= now )
+                        || ( end <= now && tixel.start >= now ) ) {
+                        tixel.exec( ( end - now ) / tixel.duration )
+                    }
+                } )
+            }
+
+            this.__defineGetter__( 'once', once )
+
+            this.__defineGetter__( 'go', function() {
+                if( interval.id === undefined ) {
+                    var self = this
+                    var freq = state.__.get( 'tixel.capture.frequency.mHz' ) || 100
+                    interval.id =
+                        setInterval( function() {
+                            once.apply( self, arguments )
+                        },
+                                     freq )
+                }
+                return this
+            } )
+
+            this.__defineGetter__( 'stop', function() {
+                if( interval.id !== undefined ) {
+                    clearInterval( interval.id )
+                    interval.id = undefined
+                }
+                return this
+            } )
+
+            this.__defineGetter__( 'running', function() {
+                return interval.id !== undefined
+            } )
+
+            this.__defineGetter__( 'pause', function() {
+                return this.running ? this.stop : this.go
+            } )
+        }
+
+        var scene = new Scene
+        scene.go
+    ]]></script>
+
+    <script type="application/javascript"><![CDATA[
         function Container() {
             var $container = $.__.$( '<g/>' )
             var transform = {
@@ -47,6 +110,7 @@
             }
 
             this.__defineGetter__( '$root', function() { return $container } )
+
             this.__defineGetter__( 'transform', function() { return {
                 set x( x ) {
                     transform.x = x
@@ -101,9 +165,13 @@
 
             this.__defineGetter__( 'background', function() {
                 return {
-                    set radius( r ) { $bg.attr( 'rx', r ) }, 
+                    set radius( r ) {
+                        $bg.attr( 'rx', r )
+                        $bg.attr( 'ry', r )
+                    }, 
                 }
             } )
+            this.background.radius = 4
 
             $work.append( this.$root )
 
@@ -121,11 +189,31 @@
     <script type="application/javascript"><![CDATA[
         function Value( val, id ) {
             var container = new Container()
-            container.add( new Label( val ) )
-            container.add( new Label( id ) )
+            var value = new Label( val )
+            var id = new Label( id )
+            container.add( value )
+            container.add( id )
             this.__defineGetter__( '$root', function() { return container.$root } )
             this.__defineSetter__( 'x', container.transform.__lookupSetter__( 'x' ) ) 
             this.__defineSetter__( 'y', container.transform.__lookupSetter__( 'y' ) ) 
+
+            var hover = {
+                start: false,
+                duration: .5 * 1000,
+                exec: function( percent ) {
+                    value.x = 
+                },
+            }
+
+            container.$root.hover(
+                function() {
+                    hover.start = time.now
+                },
+                function() {
+                    
+                }
+            )
+                                   
         }
     ]]></script>
 
