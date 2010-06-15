@@ -90,6 +90,7 @@
                        ) } )
             this.__defineSetter__( 'x', container.transform.__lookupSetter__( 'x' ) ) 
             this.__defineSetter__( 'y', container.transform.__lookupSetter__( 'y' ) ) 
+            this.__defineGetter__( '$root', container.__lookupGetter__( '$root' ) ) 
 
             this.__defineGetter__( 'text', function() {
                 return $text.text()
@@ -97,15 +98,21 @@
             this.__defineSetter__( 'text', function( text ) {
                 $text.text( text )
             } )
-            this.__defineGetter__( '$root', function() { return container.$root } )
+
+            this.__defineGetter__( 'background', function() {
+                return {
+                    set radius( r ) { $bg.attr( 'rx', r ) }, 
+                }
+            } )
+
+            $work.append( this.$root )
 
             var size = {
                 x: - this.width / 2,
                 y: 0,
                 width: this.width,
                 height: this.height,
-            } 
-            alert( $text.width() )
+            }
             $obj.attr( size )
             $bg.attr( size )
         }
@@ -117,6 +124,8 @@
             container.add( new Label( val ) )
             container.add( new Label( id ) )
             this.__defineGetter__( '$root', function() { return container.$root } )
+            this.__defineSetter__( 'x', container.transform.__lookupSetter__( 'x' ) ) 
+            this.__defineSetter__( 'y', container.transform.__lookupSetter__( 'y' ) ) 
         }
     ]]></script>
 
@@ -149,9 +158,8 @@
         $( function() {
             display.JSON( new List( {
                 username: 'bob@localhost',
-                password: 'bob\'spass',
-                connect: function() {
-                },
+                //password: 'bob\'spass',
+                //connect: function() { },
             } ) )
         } )
     ]]></script>
@@ -193,11 +201,11 @@
         } )
     ]]></script>
     <style type="text/css">
-    rect { fill: blue }
+    rect { fill: lightblue; stroke: darkgray }
     #log { text-anchor: middle }
-input { text-align: center; padding: auto; }
+input { text-align: center; font-size: 13pt; border: none }
 foreignObject { overflow: visible; }
-[class~='value'] { background-color: transparent }
+[class~='value'] { background-color: transparent; padding: .25em .5em }
     </style>
   </defs>
     <g id="body"/>
