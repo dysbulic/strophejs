@@ -40,8 +40,11 @@
                 contents.__.each( function( tixel ) {
                     var end = tixel.start + tixel.duration
                     if( ( tixel.start <= now && end >= now )
-                        || ( end <= now && tixel.start >= now ) ) {
-                        tixel.exec( ( end - now ) / tixel.duration )
+                        || ( end <= now && tixel.start >= now )
+                        || ( tixel.percent > 0 && tixel.percent < 1 ) ) {
+                        var percent = ( now - tixel.start ) / tixel.duration
+                        tixel.percent = Math.max( 0, Math.min( 1, percent ) )
+                        tixel.exec.call( tixel )
                     }
                 } )
             }
@@ -201,17 +204,12 @@
             this.__defineSetter__( 'x', container.transform.__lookupSetter__( 'x' ) ) 
             this.__defineSetter__( 'y', container.transform.__lookupSetter__( 'y' ) ) 
 
-            var once = false
             var hover = {
                 start: false,
                 duration: .5 * 1000,
                 exec: function( percent ) {
-                    if( ! once ) {
-                        alert( percent )
-                        once = true
-                    }
-                    value.x = percent * value.width
-                    id.x = percent * - id.width
+                    value.x = this.percent * value.width / 2
+                    id.x = this.percent * - id.width / 2
                 },
             }
             scene.add( hover )
@@ -223,7 +221,7 @@
                     hover.duration = duration
                 },
                 function() {
-                    hover.start = time.now
+                    hover.start = time.now + duration
                     hover.duration = - duration
                 }
             )
