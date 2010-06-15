@@ -105,10 +105,9 @@
             function add( elem ) {
                 elems.push( elem )
                 if( elem && elem.$root ) {
-                    add.call( this, elem.$root )
-                } else {
-                    $container.append( elem )
+                    elem = elem.$root
                 }
+                $container.append( elem )
             }
             this.add = add
 
@@ -203,6 +202,9 @@
             this.__defineGetter__( '$root', function() { return container.$root } )
             this.__defineSetter__( 'x', container.transform.__lookupSetter__( 'x' ) ) 
             this.__defineSetter__( 'y', container.transform.__lookupSetter__( 'y' ) ) 
+            this.__defineGetter__( 'height', function() {
+                return Math.max( value.height, id.height )
+            } )
 
             var hover = {
                 start: false,
@@ -225,7 +227,6 @@
                     hover.duration = - duration
                 }
             )
-                                   
         }
     ]]></script>
 
@@ -239,15 +240,14 @@
                 var container = new Container()
                 $work.append( container.$root )
 
-                var max = { width: 0 }
                 list.__.each( function( line, id ) {
                     var val = new Value( line, id )
                     container.add( val )
-                    max.width = Math.max( val.width, max.width )
                 } )
                 var y = pad.top
                 container.each( function( line ) {
                     line.y = y
+                    alert( line.height )
                     y += line.height + pad.between
                 } )
                 y -= pad.between - pad.bottom
@@ -258,8 +258,9 @@
         $( function() {
             display.JSON( new List( {
                 username: 'bob@localhost',
-                //password: 'bob\'spass',
-                //connect: function() { },
+                password: 'bob\'spass',
+                connect: function() {
+                },
             } ) )
         } )
     ]]></script>
